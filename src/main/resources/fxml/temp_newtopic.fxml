@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="480.0" prefWidth="640.0" spacing="5" 
+      fx:controller="com.helegris.szorengeteg.TempNewTopicController">
+    <MenuBar fx:id="menuBar">
+        <menus>
+            <Menu text="Témakörök" style="-fx-font: NORMAL 16 Arial;"></Menu>
+            <Menu text="Új témakör" style="-fx-font: NORMAL 16 Arial;" fx:id="newTopic"></Menu>
+            <Menu text="Beállítások" style="-fx-font: NORMAL 16 Arial;"></Menu>
+            <Menu text="Statisztika" style="-fx-font: NORMAL 16 Arial;"></Menu>
+            <Menu text="Segítség" style="-fx-font: NORMAL 16 Arial;"></Menu>
+        </menus>
+    </MenuBar>
+    <VBox>
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
+        
+        <Label style="-fx-font: NORMAL 20 Arial;" text="Új témakör"></Label>
+        <HBox spacing="5">
+            <Label style="-fx-font: NORMAL 14 Arial;" text="Megnevezés:"></Label>
+            <TextField></TextField>
+        </HBox>
+        <Label style="-fx-font: NORMAL 14 Arial;" text="Kép:"></Label>
+        <HBox spacing="5">
+        <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="file:/com/helegris/szorengeteg/animal1.jpg" />
+            </image>
+        </ImageView>
+        <Button text="Kiválaztás"></Button>
+        </HBox>
+        <Label style="-fx-font: NORMAL 14 Arial;" text="Szavak"></Label>
+        <TableView fx:id="tableView">
+            <columns>
+                <TableColumn text="szó" minWidth="120.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="word" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="leírás" prefWidth="350.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="description" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="szerkeszt" prefWidth="74.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="btnEdit" />
+                    </cellValueFactory>
+                    <cellFactory>
+
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn text="töröl" prefWidth="50.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="btnDelete" />
+                    </cellValueFactory>
+                    <cellFactory>
+
+                    </cellFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+        <HBox>
+            <Button text="Új szó" style="-fx-font: NORMAL 14 Arial;"></Button>
+            <Pane HBox.hgrow="ALWAYS"></Pane>
+            <Button text="Mentés" style="-fx-font: NORMAL 14 Arial;"></Button>
+            <Button text="Vissza" style="-fx-font: NORMAL 14 Arial;"></Button>
+        </HBox>
+    </VBox>
+</VBox>

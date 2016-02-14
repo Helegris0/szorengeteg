@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane id="AnchorPane" prefHeight="350.0" prefWidth="600.0" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.helegris.szorengeteg.controller.NewTopicController">
+    <VBox>
+        <HBox spacing="5">
+            <Label text="Megnevezés:"></Label>
+            <TextField fx:id="txtName"></TextField>
+        </HBox>
+        <Label text="Kép:"></Label>
+        <HBox spacing="5">
+            <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true" />
+            <Button text="Betöltés" onAction="#loadImage"></Button>
+        </HBox>
+        <Label text="Szavak"></Label>
+        <TableView fx:id="tableView">
+            <columns>
+                <TableColumn text="szó" minWidth="120.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="word" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="leírás" prefWidth="350.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="description" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn text="szerkeszt" prefWidth="74.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="btnEdit" />
+                    </cellValueFactory>
+                    <cellFactory>
+
+                    </cellFactory>
+                </TableColumn>
+                <TableColumn text="töröl" prefWidth="50.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="btnDelete" />
+                    </cellValueFactory>
+                    <cellFactory>
+
+                    </cellFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+        <HBox>
+            <Button text="Új szó"></Button>
+            <Pane HBox.hgrow="ALWAYS"></Pane>
+            <Button text="Mentés" onAction="#saveTopic"></Button>
+            <Button text="Vissza"></Button>
+        </HBox>
+    </VBox>
+</AnchorPane>

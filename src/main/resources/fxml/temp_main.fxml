@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" prefHeight="400.0" prefWidth="600.0" spacing="5">
+    <MenuBar fx:id="menuBar">
+        <menus>
+            <Menu text="Témakörök" style="-fx-font: NORMAL 16 Arial;"></Menu>
+            <Menu text="Új témakör" style="-fx-font: NORMAL 16 Arial;" fx:id="newTopic"></Menu>
+            <Menu text="Beállítások" style="-fx-font: NORMAL 16 Arial;"></Menu>
+            <Menu text="Statisztika" style="-fx-font: NORMAL 16 Arial;"></Menu>
+            <Menu text="Segítség" style="-fx-font: NORMAL 16 Arial;"></Menu>
+        </menus>
+    </MenuBar>
+    <VBox>
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
+            
+        <Label style="-fx-font: NORMAL 20 Arial;" text="Témakörök"></Label>
+        <HBox spacing="5">
+            <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="file:/com/helegris/szorengeteg/animal1.jpg" />
+                </image>
+            </ImageView>
+            <VBox>
+                <Label text="Idő" style="-fx-font: BOLD 16 Arial;"></Label>
+                <Label text="átnézendő: 0" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="megtanulva: 17" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="új: 23" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="összesen: 40" style="-fx-font: NORMAL 14 Arial;"></Label>
+            </VBox>
+            <VBox>
+                <HBox>
+                <Button text="Átnézés" disable="true"></Button>
+                <Button text="Tanulás"></Button>
+                </HBox>
+                <Label text="szerkesztés" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="nullázás" style="-fx-font: NORMAL 14 Arial;"></Label>
+            </VBox>
+        </HBox>
+        
+        <HBox spacing="5">
+            <ImageView fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="file:/com/helegris/szorengeteg/animal1.jpg" />
+                </image>
+            </ImageView>
+            <VBox>
+                <Label text="Természet" style="-fx-font: BOLD 16 Arial;"></Label>
+                <Label text="átnézendő: 10" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="megtanulva: 0" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="új: 30" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="összesen: 40" style="-fx-font: NORMAL 14 Arial;"></Label>
+            </VBox>
+            <VBox>
+                <HBox>
+                <Button text="Átnézés"></Button>
+                <Button text="Tanulás"></Button>
+                </HBox>
+                <Label text="szerkesztés" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="nullázás" style="-fx-font: NORMAL 14 Arial;"></Label>
+            </VBox>
+        </HBox>
+        
+        <HBox spacing="5">
+            <ImageView fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true">
+                <image>
+                    <Image url="file:/com/helegris/szorengeteg/animal1.jpg" />
+                </image>
+            </ImageView>
+            <VBox>
+                <Label text="Étkezés" style="-fx-font: BOLD 16 Arial;"></Label>
+                <Label text="átnézendő: 0" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="megtanulva: 0" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="új: 40" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="összesen: 40" style="-fx-font: NORMAL 14 Arial;"></Label>
+            </VBox>
+            <VBox>
+                <HBox>
+                <Button text="Átnézés"></Button>
+                <Button text="Tanulás"></Button>
+                </HBox>
+                <Label text="szerkesztés" style="-fx-font: NORMAL 14 Arial;"></Label>
+                <Label text="nullázás" style="-fx-font: NORMAL 14 Arial;"></Label>
+            </VBox>
+        </HBox>
+    </VBox>
+</VBox>
