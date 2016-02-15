@@ -5,30 +5,10 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import com.helegris.szorengeteg.controller.component.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="350.0" prefWidth="600.0" 
+<ScrollPane id="scrollPane" prefHeight="350.0" prefWidth="600.0" 
             xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.helegris.szorengeteg.controller.TopicsController">
-    <HBox>
-        <ImageView fx:id="imageView" fitHeight="120.0" fitWidth="120.0">
-        </ImageView>
-        <Region prefHeight="140.0" prefWidth="10.0" />
-        <VBox prefHeight="200.0" prefWidth="100.0">
-            <Label text="Név" />
-            <Label text="átnézendő:" />
-            <Label text="megtanulva:" />
-            <Label text="új:" />
-            <Label text="összesen:" />
-        </VBox>
-        <VBox prefHeight="140.0" prefWidth="130.0">
-            <HBox prefHeight="40.0" prefWidth="130.0">
-                <Button mnemonicParsing="false" text="Átnézés" />
-                <Button mnemonicParsing="false" text="Tanulás" />
-            </HBox>
-            <Label text="szerkesztés" />
-            <Label text="nullázás" />
-        </VBox>
-    </HBox>
-</AnchorPane>
+    <TopicBox fx:id="topicBox" />
+</ScrollPane>
