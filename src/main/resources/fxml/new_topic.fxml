@@ -20,7 +20,10 @@
         <Label text="Kép:"></Label>
         <HBox spacing="5">
             <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true" />
-            <Button text="Betöltés" onAction="#loadImage"></Button>
+            <VBox>
+                <Button text="Betöltés" onAction="#loadImage"></Button>
+                <Button text="Törlés" fx:id="btnDeleteImage" onAction="#deleteImage" visible="false" ></Button>
+            </VBox>
         </HBox>
         <Label text="Szavak"></Label>
         <TableView fx:id="tableView">
@@ -57,7 +60,7 @@
             <Button text="Új szó"></Button>
             <Pane HBox.hgrow="ALWAYS"></Pane>
             <Button text="Mentés" onAction="#saveTopic"></Button>
-            <Button text="Vissza"></Button>
+            <Button text="Vissza" onAction="#goBack"></Button>
         </HBox>
     </VBox>
 </AnchorPane>

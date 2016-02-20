@@ -15,11 +15,11 @@
         </ImageView>
         <Region prefHeight="140.0" prefWidth="10.0" />
         <VBox prefHeight="200.0" prefWidth="100.0">
-            <Label text="Név" />
+            <Label text="Név" fx:id="lblName" />
             <Label text="átnézendő:" />
             <Label text="megtanulva:" />
             <Label text="új:" />
-            <Label text="összesen:" />
+            <Label text="összesen:" fx:id="lblNoAllCards" />
         </VBox>
         <VBox prefHeight="140.0" prefWidth="130.0">
             <HBox prefHeight="40.0" prefWidth="130.0">

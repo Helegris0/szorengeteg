@@ -5,12 +5,12 @@
  */
 package com.helegris.szorengeteg.model.entity;
 
-import java.io.File;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -32,8 +32,9 @@ public class Topic extends PersistentObject {
     @Column(name = "name")
     private String name;
 
+    @Lob
     @Column(name = "image")
-    private File image;
+    private byte[] image;
 
     @OneToMany(mappedBy = "topic")
     private List<Card> cards;
@@ -68,11 +69,11 @@ public class Topic extends PersistentObject {
         this.name = name;
     }
 
-    public File getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(File image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

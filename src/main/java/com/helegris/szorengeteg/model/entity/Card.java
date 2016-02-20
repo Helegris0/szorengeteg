@@ -5,7 +5,6 @@
  */
 package com.helegris.szorengeteg.model.entity;
 
-import java.io.File;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -43,8 +43,9 @@ public class Card extends PersistentObject {
     @JoinColumn(name = "topic_id")
     private Topic topic;
 
+    @Lob
     @Column(name = "image")
-    private File image;
+    private byte[] image;
 
     @Column(name = "factor")
     private double factor;
@@ -99,11 +100,11 @@ public class Card extends PersistentObject {
         this.topic = topic;
     }
 
-    public File getImage() {
+    public byte[] getImage() {
         return image;
     }
 
-    public void setImage(File image) {
+    public void setImage(byte[] image) {
         this.image = image;
     }
 

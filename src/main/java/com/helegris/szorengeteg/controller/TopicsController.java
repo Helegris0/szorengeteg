@@ -5,14 +5,16 @@
  */
 package com.helegris.szorengeteg.controller;
 
+import com.helegris.szorengeteg.controller.component.TopicBox;
+import com.helegris.szorengeteg.model.TopicLoader;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
+import javax.inject.Inject;
 
 /**
  * FXML Controller class
@@ -22,20 +24,32 @@ import javafx.scene.control.ScrollPane;
 public class TopicsController implements Initializable {
 
     @FXML
-    private ScrollPane scrollPane;
+    private VBox vBox;
 
-    private List<Topic> topics = new ArrayList<>();
+    @Inject
+    private TopicLoader topicLoader;
+
+    private List<Topic> topics;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadTopics();
+//        loadTopics();
+//        createTopicBoxes();
     }
 
     private void loadTopics() {
+        topics = topicLoader.loadAll();
+    }
 
+    private void createTopicBoxes() {
+        for (Topic topic : topics) {
+            vBox.getChildren().add(new TopicBox(topic));
+        }
     }
 
 }

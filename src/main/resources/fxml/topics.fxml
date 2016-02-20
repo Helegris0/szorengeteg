@@ -10,5 +10,5 @@
 <ScrollPane id="scrollPane" prefHeight="350.0" prefWidth="600.0" 
             xmlns:fx="http://javafx.com/fxml/1" 
             fx:controller="com.helegris.szorengeteg.controller.TopicsController">
-    <TopicBox fx:id="topicBox" />
+    <VBox fx:id="vBox" />
 </ScrollPane>
