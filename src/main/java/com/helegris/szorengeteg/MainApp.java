@@ -22,6 +22,8 @@ public class MainApp extends Application {
 //        stage.setScene(scene);
 //        stage.show();
 
+        ApplicationContainer.getInstance();
+
         stage.setTitle("Szórengeteg");
         stage.setScene(
                 createScene(

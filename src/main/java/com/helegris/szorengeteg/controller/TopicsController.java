@@ -5,10 +5,12 @@
  */
 package com.helegris.szorengeteg.controller;
 
+import com.helegris.szorengeteg.CdiUtils;
 import com.helegris.szorengeteg.controller.component.TopicBox;
 import com.helegris.szorengeteg.model.TopicLoader;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
@@ -29,7 +31,11 @@ public class TopicsController implements Initializable {
     @Inject
     private TopicLoader topicLoader;
 
-    private List<Topic> topics;
+    private List<Topic> topics = new ArrayList<>();
+
+    public TopicsController() {
+        CdiUtils.injectFields(this);
+    }
 
     /**
      * Initializes the controller class.
@@ -38,8 +44,8 @@ public class TopicsController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-//        loadTopics();
-//        createTopicBoxes();
+        loadTopics();
+        createTopicBoxes();
     }
 
     private void loadTopics() {
