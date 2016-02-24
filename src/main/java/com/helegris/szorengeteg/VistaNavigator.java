@@ -28,6 +28,10 @@ public class VistaNavigator {
      */
     private static MainController mainController;
 
+    public static MainController getMainController() {
+        return mainController;
+    }
+
     /**
      * Stores the main controller for later use in navigation tasks.
      *

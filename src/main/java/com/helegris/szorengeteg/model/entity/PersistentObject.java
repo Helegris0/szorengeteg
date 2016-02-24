@@ -22,7 +22,7 @@ public abstract class PersistentObject implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id")
-    private Long id;
+    protected Long id;
 
     public Long getId() {
         return id;

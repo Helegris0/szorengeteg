@@ -32,6 +32,7 @@ public class TopicBox extends Pane {
     private static final String FXML = "/fxml/topicbox.fxml";
 
     public TopicBox(Topic topic) {
+        this.topic = topic;
         loadFxml();
         setLabels();
     }

@@ -53,13 +53,14 @@ public class MainController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        lblTitle.setText(TOPICS_TITLE);
+
         Label lblTopics = new Label(TOPICS_TITLE);
         lblTopics.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
             @Override
             public void handle(MouseEvent event) {
-                lblTitle.setText(TOPICS_TITLE);
-                VistaNavigator.loadVista(VistaNavigator.TOPICS_FXML);
+                loadContentTopics();
             }
         });
         mnTopics.setGraphic(lblTopics);
@@ -69,8 +70,7 @@ public class MainController implements Initializable {
 
             @Override
             public void handle(MouseEvent event) {
-                lblTitle.setText(NEW_TOPIC_TITLE);
-                VistaNavigator.loadVista(VistaNavigator.NEW_TOPIC_FXML);
+                loadContentNewTopic();
             }
         });
         mnNewTopic.setGraphic(lblNewTopic);
@@ -78,6 +78,16 @@ public class MainController implements Initializable {
         mnSettings.setText(SETTINGS_TITLE);
         mnStatistics.setText(STATISTICS_TITLE);
         mnHelp.setText(HELP_TITLE);
+    }
+
+    public void loadContentTopics() {
+        lblTitle.setText(TOPICS_TITLE);
+        VistaNavigator.loadVista(VistaNavigator.TOPICS_FXML);
+    }
+
+    public void loadContentNewTopic() {
+        lblTitle.setText(NEW_TOPIC_TITLE);
+        VistaNavigator.loadVista(VistaNavigator.NEW_TOPIC_FXML);
     }
 
     /**

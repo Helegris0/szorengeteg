@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.helegris.szorengeteg.model.transaction;
+package com.helegris.szorengeteg.transaction;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

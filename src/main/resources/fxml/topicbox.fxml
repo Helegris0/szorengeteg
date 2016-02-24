@@ -23,8 +23,7 @@
         </VBox>
         <VBox prefHeight="140.0" prefWidth="130.0">
             <HBox prefHeight="40.0" prefWidth="130.0">
-                <Button mnemonicParsing="false" text="Átnézés" />
-                <Button mnemonicParsing="false" text="Tanulás" />
+                <Button mnemonicParsing="false" text="Gyakorlás" />
             </HBox>
             <Label text="szerkesztés" />
             <Label text="nullázás" />

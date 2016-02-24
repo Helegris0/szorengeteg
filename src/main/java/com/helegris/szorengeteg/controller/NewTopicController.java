@@ -5,8 +5,10 @@ package com.helegris.szorengeteg.controller;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+import com.helegris.szorengeteg.CdiUtils;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.model.EntitySaver;
+import com.helegris.szorengeteg.model.entity.Topic;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,6 +52,10 @@ public class NewTopicController implements Initializable {
 
     private byte[] imageBytes;
 
+    public NewTopicController() {
+        CdiUtils.injectFields(this);
+    }
+
     /**
      * Initializes the controller class.
      */
@@ -91,19 +97,19 @@ public class NewTopicController implements Initializable {
 
     @FXML
     protected void saveTopic(ActionEvent event) {
-//        if (!"".equals(txtName.getText())) {
-//            Topic topic = new Topic(txtName.getText());
-//            if (imageBytes != null) {
-//                topic.setImage(imageBytes);
-//            }
-//            entitySaver.create(topic);
-//            VistaNavigator.loadVista(VistaNavigator.TOPICS_FXML);
-//        }
+        if (!"".equals(txtName.getText())) {
+            Topic topic = new Topic(txtName.getText());
+            if (imageBytes != null) {
+                topic.setImage(imageBytes);
+            }
+            entitySaver.create(topic);
+            VistaNavigator.getMainController().loadContentTopics();
+        }
     }
 
     @FXML
     protected void goBack(ActionEvent event) {
-        VistaNavigator.loadVista(VistaNavigator.TOPICS_FXML);
+        VistaNavigator.getMainController().loadContentTopics();
     }
 
     private byte[] getImageBytes(File file) throws IOException {

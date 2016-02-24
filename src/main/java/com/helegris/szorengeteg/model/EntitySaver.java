@@ -6,7 +6,7 @@
 package com.helegris.szorengeteg.model;
 
 import com.helegris.szorengeteg.model.entity.PersistentObject;
-import com.helegris.szorengeteg.model.transaction.Transactional;
+import com.helegris.szorengeteg.transaction.Transactional;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -29,6 +29,6 @@ public class EntitySaver {
     }
 
     public void delete(PersistentObject obj) {
-        em.remove(em.merge(obj));
+        em.remove(obj);
     }
 }

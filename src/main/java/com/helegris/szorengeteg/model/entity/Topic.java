@@ -5,6 +5,7 @@
  */
 package com.helegris.szorengeteg.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,7 +38,7 @@ public class Topic extends PersistentObject {
     private byte[] image;
 
     @OneToMany(mappedBy = "topic")
-    private List<Card> cards;
+    private List<Card> cards = new ArrayList<>();
 
     public Topic() {
     }
