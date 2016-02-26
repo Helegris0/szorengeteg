@@ -10,23 +10,27 @@ import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.model.EntitySaver;
 import com.helegris.szorengeteg.model.entity.Topic;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.embed.swing.SwingFXUtils;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
-import javax.imageio.ImageIO;
+import javafx.stage.Modality;
 import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 
@@ -55,7 +59,7 @@ public class NewTopicView extends AnchorPane {
     @FXML
     private Button btnBack;
 
-    private byte[] imageBytes;
+    private File imageFile;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public NewTopicView() {
@@ -74,6 +78,7 @@ public class NewTopicView extends AnchorPane {
     @FXML
     protected void loadImage(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         FileChooser.ExtensionFilter extFilterJpg
                 = new FileChooser.ExtensionFilter("JPG fájlok (*.jpg)", "*.JPG");
@@ -81,48 +86,94 @@ public class NewTopicView extends AnchorPane {
                 = new FileChooser.ExtensionFilter("PNG fájlok (*.png)", "*.PNG");
         fileChooser.getExtensionFilters().addAll(extFilterJpg, extFilterPng);
 
-        File file = fileChooser.showOpenDialog(null);
+        imageFile = fileChooser.showOpenDialog(null);
 
-        try {
-            if (file != null) {
-                BufferedImage bufferedImage = ImageIO.read(file);
-                Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+        if (imageFile != null) {
+            try {
+                Image image = new Image(new FileInputStream(imageFile));
                 imageView.setImage(image);
-                imageBytes = getImageBytes(file);
                 btnDeleteImage.setVisible(true);
+            } catch (FileNotFoundException ex) {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Képfeltöltés sikertelen");
+                alert.setHeaderText("A megadott kép nem elérhető!");
+                alert.setContentText("Keresett képfájl: " + imageFile.getAbsolutePath());
+
+                alert.showAndWait();
             }
-        } catch (IOException ex) {
-            Logger.getLogger(NewTopicView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @FXML
     protected void deleteImage(ActionEvent event) {
         btnDeleteImage.setVisible(false);
-        imageBytes = null;
+        imageFile = null;
         imageView.setImage(null);
     }
 
     @FXML
     protected void saveTopic(ActionEvent event) {
-        if (!"".equals(txtName.getText())) {
+        if ("".equals(txtName.getText())) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Hiányos adat");
+            alert.setHeaderText("Kérem, adja meg a témakör nevét");
+            alert.initModality(Modality.APPLICATION_MODAL);
+
+            alert.showAndWait();
+            return;
+        }
+        try {
             Topic topic = new Topic(txtName.getText());
-            if (imageBytes != null) {
-                topic.setImage(imageBytes);
+            if (imageFile != null) {
+                topic.setImage(IOUtils.toByteArray(new FileInputStream(imageFile)));
             }
             entitySaver.create(topic);
             VistaNavigator.getMainView().loadContentTopics();
+        } catch (FileNotFoundException ioe) {
+            Alert alert = new Alert(AlertType.WARNING);
+            alert.setTitle("Mentés sikertelen");
+            alert.setHeaderText("A megadott kép nem elérhető!");
+            alert.setContentText("Keresett képfájl: " + imageFile.getAbsolutePath());
+            alert.initModality(Modality.APPLICATION_MODAL);
+
+            alert.showAndWait();
+        } catch (IOException ioe) {
+            Alert alert = new Alert(AlertType.ERROR);
+            alert.setTitle("Váratlan hiba");
+            alert.setHeaderText(ioe.getMessage());
+            alert.initModality(Modality.APPLICATION_MODAL);
+
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ioe.printStackTrace(pw);
+            String exceptionText = sw.toString();
+
+            Label label = new Label("Exception stracktrace:");
+
+            TextArea textArea = new TextArea(exceptionText);
+            textArea.setEditable(false);
+            textArea.setWrapText(true);
+
+            textArea.setMaxWidth(Double.MAX_VALUE);
+            textArea.setMaxHeight(Double.MAX_VALUE);
+            GridPane.setVgrow(textArea, Priority.ALWAYS);
+            GridPane.setHgrow(textArea, Priority.ALWAYS);
+
+            GridPane expContent = new GridPane();
+            expContent.setMaxWidth(Double.MAX_VALUE);
+            expContent.add(label, 0, 0);
+            expContent.add(textArea, 0, 1);
+
+            alert.getDialogPane().setExpandableContent(expContent);
+            alert.getDialogPane().setExpanded(true);
+
+            alert.showAndWait();
         }
     }
 
     @FXML
     protected void goBack(ActionEvent event) {
         VistaNavigator.getMainView().loadContentTopics();
-    }
-
-    private byte[] getImageBytes(File file) throws IOException {
-        InputStream inputStream = new FileInputStream(file);
-        return IOUtils.toByteArray(inputStream);
     }
 
 }
