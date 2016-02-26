@@ -5,13 +5,9 @@
  */
 package com.helegris.szorengeteg.controller.component;
 
+import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.model.entity.Topic;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 
@@ -33,23 +29,11 @@ public class TopicBox extends Pane {
 
     public TopicBox(Topic topic) {
         this.topic = topic;
-        loadFxml();
-        setLabels();
+        FXMLLoaderHelper.load(FXML, this);
     }
 
-    private void loadFxml() {
-        InputStream inputStream = this.getClass().getResourceAsStream(FXML);
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setRoot(this);
-        fxmlLoader.setController(this);
-        try {
-            fxmlLoader.load(inputStream);
-        } catch (IOException ex) {
-            Logger.getLogger(TopicBox.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    private void setLabels() {
+    @FXML
+    protected void initialize() {
         lblName.setText(topic.getName());
         lblNoAllCards.setText("Összesen: " + topic.getCards().size());
     }

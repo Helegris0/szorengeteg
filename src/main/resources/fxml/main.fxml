@@ -6,10 +6,10 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="com.helegris.szorengeteg.controller.MainController">
-    <VBox prefWidth="600.0" >
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
+         id="AnchorPane" prefHeight="400.0" prefWidth="600.0" 
+         xmlns="http://javafx.com/javafx/8">
+    <VBox prefWidth="600.0">
         <MenuBar fx:id="menuBar">
             <menus>
                 <Menu fx:id="mnTopics"></Menu>
@@ -23,4 +23,4 @@
         <Label fx:id="lblTitle"></Label>
         <StackPane fx:id="vistaHolder" VBox.vgrow="ALWAYS" />
     </VBox>
-</AnchorPane>
+</fx:root>

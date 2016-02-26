@@ -9,9 +9,9 @@
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane id="AnchorPane" prefHeight="350.0" prefWidth="600.0" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="com.helegris.szorengeteg.controller.NewTopicController">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
+         id="AnchorPane" prefHeight="350.0" prefWidth="600.0" 
+         xmlns="http://javafx.com/javafx/8">
     <VBox>
         <HBox spacing="5">
             <Label text="Megnevezés:"></Label>
@@ -21,8 +21,8 @@
         <HBox spacing="5">
             <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true" />
             <VBox>
-                <Button text="Betöltés" onAction="#loadImage"></Button>
-                <Button text="Törlés" fx:id="btnDeleteImage" onAction="#deleteImage" visible="false" ></Button>
+                <Button fx:id="btnLoadImage" text="Betöltés" />
+                <Button fx:id="btnDeleteImage" text="Törlés" visible="false" />
             </VBox>
         </HBox>
         <Label text="Szavak"></Label>
@@ -59,8 +59,8 @@
         <HBox>
             <Button text="Új szó"></Button>
             <Pane HBox.hgrow="ALWAYS"></Pane>
-            <Button text="Mentés" onAction="#saveTopic"></Button>
-            <Button text="Vissza" onAction="#goBack"></Button>
+            <Button fx:id="btnSave" text="Mentés" />
+            <Button fx:id="btnBack" text="Vissza" />
         </HBox>
     </VBox>
-</AnchorPane>
+</fx:root>

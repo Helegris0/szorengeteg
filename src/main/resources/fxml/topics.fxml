@@ -7,8 +7,8 @@
 <?import javafx.scene.layout.*?>
 <?import com.helegris.szorengeteg.controller.component.*?>
 
-<ScrollPane id="scrollPane" prefHeight="350.0" prefWidth="600.0" 
-            xmlns:fx="http://javafx.com/fxml/1" 
-            fx:controller="com.helegris.szorengeteg.controller.TopicsController">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="ScrollPane"
+         id="scrollPane" prefHeight="350.0" prefWidth="600.0" 
+         xmlns="http://javafx.com/javafx/8">
     <VBox fx:id="vBox" />
-</ScrollPane>
+</fx:root>

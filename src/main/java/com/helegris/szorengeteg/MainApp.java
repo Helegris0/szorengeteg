@@ -1,10 +1,8 @@
 package com.helegris.szorengeteg;
 
-import com.helegris.szorengeteg.controller.MainController;
-import java.io.IOException;
+import com.helegris.szorengeteg.controller.MainView;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -13,23 +11,10 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-//        Parent root = FXMLLoader.load(getClass().getResource("/fxml/temp_main.fxml"));
-//
-//        Scene scene = new Scene(root);
-//        scene.getStylesheets().add("/styles/Styles.css");
-//
-//        stage.setTitle("Szórengeteg");
-//        stage.setScene(scene);
-//        stage.show();
-
         ApplicationContainer.getInstance();
 
         stage.setTitle("Szórengeteg");
-        stage.setScene(
-                createScene(
-                        loadMainPane()
-                )
-        );
+        stage.setScene(createScene(loadMainPane()));
 
         stage.show();
     }
@@ -39,21 +24,14 @@ public class MainApp extends Application {
      * Loads the first vista into the fxml layout.
      *
      * @return the loaded pane.
-     * @throws IOException if the pane could not be loaded.
      */
-    private Pane loadMainPane() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
+    private Pane loadMainPane() {
+        MainView mainView = new MainView();
 
-        Pane mainPane = (Pane) loader.load(
-                getClass().getResourceAsStream(VistaNavigator.MAIN_FXML)
-        );
+        VistaNavigator.setMainView(mainView);
+        mainView.loadContentTopics();
 
-        MainController mainController = loader.getController();
-
-        VistaNavigator.setMainController(mainController);
-        VistaNavigator.loadVista(VistaNavigator.TOPICS_FXML);
-
-        return mainPane;
+        return mainView;
     }
 
     /**
@@ -64,9 +42,7 @@ public class MainApp extends Application {
      * @return the created scene.
      */
     private Scene createScene(Pane mainPane) {
-        Scene scene = new Scene(
-                mainPane
-        );
+        Scene scene = new Scene(mainPane);
 
         scene.getStylesheets().setAll(
                 getClass().getResource("/styles/Styles.css").toExternalForm()

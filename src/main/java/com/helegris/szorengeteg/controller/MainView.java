@@ -5,17 +5,15 @@
  */
 package com.helegris.szorengeteg.controller;
 
-import com.helegris.szorengeteg.VistaNavigator;
-import java.net.URL;
-import java.util.ResourceBundle;
+import com.helegris.szorengeteg.FXMLLoaderHelper;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
 /**
@@ -23,7 +21,9 @@ import javafx.scene.layout.StackPane;
  *
  * @author Timi
  */
-public class MainController implements Initializable {
+public class MainView extends AnchorPane {
+
+    public static final String FXML = "fxml/main.fxml";
 
     public static final String TOPICS_TITLE = "Témakörök";
     public static final String NEW_TOPIC_TITLE = "Új témakör";
@@ -48,11 +48,13 @@ public class MainController implements Initializable {
     @FXML
     private StackPane vistaHolder;
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @SuppressWarnings("LeakingThisInConstructor")
+    public MainView() {
+        FXMLLoaderHelper.load(FXML, this);
+    }
+
+    @FXML
+    public void initialize() {
         lblTitle.setText(TOPICS_TITLE);
 
         Label lblTopics = new Label(TOPICS_TITLE);
@@ -82,12 +84,12 @@ public class MainController implements Initializable {
 
     public void loadContentTopics() {
         lblTitle.setText(TOPICS_TITLE);
-        VistaNavigator.loadVista(VistaNavigator.TOPICS_FXML);
+        setVista(new TopicsView());
     }
 
     public void loadContentNewTopic() {
         lblTitle.setText(NEW_TOPIC_TITLE);
-        VistaNavigator.loadVista(VistaNavigator.NEW_TOPIC_FXML);
+        setVista(new NewTopicView());
     }
 
     /**

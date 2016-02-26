@@ -5,7 +5,8 @@ package com.helegris.szorengeteg.controller;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import com.helegris.szorengeteg.CdiUtils;
+import com.helegris.szorengeteg.CDIUtils;
+import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.model.EntitySaver;
 import com.helegris.szorengeteg.model.entity.Topic;
@@ -14,18 +15,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 import javax.inject.Inject;
@@ -36,31 +35,40 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Timi
  */
-public class NewTopicController implements Initializable {
+public class NewTopicView extends AnchorPane {
+    
+    public static final String FXML = "fxml/new_topic.fxml";
 
     @Inject
     private EntitySaver entitySaver;
 
     @FXML
     private TextField txtName;
-
     @FXML
     private ImageView imageView;
-
+    @FXML
+    private Button btnLoadImage;
     @FXML
     private Button btnDeleteImage;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Button btnBack;
 
     private byte[] imageBytes;
 
-    public NewTopicController() {
-        CdiUtils.injectFields(this);
+    @SuppressWarnings("LeakingThisInConstructor")
+    public NewTopicView() {
+        CDIUtils.injectFields(this);
+        FXMLLoaderHelper.load(FXML, this);
     }
 
-    /**
-     * Initializes the controller class.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    protected void initialize() {
+        btnLoadImage.setOnAction(this::loadImage);
+        btnDeleteImage.setOnAction(this::deleteImage);
+        btnSave.setOnAction(this::saveTopic);
+        btnBack.setOnAction(this::goBack);
     }
 
     @FXML
@@ -84,7 +92,7 @@ public class NewTopicController implements Initializable {
                 btnDeleteImage.setVisible(true);
             }
         } catch (IOException ex) {
-            Logger.getLogger(NewTopicController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(NewTopicView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -103,13 +111,13 @@ public class NewTopicController implements Initializable {
                 topic.setImage(imageBytes);
             }
             entitySaver.create(topic);
-            VistaNavigator.getMainController().loadContentTopics();
+            VistaNavigator.getMainView().loadContentTopics();
         }
     }
 
     @FXML
     protected void goBack(ActionEvent event) {
-        VistaNavigator.getMainController().loadContentTopics();
+        VistaNavigator.getMainView().loadContentTopics();
     }
 
     private byte[] getImageBytes(File file) throws IOException {

@@ -5,16 +5,15 @@
  */
 package com.helegris.szorengeteg.controller;
 
-import com.helegris.szorengeteg.CdiUtils;
+import com.helegris.szorengeteg.CDIUtils;
+import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.controller.component.TopicBox;
 import com.helegris.szorengeteg.model.TopicLoader;
 import com.helegris.szorengeteg.model.entity.Topic;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javax.inject.Inject;
 
@@ -23,7 +22,9 @@ import javax.inject.Inject;
  *
  * @author Timi
  */
-public class TopicsController implements Initializable {
+public class TopicsView extends ScrollPane {
+    
+    public static final String FXML = "fxml/topics.fxml";
 
     @FXML
     private VBox vBox;
@@ -33,17 +34,14 @@ public class TopicsController implements Initializable {
 
     private List<Topic> topics = new ArrayList<>();
 
-    public TopicsController() {
-        CdiUtils.injectFields(this);
+    @SuppressWarnings("LeakingThisInConstructor")
+    public TopicsView() {
+        CDIUtils.injectFields(this);
+        FXMLLoaderHelper.load(FXML, this);
     }
 
-    /**
-     * Initializes the controller class.
-     * @param url
-     * @param rb
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    @FXML
+    protected void initialize() {
         loadTopics();
         createTopicBoxes();
     }

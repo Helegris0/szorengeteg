@@ -14,7 +14,7 @@ import javax.enterprise.inject.spi.InjectionTarget;
  *
  * @author Timi
  */
-public class CdiUtils {
+public class CDIUtils {
 
     public static <T> T injectFields(T instance) {
         if (instance == null) {
