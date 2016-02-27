@@ -8,7 +8,7 @@ package com.helegris.szorengeteg.controller;
 import com.helegris.szorengeteg.CDIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
-import static com.helegris.szorengeteg.controller.NewTopicView.FXML;
+import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.EntitySaver;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.File;
@@ -17,11 +17,14 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -40,7 +43,7 @@ import org.apache.commons.io.IOUtils;
  */
 public abstract class TopicView extends AnchorPane {
 
-    public static final String FXML = "fxml/new_topic.fxml";
+    public static final String FXML = "fxml/topic.fxml";
 
     @Inject
     protected EntitySaver entitySaver;
@@ -54,12 +57,15 @@ public abstract class TopicView extends AnchorPane {
     @FXML
     protected Button btnDeleteImage;
     @FXML
+    protected TableView<RowForCard> tableView;
+    @FXML
     protected Button btnSave;
     @FXML
     protected Button btnBack;
 
-    protected File imageFile;
     protected Topic topic;
+    protected File imageFile;
+    protected ObservableList<RowForCard> rows = FXCollections.observableArrayList();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public TopicView() {
@@ -73,6 +79,7 @@ public abstract class TopicView extends AnchorPane {
         btnDeleteImage.setOnAction(this::deleteImage);
         btnSave.setOnAction(this::saveTopic);
         btnBack.setOnAction(this::goBack);
+        tableView.setItems(rows);
     }
 
     @FXML

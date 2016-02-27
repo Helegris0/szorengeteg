@@ -57,7 +57,7 @@
             </columns>
         </TableView>
         <HBox>
-            <Button text="Új szó"></Button>
+            <Button fx:id="btnNewWord" text="Új szó" />
             <Pane HBox.hgrow="ALWAYS"></Pane>
             <Button fx:id="btnSave" text="Mentés" />
             <Button fx:id="btnBack" text="Vissza" />

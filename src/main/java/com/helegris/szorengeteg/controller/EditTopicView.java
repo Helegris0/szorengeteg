@@ -6,6 +6,7 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.VistaNavigator;
+import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -22,12 +23,23 @@ public class EditTopicView extends TopicView {
         super();
         this.topic = topic;
         txtName.setText(topic.getName());
+        loadOriginalImage();
+        loadOriginalRows();
+    }
+
+    private void loadOriginalImage() {
         if (topic.getImage() != null) {
             InputStream inputStream = new ByteArrayInputStream(topic.getImage());
             Image image = new Image(inputStream);
             imageView.setImage(image);
             btnDeleteImage.setVisible(true);
         }
+    }
+
+    private void loadOriginalRows() {
+        topic.getCards().stream().forEach((card) -> {
+            rows.add(new RowForCard(card));
+        });
     }
 
     @Override
