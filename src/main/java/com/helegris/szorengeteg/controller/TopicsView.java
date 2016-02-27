@@ -23,7 +23,7 @@ import javax.inject.Inject;
  * @author Timi
  */
 public class TopicsView extends ScrollPane {
-    
+
     public static final String FXML = "fxml/topics.fxml";
 
     @FXML
@@ -51,9 +51,9 @@ public class TopicsView extends ScrollPane {
     }
 
     private void createTopicBoxes() {
-        for (Topic topic : topics) {
+        topics.stream().forEach((topic) -> {
             vBox.getChildren().add(new TopicBox(topic));
-        }
+        });
     }
 
 }

@@ -40,7 +40,7 @@ import org.apache.commons.io.IOUtils;
  * @author Timi
  */
 public class NewTopicView extends AnchorPane {
-    
+
     public static final String FXML = "fxml/new_topic.fxml";
 
     @Inject

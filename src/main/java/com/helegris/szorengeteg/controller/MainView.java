@@ -6,7 +6,6 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -58,22 +57,14 @@ public class MainView extends AnchorPane {
         lblTitle.setText(TOPICS_TITLE);
 
         Label lblTopics = new Label(TOPICS_TITLE);
-        lblTopics.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                loadContentTopics();
-            }
+        lblTopics.setOnMouseClicked((MouseEvent event) -> {
+            loadContentTopics();
         });
         mnTopics.setGraphic(lblTopics);
 
         Label lblNewTopic = new Label(NEW_TOPIC_TITLE);
-        lblNewTopic.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                loadContentNewTopic();
-            }
+        lblNewTopic.setOnMouseClicked((MouseEvent event) -> {
+            loadContentNewTopic();
         });
         mnNewTopic.setGraphic(lblNewTopic);
 
