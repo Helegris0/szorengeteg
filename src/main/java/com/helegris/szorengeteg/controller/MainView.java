@@ -6,6 +6,7 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
+import com.helegris.szorengeteg.model.entity.Topic;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -26,6 +27,7 @@ public class MainView extends AnchorPane {
 
     public static final String TOPICS_TITLE = "Témakörök";
     public static final String NEW_TOPIC_TITLE = "Új témakör";
+    public static final String EDIT_TOPIC_TITLE = "Témakör szerkesztése";
     public static final String SETTINGS_TITLE = "Beállítások";
     public static final String STATISTICS_TITLE = "Statisztika";
     public static final String HELP_TITLE = "Segítség";
@@ -81,6 +83,11 @@ public class MainView extends AnchorPane {
     public void loadContentNewTopic() {
         lblTitle.setText(NEW_TOPIC_TITLE);
         setVista(new NewTopicView());
+    }
+
+    public void loadContentEditTopic(Topic topic) {
+        lblTitle.setText(EDIT_TOPIC_TITLE);
+        setVista(new EditTopicView(topic));
     }
 
     /**

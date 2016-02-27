@@ -6,10 +6,13 @@
 package com.helegris.szorengeteg.controller.component;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
+import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +32,8 @@ public class TopicBox extends Pane {
     private Label lblName;
     @FXML
     private Label lblNoAllCards;
+    @FXML
+    private Button btnEdit;
 
     private Topic topic;
     private Image image;
@@ -42,11 +47,17 @@ public class TopicBox extends Pane {
 
     @FXML
     protected void initialize() {
+        btnEdit.setOnAction(this::editTopic);
+
         if (image != null) {
             imageView.setImage(image);
         }
         lblName.setText(topic.getName());
         lblNoAllCards.setText("Összesen: " + topic.getCards().size());
+    }
+
+    protected void editTopic(ActionEvent event) {
+        VistaNavigator.getMainView().loadContentEditTopic(topic);
     }
 
     private void setImage() {

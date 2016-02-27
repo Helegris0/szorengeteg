@@ -25,7 +25,7 @@
             <HBox prefHeight="40.0" prefWidth="130.0">
                 <Button mnemonicParsing="false" text="Gyakorlás" />
             </HBox>
-            <Label text="szerkesztés" />
+            <Button fx:id="btnEdit" text="szerkesztés" />
             <Label text="nullázás" />
         </VBox>
     </HBox>
