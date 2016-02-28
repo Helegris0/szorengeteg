@@ -28,12 +28,17 @@
         <Label text="Szavak"></Label>
         <TableView fx:id="tableView">
             <columns>
+                <TableColumn fx:id="colImage" text="kép" minWidth="50.0">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="imageView" />
+                    </cellValueFactory>
+                </TableColumn>
                 <TableColumn text="szó" minWidth="120.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="leírás" prefWidth="424.0">
+                <TableColumn text="leírás" prefWidth="374.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>
@@ -42,9 +47,6 @@
                     <cellValueFactory>
                         <PropertyValueFactory property="btnDelete" />
                     </cellValueFactory>
-                    <cellFactory>
-
-                    </cellFactory>
                 </TableColumn>
             </columns>
         </TableView>

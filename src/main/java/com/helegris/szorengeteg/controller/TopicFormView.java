@@ -8,6 +8,7 @@ package com.helegris.szorengeteg.controller;
 import com.helegris.szorengeteg.CDIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
+import com.helegris.szorengeteg.controller.component.DefaultImage;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.EntitySaver;
 import com.helegris.szorengeteg.model.entity.Card;
@@ -24,19 +25,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 
@@ -62,6 +70,8 @@ public abstract class TopicFormView extends AnchorPane {
     @FXML
     protected TableView<RowForCard> tableView;
     @FXML
+    protected TableColumn colImage;
+    @FXML
     protected Button btnNewWord;
     @FXML
     protected Button btnSave;
@@ -86,6 +96,7 @@ public abstract class TopicFormView extends AnchorPane {
         btnNewWord.setOnAction(this::addRow);
         btnSave.setOnAction(this::submitTopic);
         btnBack.setOnAction(this::goBack);
+        tableView.setOnMouseClicked(this::cardImageAction);
         tableView.setItems(rows);
     }
 
@@ -114,6 +125,13 @@ public abstract class TopicFormView extends AnchorPane {
     }
 
     @FXML
+    protected void deleteImage(ActionEvent event) {
+        btnDeleteImage.setVisible(false);
+        imageFile = null;
+        imageView.setImage(null);
+    }
+
+    @FXML
     protected void addRow(ActionEvent event) {
         RowForCard row = new RowForCard(this);
         rows.add(row);
@@ -127,11 +145,37 @@ public abstract class TopicFormView extends AnchorPane {
         rows.remove(row);
     }
 
-    @FXML
-    protected void deleteImage(ActionEvent event) {
-        btnDeleteImage.setVisible(false);
-        imageFile = null;
-        imageView.setImage(null);
+    private void cardImageAction(MouseEvent event) {
+        TablePosition position = tableView.getSelectionModel().getSelectedCells().get(0);
+        if (colImage.equals(position.getTableColumn())) {
+            try {
+                int index = position.getRow();
+                RowForCard row = rows.get(index);
+                ImagePopup.setRow(row);
+                Stage stage = new Stage();
+                Parent root = FXMLLoader.load(getClass().getResource(ImagePopup.FXML));
+                stage.setScene(new Scene(root));
+                stage.setTitle(row.getTxtWord().getText() + " szó képének beállítása");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(tableView.getScene().getWindow());
+
+                stage.showAndWait();
+                if (ImagePopup.isOk()) {
+                    Image rowImage = ImagePopup.getFinalImage();
+                    File cardImageFile = ImagePopup.getImageFile();
+                    if (rowImage != null && cardImageFile != null) {
+                        row.setImageFile(cardImageFile);
+                        row.setImage(rowImage);
+                    } else {
+                        row.setImage(DefaultImage.getInstance());
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                alertFileNotFound(ex);
+            } catch (IOException ex) {
+                alertIOEx(ex);
+            }
+        }
     }
 
     @FXML
@@ -167,14 +211,20 @@ public abstract class TopicFormView extends AnchorPane {
     protected void prepareAndSaveCards() {
         rowsOfCardsToCreate.stream().forEach((row) -> {
             if (row.dataValidity()) {
-                Card card = row.getUpdatedCard(topic);
-                topic.addCard(card);
-                entitySaver.create(card);
+                try {
+                    Card card = row.getUpdatedCard(topic);
+                    topic.addCard(card);
+                    entitySaver.create(card);
+                } catch (FileNotFoundException ex) {
+                    alertFileNotFound(ex);
+                } catch (IOException ex) {
+                    alertIOEx(ex);
+                }
             }
         });
     }
 
-    private void alertFileNotFound(FileNotFoundException ex) {
+    protected void alertFileNotFound(FileNotFoundException ex) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle("A képfeltöltés sikertelen");
         alert.setHeaderText("A megadott kép nem elérhető");
@@ -184,7 +234,7 @@ public abstract class TopicFormView extends AnchorPane {
         alert.showAndWait();
     }
 
-    private void alertIOEx(IOException ioe) {
+    protected void alertIOEx(IOException ioe) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Váratlan hiba");
         alert.setHeaderText(ioe.getMessage());

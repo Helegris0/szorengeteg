@@ -5,22 +5,21 @@
  */
 package com.helegris.szorengeteg.controller;
 
+import com.helegris.szorengeteg.ImageUtils;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
-import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.image.Image;
 
 /**
  *
  * @author Timi
  */
 public class EditTopicView extends TopicFormView {
-    
+
     private List<RowForCard> rowsWithCardsToModify = new ArrayList<>();
     private List<Card> cardsToDelete = new ArrayList<>();
 
@@ -34,9 +33,7 @@ public class EditTopicView extends TopicFormView {
 
     private void loadOriginalImage() {
         if (topic.getImage() != null) {
-            InputStream inputStream = new ByteArrayInputStream(topic.getImage());
-            Image image = new Image(inputStream);
-            imageView.setImage(image);
+            imageView.setImage(ImageUtils.loadImage(topic.getImage()));
             btnDeleteImage.setVisible(true);
         }
     }
@@ -71,7 +68,13 @@ public class EditTopicView extends TopicFormView {
         super.prepareAndSaveCards();
         rowsWithCardsToModify.stream().forEach((row) -> {
             if (row.dataValidity()) {
-                entitySaver.modify(row.getUpdatedCard());
+                try {
+                    entitySaver.modify(row.getUpdatedCard());
+                } catch (FileNotFoundException ex) {
+                    alertFileNotFound(ex);
+                } catch (IOException ex) {
+                    alertIOEx(ex);
+                }
             }
         });
         cardsToDelete.stream().forEach((card) -> {
