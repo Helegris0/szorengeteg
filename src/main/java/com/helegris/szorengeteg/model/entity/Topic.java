@@ -33,22 +33,22 @@ public class Topic extends PersistentObject {
     @OneToMany(mappedBy = "topic")
     private List<Card> cards = new ArrayList<>();
 
-    public Topic() {
-    }
-
     @Override
     public String toString() {
         return "Topic{" + "id=" + id + ", name=" + name + '}';
     }
 
-    @Override
-    public Long getId() {
-        return id;
+    public void addCard(Card card) {
+        if (!cards.contains(card)) {
+            cards.add(card);
+            card.setTopic(this);
+        }
     }
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
+    public void removeCard(Card card) {
+        if (cards.contains(card)) {
+            cards.remove(card);
+        }
     }
 
     public String getName() {

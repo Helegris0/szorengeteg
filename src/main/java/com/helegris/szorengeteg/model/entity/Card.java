@@ -59,16 +59,6 @@ public class Card extends PersistentObject {
         return "Card{" + "id=" + id + ", word=" + word + ", description=" + description + ", topic=" + topic + '}';
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getWord() {
         return word;
     }

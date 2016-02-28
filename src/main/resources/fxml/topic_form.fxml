@@ -30,21 +30,13 @@
             <columns>
                 <TableColumn text="szó" minWidth="120.0">
                     <cellValueFactory>
-                        <PropertyValueFactory property="word" />
+                        <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="leírás" prefWidth="350.0">
+                <TableColumn text="leírás" prefWidth="424.0">
                     <cellValueFactory>
-                        <PropertyValueFactory property="description" />
+                        <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>
-                </TableColumn>
-                <TableColumn text="szerkeszt" prefWidth="74.0">
-                    <cellValueFactory>
-                        <PropertyValueFactory property="btnEdit" />
-                    </cellValueFactory>
-                    <cellFactory>
-
-                    </cellFactory>
                 </TableColumn>
                 <TableColumn text="töröl" prefWidth="50.0">
                     <cellValueFactory>

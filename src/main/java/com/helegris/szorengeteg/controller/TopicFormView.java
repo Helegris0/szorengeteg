@@ -10,6 +10,7 @@ import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.EntitySaver;
+import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +18,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -41,9 +44,9 @@ import org.apache.commons.io.IOUtils;
  *
  * @author Timi
  */
-public abstract class TopicView extends AnchorPane {
+public abstract class TopicFormView extends AnchorPane {
 
-    public static final String FXML = "fxml/topic.fxml";
+    public static final String FXML = "fxml/topic_form.fxml";
 
     @Inject
     protected EntitySaver entitySaver;
@@ -59,6 +62,8 @@ public abstract class TopicView extends AnchorPane {
     @FXML
     protected TableView<RowForCard> tableView;
     @FXML
+    protected Button btnNewWord;
+    @FXML
     protected Button btnSave;
     @FXML
     protected Button btnBack;
@@ -66,9 +71,10 @@ public abstract class TopicView extends AnchorPane {
     protected Topic topic;
     protected File imageFile;
     protected ObservableList<RowForCard> rows = FXCollections.observableArrayList();
+    protected List<RowForCard> rowsOfCardsToCreate = new ArrayList<>();
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public TopicView() {
+    public TopicFormView() {
         CDIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
     }
@@ -77,7 +83,8 @@ public abstract class TopicView extends AnchorPane {
     protected void initialize() {
         btnLoadImage.setOnAction(this::loadImage);
         btnDeleteImage.setOnAction(this::deleteImage);
-        btnSave.setOnAction(this::saveTopic);
+        btnNewWord.setOnAction(this::addRow);
+        btnSave.setOnAction(this::submitTopic);
         btnBack.setOnAction(this::goBack);
         tableView.setItems(rows);
     }
@@ -107,6 +114,20 @@ public abstract class TopicView extends AnchorPane {
     }
 
     @FXML
+    protected void addRow(ActionEvent event) {
+        RowForCard row = new RowForCard(this);
+        rows.add(row);
+        rowsOfCardsToCreate.add(row);
+    }
+
+    public void deleteRow(RowForCard row) {
+        if (rowsOfCardsToCreate.contains(row)) {
+            rowsOfCardsToCreate.remove(row);
+        }
+        rows.remove(row);
+    }
+
+    @FXML
     protected void deleteImage(ActionEvent event) {
         btnDeleteImage.setVisible(false);
         imageFile = null;
@@ -114,7 +135,7 @@ public abstract class TopicView extends AnchorPane {
     }
 
     @FXML
-    protected void saveTopic(ActionEvent event) {
+    protected void submitTopic(ActionEvent event) {
         if ("".equals(txtName.getText())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Hiányos adat");
@@ -126,6 +147,9 @@ public abstract class TopicView extends AnchorPane {
         }
         try {
             prepareTopic();
+            prepareAndSaveCards();
+            entitySaver.modify(topic);
+            VistaNavigator.getMainView().loadContentTopics();
         } catch (FileNotFoundException ex) {
             alertFileNotFound(ex);
         } catch (IOException ex) {
@@ -138,6 +162,16 @@ public abstract class TopicView extends AnchorPane {
         if (imageFile != null) {
             topic.setImage(IOUtils.toByteArray(new FileInputStream(imageFile)));
         }
+    }
+
+    protected void prepareAndSaveCards() {
+        rowsOfCardsToCreate.stream().forEach((row) -> {
+            if (row.dataValidity()) {
+                Card card = row.getUpdatedCard(topic);
+                topic.addCard(card);
+                entitySaver.create(card);
+            }
+        });
     }
 
     private void alertFileNotFound(FileNotFoundException ex) {

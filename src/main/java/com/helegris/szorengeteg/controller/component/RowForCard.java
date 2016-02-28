@@ -5,8 +5,12 @@
  */
 package com.helegris.szorengeteg.controller.component;
 
+import com.helegris.szorengeteg.controller.TopicFormView;
 import com.helegris.szorengeteg.model.entity.Card;
+import com.helegris.szorengeteg.model.entity.Topic;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 
 /**
  *
@@ -14,22 +18,42 @@ import javafx.scene.control.Button;
  */
 public class RowForCard {
 
-    private Card card;
-    private String word;
-    private String description;
-    private Button btnEdit;
-    private Button btnDelete;
+    private TopicFormView topicView;
+    private Card card = new Card();
+    private TextField txtWord = new TextField();
+    private TextField txtDescription = new TextField();
+    private Button btnDelete = new Button("töröl");
 
-    public RowForCard() {
-        this.btnEdit = new Button("szerkeszt");
-        this.btnDelete = new Button("töröl");
+    public RowForCard(TopicFormView topicView) {
+        this.topicView = topicView;
+        this.btnDelete.setOnAction(this::delete);
     }
 
-    public RowForCard(Card card) {
-        this();
+    public RowForCard(TopicFormView topicView, Card card) {
+        this(topicView);
         this.card = card;
-        this.word = card.getWord();
-        this.description = card.getDescription();
+        this.txtWord.setText(card.getWord());
+        this.txtDescription.setText(card.getDescription());
+    }
+
+    private void delete(ActionEvent event) {
+        topicView.deleteRow(this);
+    }
+
+    public boolean dataValidity() {
+        return !"".equals(txtWord.getText()) && !"".equals(txtDescription.getText());
+    }
+
+    public Card getUpdatedCard() {
+        card.setWord(txtDescription.getText());
+        card.setDescription(txtDescription.getText());
+        return card;
+    }
+
+    public Card getUpdatedCard(Topic topic) {
+        getUpdatedCard();
+        card.setTopic(topic);
+        return card;
     }
 
     public Card getCard() {
@@ -40,30 +64,20 @@ public class RowForCard {
         this.card = card;
     }
 
-    public String getWord() {
-        return word;
+    public TextField getTxtWord() {
+        return txtWord;
     }
 
-    public void setWord(String word) {
-        this.word = word;
-        card.setWord(word);
+    public void setTxtWord(TextField txtWord) {
+        this.txtWord = txtWord;
     }
 
-    public String getDescription() {
-        return description;
+    public TextField getTxtDescription() {
+        return txtDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-        card.setDescription(description);
-    }
-
-    public Button getBtnEdit() {
-        return btnEdit;
-    }
-
-    public void setBtnEdit(Button btnEdit) {
-        this.btnEdit = btnEdit;
+    public void setTxtDescription(TextField txtDescription) {
+        this.txtDescription = txtDescription;
     }
 
     public Button getBtnDelete() {
