@@ -14,6 +14,7 @@
             <menus>
                 <Menu fx:id="mnTopics"></Menu>
                 <Menu fx:id="mnNewTopic"></Menu>
+                <Menu fx:id="mnWords"></Menu>
                 <Menu fx:id="mnSettings"></Menu>
                 <Menu fx:id="mnStatistics"></Menu>
                 <Menu fx:id="mnHelp"></Menu>

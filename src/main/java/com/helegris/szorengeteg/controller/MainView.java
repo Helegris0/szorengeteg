@@ -15,7 +15,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
@@ -31,6 +30,7 @@ public class MainView extends AnchorPane {
     public static final String TOPICS_TITLE = "Témakörök";
     public static final String NEW_TOPIC_TITLE = "Új témakör";
     public static final String EDIT_TOPIC_TITLE = "Témakör szerkesztése";
+    public static final String WORDS_TITLE = "Szavak";
     public static final String SETTINGS_TITLE = "Beállítások";
     public static final String STATISTICS_TITLE = "Statisztika";
     public static final String HELP_TITLE = "Segítség";
@@ -39,6 +39,8 @@ public class MainView extends AnchorPane {
     private Menu mnTopics;
     @FXML
     private Menu mnNewTopic;
+    @FXML
+    private Menu mnWords;
     @FXML
     private Menu mnSettings;
     @FXML
@@ -67,12 +69,16 @@ public class MainView extends AnchorPane {
         Insets insets = new Insets(5, 8, 5, 8);
 
         label = new Label(TOPICS_TITLE);
-        label.setOnMouseClicked((MouseEvent event) -> {loadContentTopics();});
+        label.setOnMouseClicked(event -> loadContentTopics());
         menuMap.put(mnTopics, label);
 
         label = new Label(NEW_TOPIC_TITLE);
-        label.setOnMouseClicked((MouseEvent event) -> {loadContentNewTopic();});
+        label.setOnMouseClicked(event -> loadContentNewTopic());
         menuMap.put(mnNewTopic, label);
+        
+        label = new Label(WORDS_TITLE);
+        label.setOnMouseClicked(event -> loadContentWords());
+        menuMap.put(mnWords, label);
 
         label = new Label(SETTINGS_TITLE);
         menuMap.put(mnSettings, label);
@@ -107,6 +113,11 @@ public class MainView extends AnchorPane {
     public void loadContentEditTopic(Topic topic) {
         lblTitle.setText(EDIT_TOPIC_TITLE);
         setVista(new EditTopicView(topic));
+    }
+
+    public void loadContentWords() {
+        lblTitle.setText(WORDS_TITLE);
+        setVista(new WordsFormView());
     }
 
     /**

@@ -35,7 +35,7 @@ public class Topic extends PersistentObject {
 
     @Override
     public String toString() {
-        return "Topic{" + "id=" + id + ", name=" + name + '}';
+        return name;
     }
 
     public void addCard(Card card) {

@@ -10,7 +10,6 @@ import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,18 +60,26 @@ public class EditTopicView extends TopicFormView {
         alert.setHeaderText("Biztosan törölni szeretné a témakört?");
         alert.setContentText("A művelet nem vonható vissza.");
 
-        ButtonType buttonTypeDelete = new ButtonType("Törlés");
-        ButtonType buttonTypeCancel = new ButtonType("Mégse", ButtonData.CANCEL_CLOSE);
+        ButtonType typeDelete = new ButtonType("Témakör törlése");
+        ButtonType typeDeleteWithWords = new ButtonType("Témakör és szavak törlése");
+        ButtonType typeCancel = new ButtonType("Mégse", ButtonData.CANCEL_CLOSE);
 
-        alert.getButtonTypes().setAll(buttonTypeDelete, buttonTypeCancel);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().add(typeDelete);
+        if (!topic.getCards().isEmpty()) {
+            alert.getButtonTypes().add(typeDeleteWithWords);
+        }
+        alert.getButtonTypes().add(typeCancel);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeDelete) {
+        if (result.get() == typeDelete) {
+            topic.getCards().stream().forEach(card -> card.setTopic(null));
+            entitySaver.delete(topic);
+            VistaNavigator.getMainView().loadContentTopics();
+        } else if (result.get() == typeDeleteWithWords) {
             topic.getCards().stream().forEach(card -> entitySaver.delete(card));
             entitySaver.delete(topic);
             VistaNavigator.getMainView().loadContentTopics();
-        } else {
-            alert.close();
         }
     }
 
@@ -100,8 +107,6 @@ public class EditTopicView extends TopicFormView {
             if (row.dataValidity()) {
                 try {
                     entitySaver.modify(row.getUpdatedCard());
-                } catch (FileNotFoundException ex) {
-                    alertFileNotFound(ex);
                 } catch (IOException ex) {
                     alertIOEx(ex);
                 }

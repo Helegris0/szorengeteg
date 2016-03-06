@@ -20,11 +20,11 @@ import java.util.Scanner;
 public class FileInput {
 
     private final String CHARSET = "UTF-8";
-    private TopicFormView topicFormView;
-    private File file;
+    private final CardsEditorForm form;
+    private final File file;
 
-    public FileInput(TopicFormView topicFormView, File file) {
-        this.topicFormView = topicFormView;
+    public FileInput(CardsEditorForm form, File file) {
+        this.form = form;
         this.file = file;
     }
 
@@ -39,7 +39,7 @@ public class FileInput {
                     Card card = new Card();
                     card.setWord(data[0]);
                     card.setDescription(data[1]);
-                    rows.add(new RowForCard(topicFormView, card));
+                    rows.add(new RowForCard(form, card));
                 }
             }
         }

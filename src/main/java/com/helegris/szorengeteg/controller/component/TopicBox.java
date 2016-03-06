@@ -23,7 +23,7 @@ import javafx.scene.layout.Pane;
  */
 public class TopicBox extends Pane {
 
-    private static final String FXML = "/fxml/topicbox.fxml";
+    private static final String FXML = "fxml/topicbox.fxml";
 
     @FXML
     private ImageView imageView;
