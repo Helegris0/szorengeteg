@@ -67,15 +67,11 @@ public class MainView extends AnchorPane {
         Insets insets = new Insets(5, 8, 5, 8);
 
         label = new Label(TOPICS_TITLE);
-        label.setOnMouseClicked((MouseEvent event) -> {
-            loadContentTopics();
-        });
+        label.setOnMouseClicked((MouseEvent event) -> {loadContentTopics();});
         menuMap.put(mnTopics, label);
 
         label = new Label(NEW_TOPIC_TITLE);
-        label.setOnMouseClicked((MouseEvent event) -> {
-            loadContentNewTopic();
-        });
+        label.setOnMouseClicked((MouseEvent event) -> {loadContentNewTopic();});
         menuMap.put(mnNewTopic, label);
 
         label = new Label(SETTINGS_TITLE);

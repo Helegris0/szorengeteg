@@ -68,6 +68,8 @@ public abstract class TopicFormView extends AnchorPane {
     @FXML
     protected Button btnDeleteImage;
     @FXML
+    protected Button btnAddWordsFromFile;
+    @FXML
     protected TableView<RowForCard> tableView;
     @FXML
     protected TableColumn colImage;
@@ -93,6 +95,7 @@ public abstract class TopicFormView extends AnchorPane {
     protected void initialize() {
         btnLoadImage.setOnAction(this::loadImage);
         btnDeleteImage.setOnAction(this::deleteImage);
+        btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
         btnNewWord.setOnAction(this::addRow);
         btnSave.setOnAction(this::submitTopic);
         btnBack.setOnAction(this::goBack);
@@ -129,6 +132,29 @@ public abstract class TopicFormView extends AnchorPane {
         btnDeleteImage.setVisible(false);
         imageFile = null;
         imageView.setImage(null);
+    }
+
+    @FXML
+    protected void addWordsFromFile(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+
+        FileChooser.ExtensionFilter extFilterTxt
+                = new FileChooser.ExtensionFilter("szövegfájlok (*.txt)", "*.TXT");
+        fileChooser.getExtensionFilters().add(extFilterTxt);
+
+        File file = fileChooser.showOpenDialog(null);
+        FileInput fileInput = new FileInput(this, file);
+        try {
+            fileInput.getRows().stream().forEach(row -> {
+                rows.add(row);
+                rowsOfCardsToCreate.add(row);
+            });
+        } catch (FileNotFoundException ex) {
+            alertFileNotFound(ex);
+        } catch (Exception ex) {
+            alertIOEx(ex);
+        }
     }
 
     @FXML
@@ -229,15 +255,15 @@ public abstract class TopicFormView extends AnchorPane {
 
     protected void alertFileNotFound(FileNotFoundException ex) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("A képfeltöltés sikertelen");
-        alert.setHeaderText("A megadott kép nem elérhető");
-        alert.setContentText("Keresett képfájl: " + imageFile.getAbsolutePath());
+        alert.setTitle("A fájlfeltöltés sikertelen");
+        alert.setHeaderText("A megadott fájl nem elérhető");
+        alert.setContentText("Keresett fájl: " + imageFile.getAbsolutePath());
         alert.initModality(Modality.APPLICATION_MODAL);
 
         alert.showAndWait();
     }
 
-    protected void alertIOEx(IOException ioe) {
+    protected void alertIOEx(Exception ioe) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Váratlan hiba");
         alert.setHeaderText(ioe.getMessage());

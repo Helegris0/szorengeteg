@@ -14,15 +14,21 @@
          xmlns="http://javafx.com/javafx/8">
     <VBox>
         <HBox spacing="5">
-            <Label text="Megnevezés:"></Label>
-            <TextField fx:id="txtName"></TextField>
+            <Label text="Megnevezés:" />
+            <TextField fx:id="txtName" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnDeleteTopic" text="Témakör törlése" />
         </HBox>
-        <Label text="Kép:"></Label>
+        <Label text="Kép:" />
         <HBox spacing="5">
             <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" />
             <VBox>
                 <Button fx:id="btnLoadImage" text="Tallózás..." />
                 <Button fx:id="btnDeleteImage" text="Törlés" visible="false" />
+            </VBox>
+            <Pane HBox.hgrow="ALWAYS" />
+            <VBox alignment="BOTTOM_RIGHT">
+                <Button fx:id="btnAddWordsFromFile" text="Hozzáadás..." />
             </VBox>
         </HBox>
         <TableView fx:id="tableView" prefWidth="595" prefHeight="378">
@@ -51,8 +57,8 @@
         </TableView>
         <HBox>
             <Button fx:id="btnNewWord" text="Új szó" />
-            <Pane HBox.hgrow="ALWAYS"></Pane>
-            <Button fx:id="btnSave" text="Mentés" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnSave" text="Mentés" style="-fx-font-weight: bold;" />
             <Button fx:id="btnBack" text="Vissza" />
         </HBox>
     </VBox>
