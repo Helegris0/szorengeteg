@@ -62,6 +62,8 @@ public abstract class TopicFormView extends AnchorPane {
     @FXML
     protected TextField txtName;
     @FXML
+    protected Button btnDeleteTopic;
+    @FXML
     protected ImageView imageView;
     @FXML
     protected Button btnLoadImage;
@@ -93,6 +95,7 @@ public abstract class TopicFormView extends AnchorPane {
 
     @FXML
     protected void initialize() {
+        btnDeleteTopic.setVisible(false);
         btnLoadImage.setOnAction(this::loadImage);
         btnDeleteImage.setOnAction(this::deleteImage);
         btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
@@ -144,16 +147,22 @@ public abstract class TopicFormView extends AnchorPane {
         fileChooser.getExtensionFilters().add(extFilterTxt);
 
         File file = fileChooser.showOpenDialog(null);
-        FileInput fileInput = new FileInput(this, file);
-        try {
-            fileInput.getRows().stream().forEach(row -> {
-                rows.add(row);
-                rowsOfCardsToCreate.add(row);
-            });
-        } catch (FileNotFoundException ex) {
-            alertFileNotFound(ex);
-        } catch (Exception ex) {
-            alertIOEx(ex);
+        if (file != null) {
+            FileInput fileInput = new FileInput(this, file);
+            try {
+                fileInput.getRows().stream().forEach(row -> {
+                    rows.add(row);
+                    rowsOfCardsToCreate.add(row);
+                });
+            } catch (FileNotFoundException ex) {
+                alertFileNotFound(ex);
+            } catch (Exception ex) {
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Hiba");
+                alert.setHeaderText("Hibás fájl");
+                alert.setContentText("Elvárt szövegszerkezet:\nszó1;leírás1\nszó2;leírás2");
+                alert.showAndWait();
+            }
         }
     }
 
@@ -263,7 +272,7 @@ public abstract class TopicFormView extends AnchorPane {
         alert.showAndWait();
     }
 
-    protected void alertIOEx(Exception ioe) {
+    protected void alertIOEx(IOException ioe) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Váratlan hiba");
         alert.setHeaderText(ioe.getMessage());
