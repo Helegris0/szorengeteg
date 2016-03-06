@@ -10,12 +10,11 @@ import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 /**
@@ -31,12 +30,15 @@ public class TopicBox extends Pane {
     @FXML
     private Label lblName;
     @FXML
-    private Label lblNoAllCards;
+    private ClickableLabel lblEdit;
     @FXML
-    private Button btnEdit;
+    private ClickableLabel lblInfo;
+    @FXML
+    private Label lblNumberOfWords;
 
     private Topic topic;
     private Image image;
+    private boolean infoVisibility;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public TopicBox(Topic topic) {
@@ -47,17 +49,27 @@ public class TopicBox extends Pane {
 
     @FXML
     protected void initialize() {
-        btnEdit.setOnAction(this::editTopic);
-
         if (image != null) {
             imageView.setImage(image);
         }
         lblName.setText(topic.getName());
-        lblNoAllCards.setText("Összesen: " + topic.getCards().size());
+        lblEdit.setOnMouseClicked((MouseEvent event) -> {
+            editTopic(event);
+        });
+        lblInfo.setOnMouseClicked((MouseEvent event) -> {
+            toggleInfoVisibility(event);
+        });
+        lblNumberOfWords.setVisible(infoVisibility);
+        lblNumberOfWords.setText("összes szó: " + topic.getCards().size());
     }
 
-    protected void editTopic(ActionEvent event) {
+    protected void editTopic(MouseEvent event) {
         VistaNavigator.getMainView().loadContentEditTopic(topic);
+    }
+
+    private void toggleInfoVisibility(MouseEvent event) {
+        infoVisibility = !infoVisibility;
+        lblNumberOfWords.setVisible(infoVisibility);
     }
 
     private void setImage() {

@@ -7,10 +7,10 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" prefHeight="400.0" prefWidth="600.0" 
+         id="AnchorPane" prefHeight="600.0" prefWidth="600.0" 
          xmlns="http://javafx.com/javafx/8">
     <VBox prefWidth="600.0">
-        <MenuBar fx:id="menuBar">
+        <MenuBar>
             <menus>
                 <Menu fx:id="mnTopics"></Menu>
                 <Menu fx:id="mnNewTopic"></Menu>
@@ -20,7 +20,7 @@
             </menus>
         </MenuBar>
     
-        <Label fx:id="lblTitle"></Label>
-        <StackPane fx:id="vistaHolder" VBox.vgrow="ALWAYS" />
+        <Label fx:id="lblTitle" style="-fx-font-size: 16pt;"></Label>
+        <StackPane fx:id="vistaHolder" style="-fx-padding: 2pt;" VBox.vgrow="ALWAYS" />
     </VBox>
 </fx:root>

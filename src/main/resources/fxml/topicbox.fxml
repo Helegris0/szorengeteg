@@ -1,32 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.image.Image?>
+<?import com.helegris.szorengeteg.controller.component.ClickableLabel?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<fx:root xmlns:fx="http://javafx.com/fxml/1" type="Pane"
-         xmlns="http://javafx.com/javafx/8">
-    <HBox>
-        <ImageView fx:id="imageView" fitHeight="120.0" fitWidth="120.0">
+<fx:root type="Pane" xmlns="http://javafx.com/javafx/8.0.65" 
+         xmlns:fx="http://javafx.com/fxml/1">
+    <HBox prefHeight="105.0" prefWidth="360.0">
+        <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="100.0">
         </ImageView>
-        <Region prefHeight="140.0" prefWidth="10.0" />
+        <Region prefHeight="105.0" prefWidth="10.0" />
         <VBox prefHeight="200.0" prefWidth="100.0">
-            <Label text="Név" fx:id="lblName" />
-            <Label text="átnézendő:" />
-            <Label text="megtanulva:" />
-            <Label text="új:" />
-            <Label text="összesen:" fx:id="lblNoAllCards" />
+            <Label fx:id="lblName" style="-fx-font-weight: bold;" />
+            <ClickableLabel fx:id="lblEdit" text="szerkesztés" />
+            <ClickableLabel fx:id="lblInfo" text="információk" />
+            <Label fx:id="lblNumberOfWords" />
         </VBox>
-        <VBox prefHeight="140.0" prefWidth="130.0">
+        <VBox prefHeight="105.0" prefWidth="130.0">
             <HBox prefHeight="40.0" prefWidth="130.0">
                 <Button mnemonicParsing="false" text="Gyakorlás" />
             </HBox>
-            <Button fx:id="btnEdit" text="szerkesztés" />
-            <Label text="nullázás" />
         </VBox>
     </HBox>
 </fx:root>

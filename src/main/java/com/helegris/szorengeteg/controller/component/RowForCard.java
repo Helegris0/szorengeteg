@@ -34,14 +34,13 @@ public class RowForCard {
     private Button btnDelete = new Button("töröl");
     private File imageFile;
 
-    private static int imageWidth = 50;
-    private static int imageHeight = 50;
+    private static int imageWidth = 30;
+    private static int imageHeight = 30;
 
     public RowForCard(TopicFormView topicView) {
         this.topicView = topicView;
         imageView.setFitWidth(imageWidth);
         imageView.setFitHeight(imageHeight);
-//        imageView.addEventHandler(MouseEvent.MOUSE_PRESSED, this::imageAction);
         imageView.setImage(DefaultImage.getInstance());
         btnDelete.setOnAction(this::delete);
     }
@@ -60,8 +59,6 @@ public class RowForCard {
         }
     }
 
-//    private void imageAction(MouseEvent event) {
-//    }
     private void delete(ActionEvent event) {
         topicView.deleteRow(this);
     }

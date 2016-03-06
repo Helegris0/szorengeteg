@@ -8,12 +8,19 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
+    
+    private final String TITLE = "Szórengeteg";
+    private final int WIDTH = 607;
+    private final int HEIGHT = 640;
 
     @Override
     public void start(Stage stage) throws Exception {
         ApplicationContainer.getInstance();
 
-        stage.setTitle("Szórengeteg");
+        stage.setTitle(TITLE);
+        stage.setWidth(WIDTH);
+        stage.setHeight(HEIGHT);
+        stage.setResizable(false);
         stage.setScene(createScene(loadMainPane()));
 
         stage.show();

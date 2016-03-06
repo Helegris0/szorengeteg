@@ -146,34 +146,37 @@ public abstract class TopicFormView extends AnchorPane {
     }
 
     private void cardImageAction(MouseEvent event) {
-        TablePosition position = tableView.getSelectionModel().getSelectedCells().get(0);
-        if (colImage.equals(position.getTableColumn())) {
-            try {
-                int index = position.getRow();
-                RowForCard row = rows.get(index);
-                ImagePopup.setRow(row);
-                Stage stage = new Stage();
-                Parent root = FXMLLoader.load(getClass().getResource(ImagePopup.FXML));
-                stage.setScene(new Scene(root));
-                stage.setTitle(row.getTxtWord().getText() + " szó képének beállítása");
-                stage.initModality(Modality.APPLICATION_MODAL);
-                stage.initOwner(tableView.getScene().getWindow());
+        if (!rows.isEmpty() && !tableView.getSelectionModel().getSelectedCells().isEmpty()) {
+            TablePosition position = tableView.getSelectionModel().getSelectedCells().get(0);
+            if (colImage.equals(position.getTableColumn())) {
+                try {
+                    int index = position.getRow();
+                    RowForCard row = rows.get(index);
+                    ImagePopup.setRow(row);
+                    Stage stage = new Stage();
+                    Parent root = FXMLLoader.load(getClass().getResource(ImagePopup.FXML));
+                    stage.setScene(new Scene(root));
+                    stage.setTitle(row.getTxtWord().getText() + " szó képének beállítása");
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initOwner(tableView.getScene().getWindow());
+                    tableView.getSelectionModel().clearSelection();
 
-                stage.showAndWait();
-                if (ImagePopup.isOk()) {
-                    Image rowImage = ImagePopup.getFinalImage();
-                    File cardImageFile = ImagePopup.getImageFile();
-                    if (rowImage != null && cardImageFile != null) {
-                        row.setImageFile(cardImageFile);
-                        row.setImage(rowImage);
-                    } else {
-                        row.setImage(DefaultImage.getInstance());
+                    stage.showAndWait();
+                    if (ImagePopup.isOk()) {
+                        Image rowImage = ImagePopup.getFinalImage();
+                        File cardImageFile = ImagePopup.getImageFile();
+                        if (rowImage != null && cardImageFile != null) {
+                            row.setImageFile(cardImageFile);
+                            row.setImage(rowImage);
+                        } else {
+                            row.setImage(DefaultImage.getInstance());
+                        }
                     }
+                } catch (FileNotFoundException ex) {
+                    alertFileNotFound(ex);
+                } catch (IOException ex) {
+                    alertIOEx(ex);
                 }
-            } catch (FileNotFoundException ex) {
-                alertFileNotFound(ex);
-            } catch (IOException ex) {
-                alertIOEx(ex);
             }
         }
     }

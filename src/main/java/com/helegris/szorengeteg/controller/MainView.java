@@ -7,11 +7,14 @@ package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.model.entity.Topic;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -32,8 +35,6 @@ public class MainView extends AnchorPane {
     public static final String STATISTICS_TITLE = "Statisztika";
     public static final String HELP_TITLE = "Segítség";
 
-    @FXML
-    private MenuBar menuBar;
     @FXML
     private Menu mnTopics;
     @FXML
@@ -57,22 +58,44 @@ public class MainView extends AnchorPane {
     @FXML
     public void initialize() {
         lblTitle.setText(TOPICS_TITLE);
+        setMenus();
+    }
 
-        Label lblTopics = new Label(TOPICS_TITLE);
-        lblTopics.setOnMouseClicked((MouseEvent event) -> {
+    private void setMenus() {
+        Label label;
+        Map<Menu, Label> menuMap = new HashMap<>();
+        Insets insets = new Insets(5, 8, 5, 8);
+
+        label = new Label(TOPICS_TITLE);
+        label.setOnMouseClicked((MouseEvent event) -> {
             loadContentTopics();
         });
-        mnTopics.setGraphic(lblTopics);
+        menuMap.put(mnTopics, label);
 
-        Label lblNewTopic = new Label(NEW_TOPIC_TITLE);
-        lblNewTopic.setOnMouseClicked((MouseEvent event) -> {
+        label = new Label(NEW_TOPIC_TITLE);
+        label.setOnMouseClicked((MouseEvent event) -> {
             loadContentNewTopic();
         });
-        mnNewTopic.setGraphic(lblNewTopic);
+        menuMap.put(mnNewTopic, label);
 
-        mnSettings.setText(SETTINGS_TITLE);
-        mnStatistics.setText(STATISTICS_TITLE);
-        mnHelp.setText(HELP_TITLE);
+        label = new Label(SETTINGS_TITLE);
+        menuMap.put(mnSettings, label);
+
+        label = new Label(STATISTICS_TITLE);
+        menuMap.put(mnStatistics, label);
+
+        label = new Label(HELP_TITLE);
+        menuMap.put(mnHelp, label);
+
+        Iterator it = menuMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Menu menu = (Menu) pair.getKey();
+            label = (Label) pair.getValue();
+            label.setPadding(insets);
+            menu.setGraphic(label);
+            it.remove();
+        }
     }
 
     public void loadContentTopics() {

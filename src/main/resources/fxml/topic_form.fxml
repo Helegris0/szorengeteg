@@ -19,26 +19,25 @@
         </HBox>
         <Label text="Kép:"></Label>
         <HBox spacing="5">
-            <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="imageView" fitHeight="100" fitWidth="100" />
             <VBox>
-                <Button fx:id="btnLoadImage" text="Betöltés" />
+                <Button fx:id="btnLoadImage" text="Tallózás..." />
                 <Button fx:id="btnDeleteImage" text="Törlés" visible="false" />
             </VBox>
         </HBox>
-        <Label text="Szavak"></Label>
-        <TableView fx:id="tableView">
+        <TableView fx:id="tableView" prefWidth="595" prefHeight="378">
             <columns>
-                <TableColumn fx:id="colImage" text="kép" minWidth="50.0">
+                <TableColumn fx:id="colImage" text="kép" prefWidth="30.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="imageView" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="szó" minWidth="120.0">
+                <TableColumn text="szó" prefWidth="120.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="leírás" prefWidth="374.0">
+                <TableColumn text="leírás" prefWidth="380.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>
