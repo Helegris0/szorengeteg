@@ -7,10 +7,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1"
-            id="AnchorPane" prefHeight="400.0" prefWidth="350.0" 
-            xmlns="http://javafx.com/javafx/8" 
-            fx:controller="com.helegris.szorengeteg.controller.ImagePopup">
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
+         id="AnchorPane" prefHeight="400.0" prefWidth="350.0" 
+         xmlns="http://javafx.com/javafx/8">
 
     <children>
         <ImageView fx:id="imageView" fitHeight="300.0" fitWidth="300.0" 
@@ -21,6 +20,6 @@
         <Button fx:id="btnDeleteImage" layoutX="80.0" layoutY="361.0" 
                 text="Törlés" />
         <Button fx:id="btnOk" layoutX="303.0" layoutY="361.0" 
-                text="OK" />
+                text="OK" style="-fx-font-weight: bold;" />
     </children>
-</AnchorPane>
+</fx:root>

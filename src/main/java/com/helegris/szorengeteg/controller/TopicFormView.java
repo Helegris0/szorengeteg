@@ -105,8 +105,9 @@ public abstract class TopicFormView extends CardsEditorForm {
         }
         try {
             prepareTopic();
-            prepareAndSaveCards();
-            entitySaver.modify(topic);
+            prepareCards();
+            prepareToModify(topic);
+            getTransactionDone();
             VistaNavigator.getMainView().loadContentTopics();
         } catch (FileNotFoundException ex) {
             alertFileNotFound(ex, imageFile);
@@ -122,13 +123,13 @@ public abstract class TopicFormView extends CardsEditorForm {
         }
     }
 
-    protected void prepareAndSaveCards() {
+    protected void prepareCards() {
         rowsOfCardsToCreate.stream().forEach((row) -> {
             if (row.dataValidity()) {
                 try {
                     Card card = row.getUpdatedCard(topic);
                     topic.addCard(card);
-                    entitySaver.create(card);
+                    prepareToCreate(card);
                 } catch (FileNotFoundException ex) {
                     alertFileNotFound(ex, row.getImageFile());
                 } catch (IOException ex) {

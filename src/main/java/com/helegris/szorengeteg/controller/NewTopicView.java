@@ -13,7 +13,7 @@ public class NewTopicView extends TopicFormView {
     protected void prepareTopic() throws IOException {
         topic = new Topic();
         super.prepareTopic();
-        entitySaver.create(topic);
+        prepareToCreate(topic);
     }
 
 }

@@ -11,19 +11,20 @@ import com.helegris.szorengeteg.controller.component.DefaultImage;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.EntitySaver;
 import com.helegris.szorengeteg.model.TopicLoader;
+import com.helegris.szorengeteg.model.entity.PersistentObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -68,6 +69,10 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     protected ObservableList<RowForCard> rows = FXCollections.observableArrayList();
     protected List<RowForCard> rowsOfCardsToCreate = new ArrayList<>();
+
+    private Set<PersistentObject> entitiesToCreate = new HashSet<>();
+    private Set<PersistentObject> entitiesToModify = new HashSet<>();
+    private Set<PersistentObject> entitiesToDelete = new HashSet<>();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public CardsEditorForm() {
@@ -116,34 +121,27 @@ public abstract class CardsEditorForm extends AnchorPane {
         if (!rows.isEmpty() && !tableView.getSelectionModel().getSelectedCells().isEmpty()) {
             TablePosition position = tableView.getSelectionModel().getSelectedCells().get(0);
             if (colImage.equals(position.getTableColumn())) {
-                File cardImageFile = null;
-                try {
-                    int index = position.getRow();
-                    RowForCard row = rows.get(index);
-                    ImagePopup.setRow(row);
-                    Stage stage = new Stage();
-                    Parent root = FXMLLoader.load(getClass().getResource(ImagePopup.FXML));
-                    stage.setScene(new Scene(root));
-                    stage.setTitle(row.getTxtWord().getText() + " szó képének beállítása");
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.initOwner(tableView.getScene().getWindow());
-                    tableView.getSelectionModel().clearSelection();
+                int index = position.getRow();
+                RowForCard row = rows.get(index);
+                Image currentImage = row.getImageView().getImage();
+                ImagePopup imagePopup = new ImagePopup(currentImage);
+                Stage stage = new Stage();
+                stage.setScene(new Scene(imagePopup));
+                stage.setTitle(row.getTxtWord().getText() + " szó képének beállítása");
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(tableView.getScene().getWindow());
+                tableView.getSelectionModel().clearSelection();
 
-                    stage.showAndWait();
-                    if (ImagePopup.isOk()) {
-                        Image rowImage = ImagePopup.getFinalImage();
-                        cardImageFile = ImagePopup.getImageFile();
-                        if (rowImage != null && cardImageFile != null) {
-                            row.setImageFile(cardImageFile);
-                            row.setImage(rowImage);
-                        } else {
-                            row.setImage(DefaultImage.getInstance());
-                        }
+                stage.showAndWait();
+                if (imagePopup.isOk()) {
+                    Image rowImage = imagePopup.getFinalImage();
+                    File cardImageFile = imagePopup.getImageFile();
+                    if (rowImage != null && cardImageFile != null) {
+                        row.setImageFile(cardImageFile);
+                        row.setImage(rowImage);
+                    } else {
+                        row.setImage(DefaultImage.getInstance());
                     }
-                } catch (FileNotFoundException ex) {
-                    alertFileNotFound(ex, cardImageFile);
-                } catch (IOException ex) {
-                    alertIOEx(ex);
                 }
             }
         }
@@ -203,6 +201,26 @@ public abstract class CardsEditorForm extends AnchorPane {
         alert.getDialogPane().setExpanded(true);
 
         alert.showAndWait();
+    }
+
+    public void prepareToCreate(PersistentObject obj) {
+        entitiesToCreate.add(obj);
+    }
+
+    public void prepareToModify(PersistentObject obj) {
+        entitiesToModify.add(obj);
+    }
+
+    public void prepareToDelete(PersistentObject obj) {
+        entitiesToDelete.add(obj);
+    }
+
+    protected void getTransactionDone() {
+        entitySaver.complexTransaction(entitiesToCreate,
+                entitiesToModify, entitiesToDelete);
+        entitiesToCreate.clear();
+        entitiesToModify.clear();
+        entitiesToDelete.clear();
     }
 
     protected void goBack(ActionEvent event) {

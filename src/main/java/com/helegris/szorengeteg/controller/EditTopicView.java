@@ -9,6 +9,7 @@ import com.helegris.szorengeteg.ImageUtils;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.entity.Card;
+import com.helegris.szorengeteg.model.entity.PersistentObject;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,12 +74,20 @@ public class EditTopicView extends TopicFormView {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == typeDelete) {
-            topic.getCards().stream().forEach(card -> card.setTopic(null));
-            entitySaver.delete(topic);
+            List<Card> toModify = new ArrayList<>();
+            List<Topic> toDelete = new ArrayList<>();
+            topic.getCards().stream().forEach(card -> {
+                card.setTopic(null);
+                toModify.add(card);
+            });
+            toDelete.add(topic);
+            entitySaver.complexTransaction(null, toModify, toDelete);
             VistaNavigator.getMainView().loadContentTopics();
         } else if (result.get() == typeDeleteWithWords) {
-            topic.getCards().stream().forEach(card -> entitySaver.delete(card));
-            entitySaver.delete(topic);
+            List<PersistentObject> toDelete = new ArrayList<>();
+            topic.getCards().stream().forEach(card -> toDelete.add(card));
+            toDelete.add(topic);
+            entitySaver.complexTransaction(null, null, toDelete);
             VistaNavigator.getMainView().loadContentTopics();
         }
     }
@@ -101,12 +110,12 @@ public class EditTopicView extends TopicFormView {
     }
 
     @Override
-    protected void prepareAndSaveCards() {
-        super.prepareAndSaveCards();
+    protected void prepareCards() {
+        super.prepareCards();
         rowsWithCardsToModify.stream().forEach((row) -> {
             if (row.dataValidity()) {
                 try {
-                    entitySaver.modify(row.getUpdatedCard());
+                    prepareToModify(row.getUpdatedCard());
                 } catch (IOException ex) {
                     alertIOEx(ex);
                 }
@@ -114,7 +123,8 @@ public class EditTopicView extends TopicFormView {
         });
         cardsToDelete.stream().forEach((card) -> {
             topic.removeCard(card);
-            entitySaver.delete(card);
+            prepareToModify(topic);
+            prepareToDelete(card);
         });
     }
 

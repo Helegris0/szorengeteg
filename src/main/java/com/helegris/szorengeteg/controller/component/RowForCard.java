@@ -79,9 +79,24 @@ public class RowForCard {
     public Card getUpdatedCard() throws FileNotFoundException, IOException {
         card.setWord(txtWord.getText());
         card.setDescription(txtDescription.getText());
-        card.setTopic((Topic) cmbTopic.getValue());
+        Topic originalTopic = card.getTopic();
+        Topic newTopic = (Topic) cmbTopic.getValue();
+        if (originalTopic != null && !originalTopic.equals(newTopic)) {
+            originalTopic.removeCard(card);
+            newTopic.addCard(card);
+            container.prepareToModify(originalTopic);
+            container.prepareToModify(newTopic);
+            card.setTopic(newTopic);
+        } else if (newTopic != null && !newTopic.equals(originalTopic)) {
+            newTopic.addCard(card);
+            container.prepareToModify(newTopic);
+            card.setTopic(newTopic);
+        }
         if (imageFile != null) {
             card.setImage(IOUtils.toByteArray(new FileInputStream(imageFile)));
+        }
+        if (imageView.getImage() instanceof DefaultImage) {
+            card.setImage(null);
         }
         return card;
     }

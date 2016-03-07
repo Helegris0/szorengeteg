@@ -74,7 +74,7 @@ public class WordsFormView extends CardsEditorForm {
                     if (topic != null) {
                         topic.addCard(card);
                     }
-                    entitySaver.create(card);
+                    prepareToCreate(card);
                 } catch (FileNotFoundException ex) {
                     alertFileNotFound(ex, row.getImageFile());
                 } catch (IOException ex) {
@@ -86,7 +86,7 @@ public class WordsFormView extends CardsEditorForm {
         rowsWithCardsToModify.stream().forEach((row) -> {
             if (row.dataValidity()) {
                 try {
-                    entitySaver.modify(row.getUpdatedCard());
+                    prepareToModify(row.getUpdatedCard());
                 } catch (IOException ex) {
                     alertIOEx(ex);
                 }
@@ -96,10 +96,13 @@ public class WordsFormView extends CardsEditorForm {
         cardsToDelete.stream().forEach((card) -> {
             Topic topic = card.getTopic();
             if (topic != null) {
-                card.getTopic().removeCard(card);
+                topic.removeCard(card);
+                prepareToModify(topic);
             }
-            entitySaver.delete(card);
+            prepareToDelete(card);
         });
+
+        getTransactionDone();
 
         VistaNavigator.getMainView().loadContentTopics();
     }

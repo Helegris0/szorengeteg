@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.model;
 
 import com.helegris.szorengeteg.model.entity.PersistentObject;
 import com.helegris.szorengeteg.transaction.Transactional;
+import java.util.Collection;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -30,5 +31,19 @@ public class EntitySaver {
 
     public void delete(PersistentObject obj) {
         em.remove(obj);
+    }
+
+    public void complexTransaction(Collection<? extends PersistentObject> toCreate,
+            Collection<? extends PersistentObject> toModify,
+            Collection<? extends PersistentObject> toDelete) {
+        if (toCreate != null) {
+            toCreate.stream().forEach(em::persist);
+        }
+        if (toModify != null) {
+            toModify.stream().forEach(em::merge);
+        }
+        if (toDelete != null) {
+            toDelete.stream().forEach(em::remove);
+        }
     }
 }
