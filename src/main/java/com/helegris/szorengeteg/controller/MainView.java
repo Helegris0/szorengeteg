@@ -6,6 +6,7 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,13 +28,12 @@ public class MainView extends AnchorPane {
 
     public static final String FXML = "fxml/main.fxml";
 
-    public static final String TOPICS_TITLE = "Témakörök";
-    public static final String NEW_TOPIC_TITLE = "Új témakör";
-    public static final String EDIT_TOPIC_TITLE = "Témakör szerkesztése";
-    public static final String WORDS_TITLE = "Szavak";
-    public static final String SETTINGS_TITLE = "Beállítások";
-    public static final String STATISTICS_TITLE = "Statisztika";
-    public static final String HELP_TITLE = "Segítség";
+    public static final String TOPICS_TITLE = Messages.msg("menu.topics");
+    public static final String NEW_TOPIC_TITLE = Messages.msg("menu.new_topic");
+    public static final String EDIT_TOPIC_TITLE = Messages.msg("menu.edit_topic");
+    public static final String WORDS_TITLE = Messages.msg("menu.words");
+    public static final String SETTINGS_TITLE = Messages.msg("menu.settings");
+    public static final String HELP_TITLE = Messages.msg("menu.help");
 
     @FXML
     private Menu mnTopics;
@@ -82,9 +82,6 @@ public class MainView extends AnchorPane {
 
         label = new Label(SETTINGS_TITLE);
         menuMap.put(mnSettings, label);
-
-        label = new Label(STATISTICS_TITLE);
-        menuMap.put(mnStatistics, label);
 
         label = new Label(HELP_TITLE);
         menuMap.put(mnHelp, label);

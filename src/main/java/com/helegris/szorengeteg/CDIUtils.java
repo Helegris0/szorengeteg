@@ -21,12 +21,16 @@ public class CDIUtils {
             return null;
         }
 
-        BeanManager beanManager = ApplicationContainer.getInstance().getBeanManager();
+        BeanManager beanManager
+                = ApplicationContainer.getInstance().getBeanManager();
 
-        CreationalContext<T> creationalContext = beanManager.createCreationalContext(null);
+        CreationalContext<T> creationalContext
+                = beanManager.createCreationalContext(null);
 
-        AnnotatedType<T> annotatedType = beanManager.createAnnotatedType((Class<T>) instance.getClass());
-        InjectionTarget<T> injectionTarget = beanManager.createInjectionTarget(annotatedType);
+        AnnotatedType<T> annotatedType
+                = beanManager.createAnnotatedType((Class<T>) instance.getClass());
+        InjectionTarget<T> injectionTarget
+                = beanManager.createInjectionTarget(annotatedType);
         injectionTarget.inject(instance, creationalContext);
         return instance;
     }

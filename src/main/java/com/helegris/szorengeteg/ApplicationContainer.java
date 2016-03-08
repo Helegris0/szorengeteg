@@ -17,7 +17,8 @@ public class ApplicationContainer {
 
     private static class ApplicationContainerLoader {
 
-        private static final ApplicationContainer INSTANCE = new ApplicationContainer();
+        private static final ApplicationContainer INSTANCE
+                = new ApplicationContainer();
     }
 
     private final WeldContainer container;

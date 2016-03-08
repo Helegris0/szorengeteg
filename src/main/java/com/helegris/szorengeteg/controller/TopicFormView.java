@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.File;
@@ -67,9 +68,11 @@ public abstract class TopicFormView extends CardsEditorForm {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         FileChooser.ExtensionFilter extFilterJpg
-                = new FileChooser.ExtensionFilter("JPG fájlok (*.jpg)", "*.JPG");
+                = new FileChooser.ExtensionFilter(
+                        Messages.msg("open_dialog.jpg_files"), "*.JPG");
         FileChooser.ExtensionFilter extFilterPng
-                = new FileChooser.ExtensionFilter("PNG fájlok (*.png)", "*.PNG");
+                = new FileChooser.ExtensionFilter(
+                        Messages.msg("open_dialog.png_files"), "*.PNG");
         fileChooser.getExtensionFilters().addAll(extFilterJpg, extFilterPng);
 
         imageFile = fileChooser.showOpenDialog(null);

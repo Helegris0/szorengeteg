@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.controller.component;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -60,7 +61,7 @@ public class TopicBox extends Pane {
             toggleInfoVisibility(event);
         });
         lblNumberOfWords.setVisible(infoVisibility);
-        lblNumberOfWords.setText("összes szó: " + topic.getCards().size());
+        lblNumberOfWords.setText(Messages.msg("topicbox.allwords") + topic.getCards().size());
     }
 
     protected void editTopic(MouseEvent event) {

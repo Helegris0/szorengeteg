@@ -22,7 +22,8 @@ import javax.persistence.EntityTransaction;
 @Interceptor
 public class TransactionInterceptor {
 
-    private static final Logger LOGGER = Logger.getLogger(TransactionInterceptor.class.getName());
+    private static final Logger LOGGER
+            = Logger.getLogger(TransactionInterceptor.class.getName());
 
     @Inject
     private EntityManager em;
@@ -46,7 +47,8 @@ public class TransactionInterceptor {
                     LOGGER.log(Level.FINE, "Rolled back transaction");
                 }
             } catch (Exception roolbackException) {
-                LOGGER.log(Level.WARNING, "Rollback of transaction failed -> {0}", roolbackException);
+                LOGGER.log(Level.WARNING, "Rollback of transaction failed -> {0}",
+                        roolbackException);
             }
             throw e;
         }

@@ -5,6 +5,7 @@
  */
 package com.helegris.szorengeteg;
 
+import com.helegris.szorengeteg.messages.Messages;
 import java.io.IOException;
 import java.io.InputStream;
 import javafx.fxml.FXMLLoader;
@@ -19,7 +20,7 @@ public class FXMLLoaderHelper {
         InputStream fxmlInputStream = getFxmlInputStream(fxml);
 
         FXMLLoader fxmlLoader = new FXMLLoader();
-
+        fxmlLoader.setResources(Messages.RESOURCE_BUNDLE);
         fxmlLoader.setRoot(dest);
         fxmlLoader.setController(dest);
 
@@ -30,7 +31,8 @@ public class FXMLLoaderHelper {
         }
     }
 
-    private static InputStream getFxmlInputStream(String fxml) throws FXMLLoadException {
+    private static InputStream getFxmlInputStream(String fxml)
+            throws FXMLLoadException {
         final InputStream fxmlInputStream = getResource(fxml);
         if (fxmlInputStream == null) {
             throw new FXMLLoadException("FXML '" + fxml + "' not found");

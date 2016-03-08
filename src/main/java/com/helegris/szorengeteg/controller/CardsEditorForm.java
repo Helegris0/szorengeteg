@@ -9,6 +9,7 @@ import com.helegris.szorengeteg.CDIUtils;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.DefaultImage;
 import com.helegris.szorengeteg.controller.component.RowForCard;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.EntitySaver;
 import com.helegris.szorengeteg.model.TopicLoader;
 import com.helegris.szorengeteg.model.entity.PersistentObject;
@@ -67,12 +68,13 @@ public abstract class CardsEditorForm extends AnchorPane {
     @FXML
     protected Button btnBack;
 
-    protected ObservableList<RowForCard> rows = FXCollections.observableArrayList();
+    protected ObservableList<RowForCard> rows
+            = FXCollections.observableArrayList();
     protected List<RowForCard> rowsOfCardsToCreate = new ArrayList<>();
 
-    private Set<PersistentObject> entitiesToCreate = new HashSet<>();
-    private Set<PersistentObject> entitiesToModify = new HashSet<>();
-    private Set<PersistentObject> entitiesToDelete = new HashSet<>();
+    private final Set<PersistentObject> entitiesToCreate = new HashSet<>();
+    private final Set<PersistentObject> entitiesToModify = new HashSet<>();
+    private final Set<PersistentObject> entitiesToDelete = new HashSet<>();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public CardsEditorForm() {
@@ -94,7 +96,8 @@ public abstract class CardsEditorForm extends AnchorPane {
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
         FileChooser.ExtensionFilter extFilterTxt
-                = new FileChooser.ExtensionFilter("szövegfájlok (*.txt)", "*.TXT");
+                = new FileChooser.ExtensionFilter(
+                        Messages.msg("open_dialog.txt_files"), "*.TXT");
         fileChooser.getExtensionFilters().add(extFilterTxt);
 
         File file = fileChooser.showOpenDialog(null);
@@ -109,17 +112,19 @@ public abstract class CardsEditorForm extends AnchorPane {
                 alertFileNotFound(ex, file);
             } catch (Exception ex) {
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Hiba");
-                alert.setHeaderText("Hibás fájl");
-                alert.setContentText("Elvárt szövegszerkezet:\nszó1;leírás1\nszó2;leírás2");
+                alert.setTitle(Messages.msg("alert.error"));
+                alert.setHeaderText(Messages.msg("alert.wrong_file"));
+                alert.setContentText(Messages.msg("alert.expected_text_format"));
                 alert.showAndWait();
             }
         }
     }
 
     protected void cardImageAction(MouseEvent event) {
-        if (!rows.isEmpty() && !tableView.getSelectionModel().getSelectedCells().isEmpty()) {
-            TablePosition position = tableView.getSelectionModel().getSelectedCells().get(0);
+        if (!rows.isEmpty()
+                && !tableView.getSelectionModel().getSelectedCells().isEmpty()) {
+            TablePosition position
+                    = tableView.getSelectionModel().getSelectedCells().get(0);
             if (colImage.equals(position.getTableColumn())) {
                 int index = position.getRow();
                 RowForCard row = rows.get(index);
@@ -127,7 +132,8 @@ public abstract class CardsEditorForm extends AnchorPane {
                 ImagePopup imagePopup = new ImagePopup(currentImage);
                 Stage stage = new Stage();
                 stage.setScene(new Scene(imagePopup));
-                stage.setTitle(row.getTxtWord().getText() + " szó képének beállítása");
+                stage.setTitle(row.getTxtWord().getText() + " "
+                        + Messages.msg("form.set_image_of_word"));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initOwner(tableView.getScene().getWindow());
                 tableView.getSelectionModel().clearSelection();
@@ -162,9 +168,9 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     protected void alertFileNotFound(FileNotFoundException ex, File file) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("A fájlfeltöltés sikertelen");
-        alert.setHeaderText("A megadott fájl nem elérhető");
-        alert.setContentText("Keresett fájl: " + file.getAbsolutePath());
+        alert.setTitle(Messages.msg("alert.file_upload_unsuccessful"));
+        alert.setHeaderText(Messages.msg("alert.file_not_available"));
+        alert.setContentText(Messages.msg("alert.file") + file.getAbsolutePath());
         alert.initModality(Modality.APPLICATION_MODAL);
 
         alert.showAndWait();
@@ -172,7 +178,7 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     protected void alertIOEx(IOException ioe) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Váratlan hiba");
+        alert.setTitle(Messages.msg("alert.unexpected_error"));
         alert.setHeaderText(ioe.getMessage());
         alert.initModality(Modality.APPLICATION_MODAL);
 

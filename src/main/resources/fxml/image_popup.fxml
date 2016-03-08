@@ -16,10 +16,10 @@
                    layoutX="25.0" layoutY="50.0" 
                    pickOnBounds="true" preserveRatio="true" />
         <Button fx:id="btnLoadImage" layoutX="14.0" layoutY="361.0" 
-                text="Tallózás..." />
+                text="%form.browse" />
         <Button fx:id="btnDeleteImage" layoutX="80.0" layoutY="361.0" 
-                text="Törlés" />
+                text="%form.delete" />
         <Button fx:id="btnOk" layoutX="303.0" layoutY="361.0" 
-                text="OK" style="-fx-font-weight: bold;" />
+                text="%form.ok" style="-fx-font-weight: bold;" />
     </children>
 </fx:root>

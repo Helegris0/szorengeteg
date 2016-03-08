@@ -23,7 +23,8 @@ public class EntityManagerProducer {
 
     private EntityManagerFactory emf;
 
-    private static final ThreadLocal<EntityManager> ENTITY_MANAGER_STORE = new ThreadLocal<>();
+    private static final ThreadLocal<EntityManager> ENTITY_MANAGER_STORE
+            = new ThreadLocal<>();
 
     public void init(@Observes ContainerInitialized containerInitialized) {
         emf = Persistence.createEntityManagerFactory("default");

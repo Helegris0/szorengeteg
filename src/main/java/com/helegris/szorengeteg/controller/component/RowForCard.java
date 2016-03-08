@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.controller.component;
 
 import com.helegris.szorengeteg.ImageUtils;
 import com.helegris.szorengeteg.controller.CardsEditorForm;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.File;
@@ -36,12 +37,13 @@ public class RowForCard {
     private TextField txtWord = new TextField();
     private TextField txtDescription = new TextField();
     private ComboBox cmbTopic = new ComboBox();
-    private Button btnDelete = new Button("töröl");
+    private Button btnDelete = new Button(Messages.msg("form.delete_row"));
     private File imageFile;
 
     private static int imageWidth = 30;
     private static int imageHeight = 30;
-    private static ObservableList<Topic> allTopics = FXCollections.observableArrayList();
+    private static ObservableList<Topic> allTopics
+            = FXCollections.observableArrayList();
 
     public RowForCard(CardsEditorForm container) {
         this.container = container;
@@ -112,7 +114,7 @@ public class RowForCard {
 
     public static void refreshAlltopics(List<Topic> topics) {
         allTopics.clear();
-        topics.stream().forEach(topic -> allTopics.add(topic));
+        topics.stream().forEach(allTopics::add);
     }
 
     public Card getCard() {

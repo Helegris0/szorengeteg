@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.controller.component.DefaultImage;
+import com.helegris.szorengeteg.messages.Messages;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -85,9 +86,9 @@ public class ImagePopup extends AnchorPane {
 
     private void alertFileNotFound(File imageFile) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle("A képfeltöltés sikertelen");
-        alert.setHeaderText("A megadott kép nem elérhető");
-        alert.setContentText("Keresett képfájl: " + imageFile.getAbsolutePath());
+        alert.setTitle(Messages.msg("alert.image_upload_unsuccessful"));
+        alert.setHeaderText(Messages.msg("alert.image_not_available"));
+        alert.setContentText(Messages.msg("alert.image_file") + imageFile.getAbsolutePath());
         alert.initModality(Modality.APPLICATION_MODAL);
 
         alert.showAndWait();

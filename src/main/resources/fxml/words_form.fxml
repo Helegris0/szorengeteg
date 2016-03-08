@@ -13,31 +13,31 @@
     <VBox>
         <Pane HBox.hgrow="ALWAYS" />
         <VBox alignment="BOTTOM_RIGHT">
-            <Button fx:id="btnAddWordsFromFile" text="Hozzáadás..." />
+            <Button fx:id="btnAddWordsFromFile" text="%form.add_from_file" />
         </VBox>
         <TableView fx:id="tableView" prefWidth="595" prefHeight="495">
             <columns>
-                <TableColumn fx:id="colImage" text="kép" prefWidth="30.0" sortable="false">
+                <TableColumn fx:id="colImage" text="%form.image" prefWidth="30.0" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="imageView" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="szó" prefWidth="120.0">
+                <TableColumn text="%form.word" prefWidth="120.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="leírás" prefWidth="282.0">
+                <TableColumn text="%form.description" prefWidth="282.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="témakör" prefWidth="100.0">
+                <TableColumn text="%form.topic" prefWidth="100.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="cmbTopic" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="töröl" prefWidth="48.0" sortable="false">
+                <TableColumn text="%form.delete_row" prefWidth="48.0" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="btnDelete" />
                     </cellValueFactory>
@@ -45,10 +45,10 @@
             </columns>
         </TableView>
         <HBox>
-            <Button fx:id="btnNewWord" text="Új szó" />
+            <Button fx:id="btnNewWord" text="%form.new_word" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnSave" text="Mentés" style="-fx-font-weight: bold;" />
-            <Button fx:id="btnBack" text="Vissza" />
+            <Button fx:id="btnSave" text="%form.save" style="-fx-font-weight: bold;" />
+            <Button fx:id="btnBack" text="%form.back" />
         </HBox>
     </VBox>
 </fx:root>

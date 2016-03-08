@@ -20,7 +20,8 @@ import javax.persistence.criteria.Root;
  * @author Timi
  * @param <T>
  */
-public abstract class EntityLoader<T extends PersistentObject> implements Serializable {
+public abstract class EntityLoader<T extends PersistentObject>
+        implements Serializable {
 
     @Inject
     protected EntityManager em;

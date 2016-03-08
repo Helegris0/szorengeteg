@@ -6,7 +6,6 @@
 package com.helegris.szorengeteg.controller.component;
 
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
 
 /**
  *
@@ -16,12 +15,8 @@ public class ClickableLabel extends Label {
 
     public ClickableLabel() {
         super();
-        this.setOnMouseEntered((MouseEvent e) -> {
-            this.setUnderline(true);
-        });
-        this.setOnMouseExited((MouseEvent e) -> {
-            this.setUnderline(false);
-        });
+        this.setOnMouseEntered(e -> this.setUnderline(true));
+        this.setOnMouseExited(e -> this.setUnderline(false));
     }
 
 }

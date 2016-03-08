@@ -54,11 +54,6 @@ public class Card extends PersistentObject {
     @Column(name = "rep_interval")
     private int repInterval;
 
-    @Override
-    public String toString() {
-        return "Card{" + "id=" + id + ", word=" + word + ", description=" + description + ", topic=" + topic + '}';
-    }
-
     public String getWord() {
         return word;
     }

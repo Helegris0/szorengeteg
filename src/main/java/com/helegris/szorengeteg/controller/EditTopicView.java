@@ -8,11 +8,13 @@ package com.helegris.szorengeteg.controller;
 import com.helegris.szorengeteg.ImageUtils;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.PersistentObject;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javafx.event.ActionEvent;
@@ -57,13 +59,17 @@ public class EditTopicView extends TopicFormView {
 
     protected void deleteTopic(ActionEvent event) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Figyelmeztetés");
-        alert.setHeaderText("Biztosan törölni szeretné a témakört?");
-        alert.setContentText("A művelet nem vonható vissza.");
+        alert.setTitle(Messages.msg("alert.warning"));
+        alert.setHeaderText(Messages.msg("alert.sure_delete_topic"));
+        alert.setContentText(Messages.msg("alert.cannot_be_undone"));
 
-        ButtonType typeDelete = new ButtonType("Témakör törlése");
-        ButtonType typeDeleteWithWords = new ButtonType("Témakör és szavak törlése");
-        ButtonType typeCancel = new ButtonType("Mégse", ButtonData.CANCEL_CLOSE);
+        ButtonType typeDelete
+                = new ButtonType(Messages.msg("alert.delete_topic"));
+        ButtonType typeDeleteWithWords
+                = new ButtonType(Messages.msg("alert.delete_topic_and_words"));
+        ButtonType typeCancel
+                = new ButtonType(Messages.msg("alert.cancel"),
+                        ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().clear();
         alert.getButtonTypes().add(typeDelete);
@@ -75,17 +81,15 @@ public class EditTopicView extends TopicFormView {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == typeDelete) {
             List<Card> toModify = new ArrayList<>();
-            List<Topic> toDelete = new ArrayList<>();
             topic.getCards().stream().forEach(card -> {
                 card.setTopic(null);
                 toModify.add(card);
             });
-            toDelete.add(topic);
-            entitySaver.complexTransaction(null, toModify, toDelete);
+            entitySaver.complexTransaction(null, toModify, Arrays.asList(topic));
             VistaNavigator.getMainView().loadContentTopics();
         } else if (result.get() == typeDeleteWithWords) {
             List<PersistentObject> toDelete = new ArrayList<>();
-            topic.getCards().stream().forEach(card -> toDelete.add(card));
+            topic.getCards().stream().forEach(toDelete::add);
             toDelete.add(topic);
             entitySaver.complexTransaction(null, null, toDelete);
             VistaNavigator.getMainView().loadContentTopics();

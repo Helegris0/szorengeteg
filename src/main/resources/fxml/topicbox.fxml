@@ -17,13 +17,13 @@
         <Region prefHeight="105.0" prefWidth="10.0" />
         <VBox prefHeight="200.0" prefWidth="100.0">
             <Label fx:id="lblName" style="-fx-font-weight: bold;" />
-            <ClickableLabel fx:id="lblEdit" text="szerkesztés" />
-            <ClickableLabel fx:id="lblInfo" text="információk" />
+            <ClickableLabel fx:id="lblEdit" text="%topicbox.edit" />
+            <ClickableLabel fx:id="lblInfo" text="%topicbox.info" />
             <Label fx:id="lblNumberOfWords" />
         </VBox>
         <VBox prefHeight="105.0" prefWidth="130.0">
             <HBox prefHeight="40.0" prefWidth="130.0">
-                <Button mnemonicParsing="false" text="Gyakorlás" />
+                <Button mnemonicParsing="false" text="%topicbox.practice" />
             </HBox>
         </VBox>
     </HBox>
