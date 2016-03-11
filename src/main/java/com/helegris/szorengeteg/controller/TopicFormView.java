@@ -7,7 +7,7 @@ package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
-import com.helegris.szorengeteg.messages.Messages;
+import com.helegris.szorengeteg.controller.component.FileChooserHelper;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.File;
@@ -21,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import org.apache.commons.io.IOUtils;
 
@@ -64,19 +63,7 @@ public abstract class TopicFormView extends CardsEditorForm {
 
     @FXML
     protected void loadImage(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-        FileChooser.ExtensionFilter extFilterJpg
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.jpg_files"), "*.JPG");
-        FileChooser.ExtensionFilter extFilterPng
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.png_files"), "*.PNG");
-        fileChooser.getExtensionFilters().addAll(extFilterJpg, extFilterPng);
-
-        imageFile = fileChooser.showOpenDialog(null);
-
+        imageFile = FileChooserHelper.getImageFile();
         if (imageFile != null) {
             try {
                 Image image = new Image(new FileInputStream(imageFile));

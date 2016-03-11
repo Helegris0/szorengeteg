@@ -28,8 +28,8 @@ public class WordsFormView extends CardsEditorForm {
 
     public static final String FXML = "fxml/words_form.fxml";
 
-    private List<RowForCard> rowsWithCardsToModify = new ArrayList<>();
-    private List<Card> cardsToDelete = new ArrayList<>();
+    private final List<RowForCard> rowsWithCardsToModify = new ArrayList<>();
+    private final List<Card> cardsToDelete = new ArrayList<>();
 
     @Inject
     private CardLoader cardLoader;

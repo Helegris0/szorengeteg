@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.controller.component.DefaultImage;
+import com.helegris.szorengeteg.controller.component.FileChooserHelper;
 import com.helegris.szorengeteg.messages.Messages;
 import java.io.File;
 import java.io.FileInputStream;
@@ -18,7 +19,6 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -62,16 +62,7 @@ public class ImagePopup extends AnchorPane {
 
     @FXML
     protected void popupLoadImage(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-        FileChooser.ExtensionFilter extFilterJpg
-                = new FileChooser.ExtensionFilter("JPG fájlok (*.jpg)", "*.JPG");
-        FileChooser.ExtensionFilter extFilterPng
-                = new FileChooser.ExtensionFilter("PNG fájlok (*.png)", "*.PNG");
-        fileChooser.getExtensionFilters().addAll(extFilterJpg, extFilterPng);
-
-        imageFile = fileChooser.showOpenDialog(null);
+        imageFile = FileChooserHelper.getImageFile();
 
         if (imageFile != null) {
             try {

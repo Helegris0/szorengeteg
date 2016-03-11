@@ -8,6 +8,7 @@ package com.helegris.szorengeteg.controller;
 import com.helegris.szorengeteg.CDIUtils;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.DefaultImage;
+import com.helegris.szorengeteg.controller.component.FileChooserHelper;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.EntitySaver;
@@ -39,7 +40,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
-import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javax.inject.Inject;
@@ -92,15 +92,7 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     protected void addWordsFromFile(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-
-        FileChooser.ExtensionFilter extFilterTxt
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.txt_files"), "*.TXT");
-        fileChooser.getExtensionFilters().add(extFilterTxt);
-
-        File file = fileChooser.showOpenDialog(null);
+        File file = FileChooserHelper.getTxtFile();
         if (file != null) {
             FileInput fileInput = new FileInput(this, file);
             try {

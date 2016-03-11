@@ -29,8 +29,8 @@ import javafx.scene.control.ButtonType;
  */
 public class EditTopicView extends TopicFormView {
 
-    private List<RowForCard> rowsWithCardsToModify = new ArrayList<>();
-    private List<Card> cardsToDelete = new ArrayList<>();
+    private final List<RowForCard> rowsWithCardsToModify = new ArrayList<>();
+    private final List<Card> cardsToDelete = new ArrayList<>();
 
     public EditTopicView(Topic topic) {
         super();
