@@ -44,8 +44,6 @@ public class MainView extends AnchorPane {
     @FXML
     private Menu mnSettings;
     @FXML
-    private Menu mnStatistics;
-    @FXML
     private Menu mnHelp;
     @FXML
     private Label lblTitle;
@@ -75,7 +73,7 @@ public class MainView extends AnchorPane {
         label = new Label(NEW_TOPIC_TITLE);
         label.setOnMouseClicked(event -> loadContentNewTopic());
         menuMap.put(mnNewTopic, label);
-        
+
         label = new Label(WORDS_TITLE);
         label.setOnMouseClicked(event -> loadContentWords());
         menuMap.put(mnWords, label);
@@ -97,24 +95,25 @@ public class MainView extends AnchorPane {
         }
     }
 
+    private void loadContent(String title, Node node) {
+        lblTitle.setText(title);
+        setVista(node);
+    }
+
     public void loadContentTopics() {
-        lblTitle.setText(TOPICS_TITLE);
-        setVista(new TopicsView());
+        loadContent(TOPICS_TITLE, new TopicsView());
     }
 
     public void loadContentNewTopic() {
-        lblTitle.setText(NEW_TOPIC_TITLE);
-        setVista(new NewTopicView());
+        loadContent(NEW_TOPIC_TITLE, new NewTopicView());
     }
 
     public void loadContentEditTopic(Topic topic) {
-        lblTitle.setText(EDIT_TOPIC_TITLE);
-        setVista(new EditTopicView(topic));
+        loadContent(EDIT_TOPIC_TITLE, new EditTopicView(topic));
     }
 
     public void loadContentWords() {
-        lblTitle.setText(WORDS_TITLE);
-        setVista(new WordsFormView());
+        loadContent(WORDS_TITLE, new WordsFormView());
     }
 
     /**

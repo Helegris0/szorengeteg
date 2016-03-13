@@ -8,12 +8,15 @@ package com.helegris.szorengeteg.controller;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.FileChooserHelper;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -86,8 +89,8 @@ public abstract class TopicFormView extends CardsEditorForm {
     protected void submitTopic(ActionEvent event) {
         if ("".equals(txtName.getText())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Hiányos adat");
-            alert.setHeaderText("Kérem, adja meg a témakör nevét");
+            alert.setTitle(Messages.msg("alert.missing_data"));
+            alert.setHeaderText(Messages.msg("alert.define_name_for_topic"));
             alert.initModality(Modality.APPLICATION_MODAL);
 
             alert.showAndWait();
@@ -95,8 +98,6 @@ public abstract class TopicFormView extends CardsEditorForm {
         }
         try {
             prepareTopic();
-            prepareCards();
-            prepareToModify(topic);
             getTransactionDone();
             VistaNavigator.getMainView().loadContentTopics();
         } catch (FileNotFoundException ex) {
@@ -106,20 +107,20 @@ public abstract class TopicFormView extends CardsEditorForm {
         }
     }
 
-    protected void prepareTopic() throws IOException {
+    protected void prepareTopic() throws FileNotFoundException, IOException {
         topic.setName(txtName.getText());
         if (imageFile != null) {
             topic.setImage(IOUtils.toByteArray(new FileInputStream(imageFile)));
         }
     }
 
-    protected void prepareCards() {
-        rowsOfCardsToCreate.stream().forEach((row) -> {
+    @Override
+    protected void getTransactionDone() {
+        List<Card> cards = new ArrayList<>();
+        rows.stream().forEach(row -> {
             if (row.dataValidity()) {
                 try {
-                    Card card = row.getUpdatedCard(topic);
-                    topic.addCard(card);
-                    prepareToCreate(card);
+                    cards.add(row.getUpdatedCard(topic));
                 } catch (FileNotFoundException ex) {
                     alertFileNotFound(ex, row.getImageFile());
                 } catch (IOException ex) {
@@ -127,5 +128,6 @@ public abstract class TopicFormView extends CardsEditorForm {
                 }
             }
         });
+        entitySaver.saveTopic(topic, cards);
     }
 }

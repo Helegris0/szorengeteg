@@ -38,6 +38,8 @@ public class ImagePopup extends AnchorPane {
     protected Button btnDeleteImage;
     @FXML
     protected Button btnOk;
+    @FXML
+    protected Button btnCancel;
 
     private Image finalImage;
     private File imageFile;
@@ -79,7 +81,8 @@ public class ImagePopup extends AnchorPane {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(Messages.msg("alert.image_upload_unsuccessful"));
         alert.setHeaderText(Messages.msg("alert.image_not_available"));
-        alert.setContentText(Messages.msg("alert.image_file") + imageFile.getAbsolutePath());
+        alert.setContentText(Messages.msg("alert.image_file")
+                + imageFile.getAbsolutePath());
         alert.initModality(Modality.APPLICATION_MODAL);
 
         alert.showAndWait();

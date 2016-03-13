@@ -13,16 +13,11 @@ import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.EntitySaver;
 import com.helegris.szorengeteg.model.TopicLoader;
-import com.helegris.szorengeteg.model.entity.PersistentObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -70,16 +65,14 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     protected ObservableList<RowForCard> rows
             = FXCollections.observableArrayList();
-    protected List<RowForCard> rowsOfCardsToCreate = new ArrayList<>();
-
-    private final Set<PersistentObject> entitiesToCreate = new HashSet<>();
-    private final Set<PersistentObject> entitiesToModify = new HashSet<>();
-    private final Set<PersistentObject> entitiesToDelete = new HashSet<>();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public CardsEditorForm() {
         CDIUtils.injectFields(this);
     }
+
+    protected abstract void getTransactionDone()
+            throws FileNotFoundException, IOException;
 
     @FXML
     protected void initialize() {
@@ -96,10 +89,7 @@ public abstract class CardsEditorForm extends AnchorPane {
         if (file != null) {
             FileInput fileInput = new FileInput(this, file);
             try {
-                fileInput.getRows().stream().forEach(row -> {
-                    rows.add(row);
-                    rowsOfCardsToCreate.add(row);
-                });
+                fileInput.getRows().stream().forEach(row -> rows.add(row));
             } catch (FileNotFoundException ex) {
                 alertFileNotFound(ex, file);
             } catch (Exception ex) {
@@ -146,16 +136,14 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     public void deleteRow(RowForCard row) {
-        if (rowsOfCardsToCreate.contains(row)) {
-            rowsOfCardsToCreate.remove(row);
+        if (rows.contains(row)) {
+            rows.remove(row);
         }
         rows.remove(row);
     }
 
     protected void addRow(ActionEvent event) {
-        RowForCard row = new RowForCard(this);
-        rows.add(row);
-        rowsOfCardsToCreate.add(row);
+        rows.add(new RowForCard(this));
     }
 
     protected void alertFileNotFound(FileNotFoundException ex, File file) {
@@ -199,26 +187,6 @@ public abstract class CardsEditorForm extends AnchorPane {
         alert.getDialogPane().setExpanded(true);
 
         alert.showAndWait();
-    }
-
-    public void prepareToCreate(PersistentObject obj) {
-        entitiesToCreate.add(obj);
-    }
-
-    public void prepareToModify(PersistentObject obj) {
-        entitiesToModify.add(obj);
-    }
-
-    public void prepareToDelete(PersistentObject obj) {
-        entitiesToDelete.add(obj);
-    }
-
-    protected void getTransactionDone() {
-        entitySaver.complexTransaction(entitiesToCreate,
-                entitiesToModify, entitiesToDelete);
-        entitiesToCreate.clear();
-        entitiesToModify.clear();
-        entitiesToDelete.clear();
     }
 
     protected void goBack(ActionEvent event) {

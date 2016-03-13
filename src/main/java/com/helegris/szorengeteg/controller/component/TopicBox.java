@@ -5,9 +5,11 @@
  */
 package com.helegris.szorengeteg.controller.component;
 
+import com.helegris.szorengeteg.CDIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.messages.Messages;
+import com.helegris.szorengeteg.model.CardLoader;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -17,6 +19,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javax.inject.Inject;
 
 /**
  *
@@ -25,6 +28,9 @@ import javafx.scene.layout.Pane;
 public class TopicBox extends Pane {
 
     private static final String FXML = "fxml/topicbox.fxml";
+
+    @Inject
+    private CardLoader cardLoader;
 
     @FXML
     private ImageView imageView;
@@ -45,6 +51,7 @@ public class TopicBox extends Pane {
     public TopicBox(Topic topic) {
         this.topic = topic;
         setImage();
+        CDIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
     }
 
@@ -61,7 +68,8 @@ public class TopicBox extends Pane {
             toggleInfoVisibility(event);
         });
         lblNumberOfWords.setVisible(infoVisibility);
-        lblNumberOfWords.setText(Messages.msg("topicbox.allwords") + topic.getCards().size());
+        lblNumberOfWords.setText(Messages.msg("topicbox.allwords")
+                + cardLoader.loadByTopic(topic).size());
     }
 
     protected void editTopic(MouseEvent event) {

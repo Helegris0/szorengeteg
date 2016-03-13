@@ -5,9 +5,12 @@
  */
 package com.helegris.szorengeteg.model;
 
+import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.PersistentObject;
+import com.helegris.szorengeteg.model.entity.Topic;
 import com.helegris.szorengeteg.transaction.Transactional;
 import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -15,35 +18,58 @@ import javax.persistence.EntityManager;
  *
  * @author Timi
  */
-@Transactional
 public class EntitySaver {
 
     @Inject
     private EntityManager em;
 
-    public void create(PersistentObject obj) {
-        em.persist(obj);
+    @Inject
+    private CardLoader cardLoader;
+
+    private void createOrUpdate(Collection<? extends PersistentObject> entities) {
+        entities.stream().forEach(entity -> {
+            if (entity.getId() == null) {
+                em.persist(entity);
+            } else {
+                em.merge(entity);
+            }
+        });
     }
 
-    public void modify(PersistentObject obj) {
-        em.merge(obj);
+    private void compareAndDelete(
+            Collection<? extends PersistentObject> entitiesOriginal,
+            Collection<? extends PersistentObject> entitesNew) {
+        entitiesOriginal.stream().forEach(entity -> {
+            if (!entitesNew.contains(entity)) {
+                em.remove(entity);
+            }
+        });
     }
 
-    public void delete(PersistentObject obj) {
-        em.remove(obj);
+    @Transactional
+    public void delete(Collection<? extends PersistentObject> entities) {
+        entities.stream().forEach(em::remove);
     }
 
-    public void complexTransaction(Collection<? extends PersistentObject> toCreate,
-            Collection<? extends PersistentObject> toModify,
-            Collection<? extends PersistentObject> toDelete) {
-        if (toCreate != null) {
-            toCreate.stream().forEach(em::persist);
-        }
-        if (toModify != null) {
-            toModify.stream().forEach(em::merge);
-        }
-        if (toDelete != null) {
-            toDelete.stream().forEach(em::remove);
-        }
+    @Transactional
+    public void deleteTopicButSaveItsWords(Topic topic) {
+        cardLoader.loadByTopic(topic).stream().forEach(card -> {
+            card.setTopic(null);
+            em.merge(card);
+        });
+        em.remove(topic);
     }
+
+    @Transactional
+    public void saveTopic(Topic topic, List<Card> cards) {
+        createOrUpdate(cards);
+        compareAndDelete(cardLoader.loadByTopic(topic), cards);
+    }
+
+    @Transactional
+    public void saveWords(List<Card> cards) {
+        createOrUpdate(cards);
+        compareAndDelete(cardLoader.loadAll(), cards);
+    }
+
 }

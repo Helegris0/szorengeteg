@@ -5,16 +5,17 @@
  */
 package com.helegris.szorengeteg.controller;
 
+import com.helegris.szorengeteg.CDIUtils;
 import com.helegris.szorengeteg.ImageUtils;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.messages.Messages;
-import com.helegris.szorengeteg.model.entity.Card;
+import com.helegris.szorengeteg.model.CardLoader;
 import com.helegris.szorengeteg.model.entity.PersistentObject;
 import com.helegris.szorengeteg.model.entity.Topic;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javax.inject.Inject;
 
 /**
  *
@@ -29,9 +31,10 @@ import javafx.scene.control.ButtonType;
  */
 public class EditTopicView extends TopicFormView {
 
-    private final List<RowForCard> rowsWithCardsToModify = new ArrayList<>();
-    private final List<Card> cardsToDelete = new ArrayList<>();
+    @Inject
+    private CardLoader cardLoader;
 
+    @SuppressWarnings("LeakingThisInConstructor")
     public EditTopicView(Topic topic) {
         super();
         this.topic = topic;
@@ -40,6 +43,7 @@ public class EditTopicView extends TopicFormView {
         loadOriginalRows();
         btnDeleteTopic.setVisible(true);
         btnDeleteTopic.setOnAction(this::deleteTopic);
+        CDIUtils.injectFields(this);
     }
 
     private void loadOriginalImage() {
@@ -50,9 +54,8 @@ public class EditTopicView extends TopicFormView {
     }
 
     private void loadOriginalRows() {
-        topic.getCards().stream().forEach((card) -> {
+        cardLoader.loadByTopic(topic).stream().forEach((card) -> {
             RowForCard row = new RowForCard(this, card);
-            rowsWithCardsToModify.add(row);
             rows.add(row);
         });
     }
@@ -73,63 +76,30 @@ public class EditTopicView extends TopicFormView {
 
         alert.getButtonTypes().clear();
         alert.getButtonTypes().add(typeDelete);
-        if (!topic.getCards().isEmpty()) {
+        if (!cardLoader.loadByTopic(topic).isEmpty()) {
             alert.getButtonTypes().add(typeDeleteWithWords);
         }
         alert.getButtonTypes().add(typeCancel);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == typeDelete) {
-            List<Card> toModify = new ArrayList<>();
-            topic.getCards().stream().forEach(card -> {
-                card.setTopic(null);
-                toModify.add(card);
-            });
-            entitySaver.complexTransaction(null, toModify, Arrays.asList(topic));
+            entitySaver.deleteTopicButSaveItsWords(topic);
             VistaNavigator.getMainView().loadContentTopics();
         } else if (result.get() == typeDeleteWithWords) {
             List<PersistentObject> toDelete = new ArrayList<>();
-            topic.getCards().stream().forEach(toDelete::add);
+            cardLoader.loadByTopic(topic).stream().forEach(toDelete::add);
             toDelete.add(topic);
-            entitySaver.complexTransaction(null, null, toDelete);
+            entitySaver.delete(toDelete);
             VistaNavigator.getMainView().loadContentTopics();
         }
     }
 
     @Override
-    public void deleteRow(RowForCard row) {
-        if (rowsWithCardsToModify.contains(row)) {
-            rowsWithCardsToModify.remove(row);
-            cardsToDelete.add(row.getCard());
-        }
-        super.deleteRow(row);
-    }
-
-    @Override
-    protected void prepareTopic() throws IOException {
+    protected void prepareTopic() throws FileNotFoundException, IOException {
         super.prepareTopic();
         if (imageView.getImage() == null && imageFile == null) {
             topic.setImage(null);
         }
-    }
-
-    @Override
-    protected void prepareCards() {
-        super.prepareCards();
-        rowsWithCardsToModify.stream().forEach((row) -> {
-            if (row.dataValidity()) {
-                try {
-                    prepareToModify(row.getUpdatedCard());
-                } catch (IOException ex) {
-                    alertIOEx(ex);
-                }
-            }
-        });
-        cardsToDelete.stream().forEach((card) -> {
-            topic.removeCard(card);
-            prepareToModify(topic);
-            prepareToDelete(card);
-        });
     }
 
 }

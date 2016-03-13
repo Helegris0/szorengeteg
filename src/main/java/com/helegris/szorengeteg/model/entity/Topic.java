@@ -5,12 +5,9 @@
  */
 package com.helegris.szorengeteg.model.entity;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -30,25 +27,9 @@ public class Topic extends PersistentObject {
     @Column(name = "image")
     private byte[] image;
 
-    @OneToMany(mappedBy = "topic")
-    private List<Card> cards = new ArrayList<>();
-
     @Override
     public String toString() {
         return name;
-    }
-
-    public void addCard(Card card) {
-        if (!cards.contains(card)) {
-            cards.add(card);
-            card.setTopic(this);
-        }
-    }
-
-    public void removeCard(Card card) {
-        if (cards.contains(card)) {
-            cards.remove(card);
-        }
     }
 
     public String getName() {
@@ -65,13 +46,5 @@ public class Topic extends PersistentObject {
 
     public void setImage(byte[] image) {
         this.image = image;
-    }
-
-    public List<Card> getCards() {
-        return cards;
-    }
-
-    public void setCards(List<Card> cards) {
-        this.cards = cards;
     }
 }

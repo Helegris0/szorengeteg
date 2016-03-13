@@ -11,7 +11,6 @@ import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.CardLoader;
 import com.helegris.szorengeteg.model.entity.Card;
-import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,9 +26,6 @@ import javax.inject.Inject;
 public class WordsFormView extends CardsEditorForm {
 
     public static final String FXML = "fxml/words_form.fxml";
-
-    private final List<RowForCard> rowsWithCardsToModify = new ArrayList<>();
-    private final List<Card> cardsToDelete = new ArrayList<>();
 
     @Inject
     private CardLoader cardLoader;
@@ -51,30 +47,22 @@ public class WordsFormView extends CardsEditorForm {
     private void loadRows() {
         cardLoader.loadAll().stream().forEach(card -> {
             RowForCard row = new RowForCard(this, card);
-            rowsWithCardsToModify.add(row);
             rows.add(row);
         });
     }
 
-    @Override
-    public void deleteRow(RowForCard row) {
-        if (rowsWithCardsToModify.contains(row)) {
-            rowsWithCardsToModify.remove(row);
-            cardsToDelete.add(row.getCard());
-        }
-        super.deleteRow(row);
+    private void saveWords(ActionEvent event) {
+        getTransactionDone();
+        VistaNavigator.getMainView().loadContentTopics();
     }
 
-    private void saveWords(ActionEvent event) {
-        rowsOfCardsToCreate.stream().forEach((row) -> {
+    @Override
+    protected void getTransactionDone() {
+        List<Card> cards = new ArrayList<>();
+        rows.stream().forEach(row -> {
             if (row.dataValidity()) {
                 try {
-                    Card card = row.getUpdatedCard();
-                    Topic topic = card.getTopic();
-                    if (topic != null) {
-                        topic.addCard(card);
-                    }
-                    prepareToCreate(card);
+                    cards.add(row.getUpdatedCard());
                 } catch (FileNotFoundException ex) {
                     alertFileNotFound(ex, row.getImageFile());
                 } catch (IOException ex) {
@@ -82,28 +70,6 @@ public class WordsFormView extends CardsEditorForm {
                 }
             }
         });
-
-        rowsWithCardsToModify.stream().forEach((row) -> {
-            if (row.dataValidity()) {
-                try {
-                    prepareToModify(row.getUpdatedCard());
-                } catch (IOException ex) {
-                    alertIOEx(ex);
-                }
-            }
-        });
-
-        cardsToDelete.stream().forEach((card) -> {
-            Topic topic = card.getTopic();
-            if (topic != null) {
-                topic.removeCard(card);
-                prepareToModify(topic);
-            }
-            prepareToDelete(card);
-        });
-
-        getTransactionDone();
-
-        VistaNavigator.getMainView().loadContentTopics();
+        entitySaver.saveWords(cards);
     }
 }

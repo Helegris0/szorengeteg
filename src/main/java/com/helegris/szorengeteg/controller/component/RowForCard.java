@@ -83,15 +83,7 @@ public class RowForCard {
         card.setDescription(txtDescription.getText());
         Topic originalTopic = card.getTopic();
         Topic newTopic = (Topic) cmbTopic.getValue();
-        if (originalTopic != null && !originalTopic.equals(newTopic)) {
-            originalTopic.removeCard(card);
-            newTopic.addCard(card);
-            container.prepareToModify(originalTopic);
-            container.prepareToModify(newTopic);
-            card.setTopic(newTopic);
-        } else if (newTopic != null && !newTopic.equals(originalTopic)) {
-            newTopic.addCard(card);
-            container.prepareToModify(newTopic);
+        if (newTopic != null && !newTopic.equals(originalTopic)) {
             card.setTopic(newTopic);
         }
         if (imageFile != null) {
