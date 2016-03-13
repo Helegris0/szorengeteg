@@ -11,6 +11,7 @@ import com.helegris.szorengeteg.model.entity.Topic;
 import com.helegris.szorengeteg.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -22,28 +23,20 @@ public class EntitySaver {
 
     @Inject
     private EntityManager em;
-
     @Inject
     private CardLoader cardLoader;
 
-    private void createOrUpdate(Collection<? extends PersistentObject> entities) {
-        entities.stream().forEach(entity -> {
-            if (entity.getId() == null) {
-                em.persist(entity);
-            } else {
-                em.merge(entity);
-            }
-        });
+    @Transactional
+    public void saveTopic(Topic topic, List<Card> cards) {
+        cards.stream().forEach(this::save);
+        delete(cardLoader.loadByTopic(topic), card -> !cards.contains(card));
+        em.merge(topic);
     }
 
-    private void compareAndDelete(
-            Collection<? extends PersistentObject> entitiesOriginal,
-            Collection<? extends PersistentObject> entitesNew) {
-        entitiesOriginal.stream().forEach(entity -> {
-            if (!entitesNew.contains(entity)) {
-                em.remove(entity);
-            }
-        });
+    @Transactional
+    public void saveWords(List<Card> cards) {
+        cards.stream().forEach(this::save);
+        delete(cardLoader.loadAll(), card -> !cards.contains(card));
     }
 
     @Transactional
@@ -52,7 +45,7 @@ public class EntitySaver {
     }
 
     @Transactional
-    public void deleteTopicButSaveItsWords(Topic topic) {
+    public void deleteTopicWithoutWords(Topic topic) {
         cardLoader.loadByTopic(topic).stream().forEach(card -> {
             card.setTopic(null);
             em.merge(card);
@@ -60,16 +53,17 @@ public class EntitySaver {
         em.remove(topic);
     }
 
-    @Transactional
-    public void saveTopic(Topic topic, List<Card> cards) {
-        createOrUpdate(cards);
-        compareAndDelete(cardLoader.loadByTopic(topic), cards);
+    private void save(PersistentObject entity) {
+        if (entity.getId() == null) {
+            em.persist(entity);
+        } else {
+            em.merge(entity);
+        }
     }
 
-    @Transactional
-    public void saveWords(List<Card> cards) {
-        createOrUpdate(cards);
-        compareAndDelete(cardLoader.loadAll(), cards);
+    private <T extends PersistentObject> void delete(Collection<T> entities,
+            Predicate<T> filter) {
+        entities.stream().filter(filter).forEach(em::remove);
     }
 
 }

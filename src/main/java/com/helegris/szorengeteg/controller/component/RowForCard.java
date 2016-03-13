@@ -5,15 +5,12 @@
  */
 package com.helegris.szorengeteg.controller.component;
 
-import com.helegris.szorengeteg.ImageUtils;
-import com.helegris.szorengeteg.controller.CardsEditorForm;
+import com.helegris.szorengeteg.controller.ImageLoader;
+import com.helegris.szorengeteg.controller.ImageNotFoundException;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +20,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -31,7 +27,7 @@ import org.apache.commons.io.IOUtils;
  */
 public class RowForCard {
 
-    private CardsEditorForm container;
+    private RowDeleteListener listener;
     private Card card = new Card();
     private ImageView imageView = new ImageView();
     private TextField txtWord = new TextField();
@@ -39,14 +35,15 @@ public class RowForCard {
     private ComboBox cmbTopic = new ComboBox();
     private Button btnDelete = new Button(Messages.msg("form.delete_row"));
     private File imageFile;
+    private final ImageLoader imageLoader = new ImageLoader();
 
     private static int imageWidth = 30;
     private static int imageHeight = 30;
     private static ObservableList<Topic> allTopics
             = FXCollections.observableArrayList();
 
-    public RowForCard(CardsEditorForm container) {
-        this.container = container;
+    public RowForCard(RowDeleteListener listener) {
+        this.listener = listener;
         imageView.setFitWidth(imageWidth);
         imageView.setFitHeight(imageHeight);
         imageView.setImage(DefaultImage.getInstance());
@@ -54,8 +51,8 @@ public class RowForCard {
         btnDelete.setOnAction(this::delete);
     }
 
-    public RowForCard(CardsEditorForm container, Card card) {
-        this(container);
+    public RowForCard(RowDeleteListener listener, Card card) {
+        this(listener);
         this.card = card;
         txtWord.setText(card.getWord());
         txtDescription.setText(card.getDescription());
@@ -65,12 +62,12 @@ public class RowForCard {
 
     private void loadOriginalImage() {
         if (card.getImage() != null) {
-            imageView.setImage(ImageUtils.loadImage(card.getImage()));
+            imageView.setImage(imageLoader.loadImage(card.getImage()));
         }
     }
 
     private void delete(ActionEvent event) {
-        container.deleteRow(this);
+        listener.deleteRow(this);
     }
 
     public boolean dataValidity() {
@@ -78,7 +75,13 @@ public class RowForCard {
                 && !"".equals(txtDescription.getText());
     }
 
-    public Card getUpdatedCard() throws FileNotFoundException, IOException {
+    public boolean missingData() {
+        boolean cond1 = "".equals(txtWord.getText());
+        boolean cond2 = "".equals(txtDescription.getText());
+        return (cond1 && !cond2) || (!cond1 && cond2);
+    }
+
+    public Card getUpdatedCard() {
         card.setWord(txtWord.getText());
         card.setDescription(txtDescription.getText());
         Topic originalTopic = card.getTopic();
@@ -87,7 +90,7 @@ public class RowForCard {
             card.setTopic(newTopic);
         }
         if (imageFile != null) {
-            card.setImage(IOUtils.toByteArray(new FileInputStream(imageFile)));
+            card.setImage(getImage());
         }
         if (imageView.getImage() instanceof DefaultImage) {
             card.setImage(null);
@@ -95,7 +98,11 @@ public class RowForCard {
         return card;
     }
 
-    public Card getUpdatedCard(Topic topic) throws FileNotFoundException, IOException {
+    private byte[] getImage() throws ImageNotFoundException {
+        return imageLoader.loadImage(imageFile);
+    }
+
+    public Card getUpdatedCard(Topic topic) {
         cmbTopic.setValue(topic);
         return getUpdatedCard();
     }
@@ -104,7 +111,7 @@ public class RowForCard {
         imageView.setImage(image);
     }
 
-    public static void refreshAlltopics(List<Topic> topics) {
+    public static void refreshAllTopics(List<Topic> topics) {
         allTopics.clear();
         topics.stream().forEach(allTopics::add);
     }

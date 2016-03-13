@@ -38,14 +38,17 @@ public class FileChooserHelper {
         return file;
     }
 
-    public static File getTxtFile() {
+    public static File getCsvFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(txtDirectory));
 
         FileChooser.ExtensionFilter extFilterTxt
                 = new FileChooser.ExtensionFilter(
                         Messages.msg("open_dialog.txt_files"), "*.TXT");
-        fileChooser.getExtensionFilters().add(extFilterTxt);
+        FileChooser.ExtensionFilter extFilterCsv
+                = new FileChooser.ExtensionFilter(
+                        Messages.msg("open_dialog.csv_files"), "*.CSV");
+        fileChooser.getExtensionFilters().addAll(extFilterTxt, extFilterCsv);
 
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {

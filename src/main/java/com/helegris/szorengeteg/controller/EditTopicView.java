@@ -6,9 +6,7 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.CDIUtils;
-import com.helegris.szorengeteg.ImageUtils;
 import com.helegris.szorengeteg.VistaNavigator;
-import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.CardLoader;
 import com.helegris.szorengeteg.model.entity.PersistentObject;
@@ -48,16 +46,13 @@ public class EditTopicView extends TopicFormView {
 
     private void loadOriginalImage() {
         if (topic.getImage() != null) {
-            imageView.setImage(ImageUtils.loadImage(topic.getImage()));
+            imageView.setImage(new ImageLoader().loadImage(topic.getImage()));
             btnDeleteImage.setVisible(true);
         }
     }
 
     private void loadOriginalRows() {
-        cardLoader.loadByTopic(topic).stream().forEach((card) -> {
-            RowForCard row = new RowForCard(this, card);
-            rows.add(row);
-        });
+        loadRows(cardLoader.loadByTopic(topic));
     }
 
     protected void deleteTopic(ActionEvent event) {
@@ -83,7 +78,7 @@ public class EditTopicView extends TopicFormView {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == typeDelete) {
-            entitySaver.deleteTopicButSaveItsWords(topic);
+            entitySaver.deleteTopicWithoutWords(topic);
             VistaNavigator.getMainView().loadContentTopics();
         } else if (result.get() == typeDeleteWithWords) {
             List<PersistentObject> toDelete = new ArrayList<>();

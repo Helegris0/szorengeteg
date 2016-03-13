@@ -13,11 +13,13 @@ import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.EntitySaver;
 import com.helegris.szorengeteg.model.TopicLoader;
+import com.helegris.szorengeteg.model.entity.Card;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -72,11 +74,11 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     protected abstract void getTransactionDone()
-            throws FileNotFoundException, IOException;
+            throws FileNotFoundException, IOException, MissingDataException;
 
     @FXML
     protected void initialize() {
-        RowForCard.refreshAlltopics(topicLoader.loadAll());
+        RowForCard.refreshAllTopics(topicLoader.loadAll());
         btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
         tableView.setItems(rows);
         tableView.setOnMouseClicked(this::cardImageAction);
@@ -85,11 +87,11 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     protected void addWordsFromFile(ActionEvent event) {
-        File file = FileChooserHelper.getTxtFile();
+        File file = FileChooserHelper.getCsvFile();
         if (file != null) {
-            FileInput fileInput = new FileInput(this, file);
+            FileInput fileInput = new FileInput(file);
             try {
-                fileInput.getRows().stream().forEach(row -> rows.add(row));
+                loadRows(fileInput.getCards());
             } catch (FileNotFoundException ex) {
                 alertFileNotFound(ex, file);
             } catch (Exception ex) {
@@ -100,6 +102,13 @@ public abstract class CardsEditorForm extends AnchorPane {
                 alert.showAndWait();
             }
         }
+    }
+
+    protected void loadRows(List<Card> cards) {
+        cards.stream().forEach(card -> {
+            RowForCard row = new RowForCard(this::deleteRow, card);
+            rows.add(row);
+        });
     }
 
     protected void cardImageAction(MouseEvent event) {
@@ -136,17 +145,14 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     public void deleteRow(RowForCard row) {
-        if (rows.contains(row)) {
-            rows.remove(row);
-        }
         rows.remove(row);
     }
 
     protected void addRow(ActionEvent event) {
-        rows.add(new RowForCard(this));
+        rows.add(new RowForCard(this::deleteRow));
     }
 
-    protected void alertFileNotFound(FileNotFoundException ex, File file) {
+    protected void alertFileNotFound(Exception ex, File file) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(Messages.msg("alert.file_upload_unsuccessful"));
         alert.setHeaderText(Messages.msg("alert.file_not_available"));
@@ -185,6 +191,18 @@ public abstract class CardsEditorForm extends AnchorPane {
 
         alert.getDialogPane().setExpandableContent(expContent);
         alert.getDialogPane().setExpanded(true);
+
+        alert.showAndWait();
+    }
+
+    protected static class MissingDataException extends RuntimeException {
+    }
+
+    protected void alertMissingData() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(Messages.msg("alert.missing_data"));
+        alert.setHeaderText(Messages.msg("alert.missing_word_or_description"));
+        alert.initModality(Modality.APPLICATION_MODAL);
 
         alert.showAndWait();
     }

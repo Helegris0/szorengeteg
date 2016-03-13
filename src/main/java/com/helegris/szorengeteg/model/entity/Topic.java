@@ -32,6 +32,13 @@ public class Topic extends PersistentObject {
         return name;
     }
 
+    public Topic() {
+    }
+
+    public Topic(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

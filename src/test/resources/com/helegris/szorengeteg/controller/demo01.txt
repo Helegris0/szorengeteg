@@ -1,0 +1,4 @@
+﻿január;az év első hónapja
+számol;számokkal műveleteket végez
+járda;az utcán ezen járunk
+nagy;a kicsi ellentéte

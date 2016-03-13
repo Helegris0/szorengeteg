@@ -17,8 +17,7 @@ public class DefaultImage extends Image {
     private static final String PATH = "/images/default.jpg";
 
     private static final DefaultImage INSTANCE = new DefaultImage(
-            new PathFinder().getInputStream()
-    );
+            DefaultImage.class.getResourceAsStream(PATH));
 
     private DefaultImage(InputStream is) {
         super(is);
@@ -26,13 +25,6 @@ public class DefaultImage extends Image {
 
     public static DefaultImage getInstance() {
         return INSTANCE;
-    }
-
-    private static class PathFinder {
-
-        private InputStream getInputStream() {
-            return this.getClass().getResourceAsStream(PATH);
-        }
     }
 
 }

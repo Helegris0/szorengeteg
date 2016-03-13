@@ -11,10 +11,8 @@ import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.model.CardLoader;
 import com.helegris.szorengeteg.model.entity.Card;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javax.inject.Inject;
@@ -46,7 +44,7 @@ public class WordsFormView extends CardsEditorForm {
 
     private void loadRows() {
         cardLoader.loadAll().stream().forEach(card -> {
-            RowForCard row = new RowForCard(this, card);
+            RowForCard row = new RowForCard(this::deleteRow, card);
             rows.add(row);
         });
     }
@@ -58,18 +56,15 @@ public class WordsFormView extends CardsEditorForm {
 
     @Override
     protected void getTransactionDone() {
-        List<Card> cards = new ArrayList<>();
-        rows.stream().forEach(row -> {
-            if (row.dataValidity()) {
-                try {
-                    cards.add(row.getUpdatedCard());
-                } catch (FileNotFoundException ex) {
-                    alertFileNotFound(ex, row.getImageFile());
-                } catch (IOException ex) {
-                    alertIOEx(ex);
-                }
-            }
-        });
+        if (rows.stream().anyMatch(RowForCard::missingData)) {
+            throw new MissingDataException();
+        }
+
+        List<Card> cards = rows.stream()
+                .filter(RowForCard::dataValidity)
+                .map(row -> row.getUpdatedCard())
+                .collect(Collectors.toList());
         entitySaver.saveWords(cards);
     }
+
 }

@@ -54,6 +54,14 @@ public class Card extends PersistentObject {
     @Column(name = "rep_interval")
     private int repInterval;
 
+    public Card() {
+    }
+
+    public Card(String word, String description) {
+        this.word = word;
+        this.description = description;
+    }
+
     public String getWord() {
         return word;
     }
