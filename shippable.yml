@@ -6,7 +6,7 @@ jdk:
     - oraclejdk8
  
 before_install:
-    - apt-get update
+    - sudo apt-get update
     - apt-get install -y maven
  
 before_script:

@@ -21,9 +21,9 @@ import org.junit.Test;
  */
 public class FileInputTest {
 
-    File file;
-    FileInput fileInput;
-    List<Card> cards = new ArrayList<>();
+    private File file;
+    private FileInput fileInput;
+    private final List<Card> cards = new ArrayList<>();
 
     @Before
     public void setUp() {
