@@ -7,8 +7,10 @@ package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.CDIUtils;
 import com.helegris.szorengeteg.VistaNavigator;
+import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.CardLoader;
+import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.PersistentObject;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.io.FileNotFoundException;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -95,6 +98,19 @@ public class EditTopicView extends TopicFormView {
         if (imageView.getImage() == null && imageFile == null) {
             topic.setImage(null);
         }
+    }
+
+    @Override
+    protected void getTransactionDone() {
+        if (rows.stream().anyMatch(RowForCard::missingData)) {
+            throw new MissingDataException();
+        }
+
+        List<Card> cards = rows.stream()
+                .filter(RowForCard::dataValidity)
+                .map(row -> row.getUpdatedCard(topic))
+                .collect(Collectors.toList());
+        entitySaver.saveTopic(topic, cards);
     }
 
 }

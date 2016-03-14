@@ -27,6 +27,12 @@ public class EntitySaver {
     private CardLoader cardLoader;
 
     @Transactional
+    public void createTopic(Topic topic, List<Card> cards) {
+        cards.stream().forEach(this::save);
+        em.persist(topic);
+    }
+
+    @Transactional
     public void saveTopic(Topic topic, List<Card> cards) {
         cards.stream().forEach(this::save);
         delete(cardLoader.loadByTopic(topic), card -> !cards.contains(card));
