@@ -4,6 +4,8 @@ language: java
 # version numbers
 jdk:
     - oraclejdk8
+
+build_image: shippableimages/ubuntu1204_java
  
 before_install:
     - sudo apt-get update

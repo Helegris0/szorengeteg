@@ -38,12 +38,12 @@
                         <PropertyValueFactory property="imageView" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="%form.word" prefWidth="120.0">
+                <TableColumn fx:id="colWord" text="%form.word" prefWidth="120.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="%form.description" prefWidth="380.0">
+                <TableColumn fx:id="colDescription" text="%form.description" prefWidth="380.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>

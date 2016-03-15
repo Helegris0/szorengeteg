@@ -19,9 +19,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Comparator;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -32,6 +34,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -59,6 +62,10 @@ public abstract class CardsEditorForm extends AnchorPane {
     @FXML
     protected TableColumn colImage;
     @FXML
+    protected TableColumn colWord;
+    @FXML
+    protected TableColumn colDescription;
+    @FXML
     protected Button btnNewWord;
     @FXML
     protected Button btnSave;
@@ -73,14 +80,17 @@ public abstract class CardsEditorForm extends AnchorPane {
         CDIUtils.injectFields(this);
     }
 
-    protected abstract void getTransactionDone()
-            throws FileNotFoundException, IOException, MissingDataException;
+    protected abstract void getTransactionDone();
 
     @FXML
     protected void initialize() {
         RowForCard.refreshAllTopics(topicLoader.loadAll());
         btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
-        tableView.setItems(rows);
+        SortedList sortedList = new SortedList(rows);
+        tableView.setItems(sortedList);
+        sortedList.comparatorProperty().bind(tableView.comparatorProperty());
+        colWord.setComparator(new TextFieldComparator());
+        colDescription.setComparator(new TextFieldComparator());
         tableView.setOnMouseClicked(this::cardImageAction);
         btnNewWord.setOnAction(this::addRow);
         btnBack.setOnAction(this::goBack);
@@ -209,6 +219,15 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     protected void goBack(ActionEvent event) {
         VistaNavigator.getMainView().loadContentTopics();
+    }
+
+    private class TextFieldComparator implements Comparator<TextField> {
+
+        @Override
+        public int compare(TextField o1, TextField o2) {
+            return o1.getText().compareTo(o2.getText());
+        }
+
     }
 
 }
