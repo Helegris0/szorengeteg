@@ -17,7 +17,6 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:./data/szorengeteg"/>
             <property name="javax.persistence.jdbc.password" value="admin" />
             <property name="javax.persistence.jdbc.user" value="admin" />
-            
         </properties>
     </persistence-unit>
 </persistence>
