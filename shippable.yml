@@ -5,7 +5,7 @@ jdk:
 
 before_install:
 - sudo apt-get update
-- apt-get install -y oracle-java8-installer
+- sudo apt-get install -y oracle-java8-installer
 
 before_script:
 - export JAVA_HOME="/usr/lib/jvm/java-8-oracle"; export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin"; export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java";
