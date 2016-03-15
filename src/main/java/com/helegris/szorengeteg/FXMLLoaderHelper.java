@@ -16,16 +16,17 @@ import javafx.fxml.FXMLLoader;
  */
 public class FXMLLoaderHelper {
 
+    private static FXMLLoader FXML_LOADER = new FXMLLoader();
+
     public static void load(String fxml, Object dest) {
         InputStream fxmlInputStream = getFxmlInputStream(fxml);
 
-        FXMLLoader fxmlLoader = new FXMLLoader();
-        fxmlLoader.setResources(Messages.RESOURCE_BUNDLE);
-        fxmlLoader.setRoot(dest);
-        fxmlLoader.setController(dest);
+        FXML_LOADER.setResources(Messages.RESOURCE_BUNDLE);
+        FXML_LOADER.setRoot(dest);
+        FXML_LOADER.setController(dest);
 
         try {
-            fxmlLoader.load(fxmlInputStream);
+            FXML_LOADER.load(fxmlInputStream);
         } catch (IOException ex) {
             throw new FXMLLoadException(ex);
         }

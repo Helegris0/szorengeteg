@@ -18,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,8 +32,6 @@ public abstract class TopicFormView extends CardsEditorForm {
 
     public static final String FXML = "fxml/topic_form.fxml";
 
-    @FXML
-    protected ScrollPane scrollPane;
     @FXML
     protected TextField txtName;
     @FXML
@@ -62,7 +59,6 @@ public abstract class TopicFormView extends CardsEditorForm {
         btnLoadImage.setOnAction(this::loadImage);
         btnDeleteImage.setOnAction(this::deleteImage);
         btnSave.setOnAction(this::submitTopic);
-        
     }
 
     @FXML

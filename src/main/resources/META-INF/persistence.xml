@@ -14,7 +14,7 @@
             <!-- H2 -->
             <property name="eclipselink.target-database" value="org.eclipse.persistence.platform.database.H2Platform"/>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:./data/demo"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:./data/szorengeteg"/>
             <property name="javax.persistence.jdbc.password" value="admin" />
             <property name="javax.persistence.jdbc.user" value="admin" />
             
