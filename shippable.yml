@@ -1,21 +1,8 @@
-# language
 language: java
- 
-# version numbers
-jdk:
-    - oraclejdk8
 
-build_image: shippableimages/ubuntu1404_java
- 
-before_install:
-    - sudo apt-get update
-    - sudo apt-get install -y maven
- 
-before_script:
-    - if [[ $SHIPPABLE_JDK_VERSION == "oraclejdk8" ]] ; then export JAVA_HOME="/usr/lib/jvm/java-8-oracle"; export PATH="$PATH:/usr/lib/jvm/java-8-oracle/bin"; export java_path="/usr/lib/jvm/java-8-oracle/jre/bin/java"; fi
-    - update-alternatives --set java $java_path
-    - java -version
- 
-after_success:
-    - mvn clean cobertura:cobertura
-    - mvn test
+jdk:
+- oraclejdk8
+
+script:
+- mvn clean cobertura:cobertura
+- mvn test
