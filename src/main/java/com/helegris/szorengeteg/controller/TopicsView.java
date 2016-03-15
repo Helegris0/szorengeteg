@@ -8,11 +8,13 @@ package com.helegris.szorengeteg.controller;
 import com.helegris.szorengeteg.CDIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.controller.component.TopicBox;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.TopicLoader;
 import com.helegris.szorengeteg.model.entity.Topic;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javax.inject.Inject;
@@ -51,9 +53,13 @@ public class TopicsView extends ScrollPane {
     }
 
     private void createTopicBoxes() {
-        topics.stream().forEach((topic) -> {
-            vBox.getChildren().add(new TopicBox(topic));
-        });
+        if (topics.isEmpty()) {
+            vBox.getChildren().add(new Label(Messages.msg("topics.no_topics")));
+        } else {
+            topics.stream().forEach((topic) -> {
+                vBox.getChildren().add(new TopicBox(topic));
+            });
+        }
     }
 
 }

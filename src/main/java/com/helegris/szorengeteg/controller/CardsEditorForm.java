@@ -74,6 +74,7 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     protected ObservableList<RowForCard> rows
             = FXCollections.observableArrayList();
+    protected SortedList sortedRows = new SortedList(rows);
 
     @SuppressWarnings("LeakingThisInConstructor")
     public CardsEditorForm() {
@@ -84,13 +85,21 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     @FXML
     protected void initialize() {
+        setTable();
+        setEvents();
+    }
+
+    private void setTable() {
         RowForCard.refreshAllTopics(topicLoader.loadAll());
-        btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
-        SortedList sortedList = new SortedList(rows);
-        tableView.setItems(sortedList);
-        sortedList.comparatorProperty().bind(tableView.comparatorProperty());
+        tableView.setPlaceholder(new Label(Messages.msg("form.no_words")));
+        tableView.setItems(sortedRows);
+        sortedRows.comparatorProperty().bind(tableView.comparatorProperty());
         colWord.setComparator(new TextFieldComparator());
         colDescription.setComparator(new TextFieldComparator());
+    }
+
+    private void setEvents() {
+        btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
         tableView.setOnMouseClicked(this::cardImageAction);
         btnNewWord.setOnAction(this::addRow);
         btnBack.setOnAction(this::goBack);
@@ -128,7 +137,7 @@ public abstract class CardsEditorForm extends AnchorPane {
                     = tableView.getSelectionModel().getSelectedCells().get(0);
             if (colImage.equals(position.getTableColumn())) {
                 int index = position.getRow();
-                RowForCard row = rows.get(index);
+                RowForCard row = (RowForCard) sortedRows.get(index);
                 Image currentImage = row.getImageView().getImage();
                 ImagePopup imagePopup = new ImagePopup(currentImage);
                 Stage stage = new Stage();
