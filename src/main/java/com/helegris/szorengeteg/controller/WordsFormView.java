@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.controller;
 
-import com.helegris.szorengeteg.CDIUtils;
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
@@ -37,7 +37,7 @@ public class WordsFormView extends CardsEditorForm {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public WordsFormView() {
-        CDIUtils.injectFields(this);
+        DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
     }
 

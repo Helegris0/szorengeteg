@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.controller.component;
 
-import com.helegris.szorengeteg.CDIUtils;
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.messages.Messages;
@@ -51,7 +51,7 @@ public class TopicBox extends Pane {
     public TopicBox(Topic topic) {
         this.topic = topic;
         setImage();
-        CDIUtils.injectFields(this);
+        DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
     }
 

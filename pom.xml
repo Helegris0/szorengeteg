@@ -13,15 +13,28 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <weld.version>2.3.2.Final</weld.version>
+        <google.guice.version>4.0</google.guice.version>
+        <javax.inject.version>1</javax.inject.version>
         <eclipselink.version>2.6.0</eclipselink.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>org.jboss.weld.se</groupId>
-            <artifactId>weld-se</artifactId>
-            <version>${weld.version}</version>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>${javax.inject.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${google.guice.version}</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-persist</artifactId>
+            <version>${google.guice.version}</version>
         </dependency>
         
         <dependency>
@@ -38,6 +51,12 @@
         </dependency>
         
         <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.4</version>
+        </dependency>
+        
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
@@ -48,12 +67,7 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.10.19</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.4</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -131,30 +145,26 @@
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-jar-plugin</artifactId>
-                        <version>2.6</version>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <version>2.5.4</version>
                         <configuration>
                             <archive>
                                 <manifest>
                                     <mainClass>com.helegris.szorengeteg.MainApp</mainClass>
                                     <addClasspath>true</addClasspath>
-                                    <classpathPrefix>lib/</classpathPrefix>
                                 </manifest>
                             </archive>
+                            <descriptorRefs>
+                                <descriptorRef>jar-with-dependencies</descriptorRef>
+                            </descriptorRefs>
                         </configuration>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-dependency-plugin</artifactId>
                         <executions>
                             <execution>
-                                <phase>install</phase>
+                                <id>make-my-jar-with-dependencies</id>
+                                <phase>package</phase>
                                 <goals>
-                                    <goal>copy-dependencies</goal>
+                                    <goal>single</goal>
                                 </goals>
-                                <configuration>
-                                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
-                                </configuration>
                             </execution>
                         </executions>
                     </plugin>

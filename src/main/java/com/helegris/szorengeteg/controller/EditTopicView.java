@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.controller;
 
-import com.helegris.szorengeteg.CDIUtils;
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.RowForCard;
 import com.helegris.szorengeteg.messages.Messages;
@@ -44,7 +44,7 @@ public class EditTopicView extends TopicFormView {
         loadOriginalRows();
         btnDeleteTopic.setVisible(true);
         btnDeleteTopic.setOnAction(this::deleteTopic);
-        CDIUtils.injectFields(this);
+        DIUtils.injectFields(this);
     }
 
     private void loadOriginalImage() {

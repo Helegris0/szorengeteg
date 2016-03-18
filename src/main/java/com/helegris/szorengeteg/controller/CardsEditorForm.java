@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.controller;
 
-import com.helegris.szorengeteg.CDIUtils;
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.DefaultImage;
 import com.helegris.szorengeteg.controller.component.FileChooserHelper;
@@ -78,7 +78,7 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public CardsEditorForm() {
-        CDIUtils.injectFields(this);
+        DIUtils.injectFields(this);
     }
 
     protected abstract void getTransactionDone();

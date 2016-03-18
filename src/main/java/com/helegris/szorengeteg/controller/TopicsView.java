@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.controller;
 
-import com.helegris.szorengeteg.CDIUtils;
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.controller.component.TopicBox;
 import com.helegris.szorengeteg.messages.Messages;
@@ -38,7 +38,7 @@ public class TopicsView extends ScrollPane {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public TopicsView() {
-        CDIUtils.injectFields(this);
+        DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
     }
 
