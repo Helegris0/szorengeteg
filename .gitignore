@@ -1,5 +1,5 @@
 target/
-data/
+szorengetegDB/
 shippable/
 nb-configuration.xml
 src/main/resources/rebel.xml
