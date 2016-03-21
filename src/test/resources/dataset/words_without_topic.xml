@@ -1,0 +1,5 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <CARDS id="1" word="április" description="Az év negyedik hónapja" />
+    <CARDS id="2" word="május" description="Az év ötödik hónapja" />
+</dataset>

@@ -1,0 +1,7 @@
+﻿<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <TOPICS id="1" name="Idő" />
+    <CARDS id="1" word="április" description="Az év negyedik hónapja" topic_id="1" />
+    <CARDS id="2" word="május" description="Az év ötödik hónapja" topic_id="1" />
+    <CARDS word="június" description="Az év hatodik hónapja" topic_id="1" />
+</dataset>
