@@ -14,5 +14,4 @@ before_script:
 - javac -version
 
 script:
-- mvn clean cobertura:cobertura
 - mvn test
