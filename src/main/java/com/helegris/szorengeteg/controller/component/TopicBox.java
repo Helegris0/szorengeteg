@@ -52,7 +52,7 @@ public class TopicBox extends Pane {
     @FXML
     private Button btnPractice;
 
-    private Topic topic;
+    private final Topic topic;
     private Image image;
     private boolean infoVisibility;
 
@@ -102,13 +102,5 @@ public class TopicBox extends Pane {
             InputStream inputStream = new ByteArrayInputStream(topic.getImage());
             image = new Image(inputStream);
         }
-    }
-
-    public Topic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
     }
 }

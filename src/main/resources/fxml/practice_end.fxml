@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
+         id="AnchorPane" prefHeight="280.0" prefWidth="480.0"
+         xmlns="http://javafx.com/javafx/8">
+    
+    <HBox>
+        <VBox maxWidth="120">
+            <Label text="%practice.correct_answers" />
+            <ListView fx:id="lstCorrect" prefHeight="260" />
+        </VBox>
+        <VBox maxWidth="120">
+            <Label text="%practice.incorrect_answers" />
+            <ListView fx:id="lstIncorrect" prefHeight="260" />
+        </VBox>
+        <VBox maxWidth="240">
+            <Label fx:id="lblWord" />
+            <TextArea fx:id="txtDescription" editable="false" wrapText="true"
+                      prefHeight="120" />
+            <ImageView fx:id="imageView" preserveRatio="true" 
+                       fitWidth="150" fitHeight="130" />
+        </VBox>
+    </HBox>
+</fx:root>

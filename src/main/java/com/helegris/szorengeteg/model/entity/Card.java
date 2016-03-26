@@ -62,6 +62,11 @@ public class Card extends PersistentObject {
         this.description = description;
     }
 
+    @Override
+    public String toString() {
+        return word;
+    }
+
     public String getWord() {
         return word;
     }

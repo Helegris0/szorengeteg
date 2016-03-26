@@ -27,6 +27,9 @@ public class PracticeSession {
     private final List<Card> sessionCards = new ArrayList<>();
     private Card currentCard;
 
+    private final List<Card> correctAnswers = new ArrayList<>();
+    private final List<Card> incorrectAnswers = new ArrayList<>();
+
     public PracticeSession() {
         this(null);
     }
@@ -76,7 +79,23 @@ public class PracticeSession {
         }
     }
 
+    public void correctAnswer() {
+        correctAnswers.add(currentCard);
+    }
+
+    public void incorrectAnswer() {
+        incorrectAnswers.add(currentCard);
+    }
+
     public Card getCurrentCard() {
         return currentCard;
+    }
+
+    public List<Card> getCorrectAnswers() {
+        return correctAnswers;
+    }
+
+    public List<Card> getIncorrectAnswers() {
+        return incorrectAnswers;
     }
 }
