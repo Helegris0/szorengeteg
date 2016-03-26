@@ -5,7 +5,6 @@
  */
 package com.helegris.szorengeteg.controller;
 
-import com.helegris.szorengeteg.controller.ImageNotFoundException;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;

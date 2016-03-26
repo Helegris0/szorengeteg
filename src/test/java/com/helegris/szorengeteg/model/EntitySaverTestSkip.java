@@ -31,7 +31,7 @@ import org.unitils.dbunit.annotation.ExpectedDataSet;
  * @author Timi
  */
 @RunWith(UnitilsJUnit4TestClassRunner.class)
-public class EntitySaverTest {
+public class EntitySaverTestSkip {
 
     @Inject
     private EntityManager em;
@@ -69,7 +69,7 @@ public class EntitySaverTest {
     private final String DESCRIPTION3 = "Az év hatodik hónapja";
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public EntitySaverTest() {
+    public EntitySaverTestSkip() {
         final Injector injector = Guice.createInjector(new AbstractModule() {
 
             @Override

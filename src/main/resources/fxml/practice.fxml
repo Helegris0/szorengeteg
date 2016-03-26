@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
+         id="AnchorPane" prefHeight="300.0" prefWidth="600.0"
+         xmlns="http://javafx.com/javafx/8">
+    <VBox spacing="15">
+        <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </padding>
+        <HBox spacing="5" maxWidth="600" >
+            <ImageView fx:id="imageView" fitWidth="150" fitHeight="130" pickOnBounds="true" preserveRatio="true">
+            </ImageView>
+            <VBox>
+                <Label fx:id="lblDescription" wrapText="true"  style="-fx-font: NORMAL 18 Arial;" ></Label>
+            </VBox>
+        </HBox>
+    </VBox>
+</fx:root>

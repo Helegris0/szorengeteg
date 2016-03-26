@@ -11,14 +11,21 @@ import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.CardLoader;
 import com.helegris.szorengeteg.model.entity.Topic;
+import com.helegris.szorengeteg.controller.PracticeSession;
+import com.helegris.szorengeteg.controller.PracticeView;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javax.inject.Inject;
 
 /**
@@ -42,6 +49,8 @@ public class TopicBox extends Pane {
     private ClickableLabel lblInfo;
     @FXML
     private Label lblNumberOfWords;
+    @FXML
+    private Button btnPractice;
 
     private Topic topic;
     private Image image;
@@ -61,15 +70,12 @@ public class TopicBox extends Pane {
             imageView.setImage(image);
         }
         lblName.setText(topic.getName());
-        lblEdit.setOnMouseClicked((MouseEvent event) -> {
-            editTopic(event);
-        });
-        lblInfo.setOnMouseClicked((MouseEvent event) -> {
-            toggleInfoVisibility(event);
-        });
+        lblEdit.setOnMouseClicked(this::editTopic);
+        lblInfo.setOnMouseClicked(this::toggleInfoVisibility);
         lblNumberOfWords.setVisible(infoVisibility);
         lblNumberOfWords.setText(Messages.msg("topicbox.allwords")
                 + cardLoader.loadByTopic(topic).size());
+        btnPractice.setOnAction(this::startPracticeSession);
     }
 
     protected void editTopic(MouseEvent event) {
@@ -79,6 +85,16 @@ public class TopicBox extends Pane {
     private void toggleInfoVisibility(MouseEvent event) {
         infoVisibility = !infoVisibility;
         lblNumberOfWords.setVisible(infoVisibility);
+    }
+
+    private void startPracticeSession(ActionEvent event) {
+        Stage stage = new Stage();
+        stage.setScene(new Scene(new PracticeView(new PracticeSession(topic))));
+        stage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(btnPractice.getScene().getWindow());
+        stage.setResizable(false);
+        stage.showAndWait();
     }
 
     private void setImage() {

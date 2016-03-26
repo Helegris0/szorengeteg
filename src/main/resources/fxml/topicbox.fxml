@@ -12,7 +12,7 @@
 <fx:root type="Pane" xmlns="http://javafx.com/javafx/8.0.65" 
          xmlns:fx="http://javafx.com/fxml/1">
     <HBox prefHeight="105.0" prefWidth="360.0">
-        <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="100.0">
+        <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="115.0">
         </ImageView>
         <Region prefHeight="105.0" prefWidth="10.0" />
         <VBox prefHeight="200.0" prefWidth="100.0">
@@ -23,7 +23,7 @@
         </VBox>
         <VBox prefHeight="105.0" prefWidth="130.0">
             <HBox prefHeight="40.0" prefWidth="130.0">
-                <Button mnemonicParsing="false" text="%topicbox.practice" />
+                <Button fx:id="btnPractice" text="%topicbox.practice" />
             </HBox>
         </VBox>
     </HBox>

@@ -17,7 +17,7 @@
         </VBox>
         <TableView fx:id="tableView" prefWidth="595" prefHeight="495">
             <columns>
-                <TableColumn fx:id="colImage" text="%form.image" prefWidth="30.0" sortable="false">
+                <TableColumn fx:id="colImage" text="%form.image" prefWidth="35.0" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="imageView" />
                     </cellValueFactory>
@@ -27,7 +27,7 @@
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colDescription" text="%form.description" prefWidth="282.0">
+                <TableColumn fx:id="colDescription" text="%form.description" prefWidth="277.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>
