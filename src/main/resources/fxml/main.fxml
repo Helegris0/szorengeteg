@@ -7,12 +7,13 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" prefHeight="600.0" prefWidth="600.0" 
+         id="AnchorPane" prefHeight="620.0" prefWidth="700.0" 
          xmlns="http://javafx.com/javafx/8">
-    <VBox prefWidth="600.0">
+    <VBox prefWidth="700.0">
         <MenuBar>
             <menus>
                 <Menu fx:id="mnTopics"></Menu>
+                <Menu fx:id="mnPractice"></Menu>
                 <Menu fx:id="mnNewTopic"></Menu>
                 <Menu fx:id="mnWords"></Menu>
                 <Menu fx:id="mnSettings"></Menu>

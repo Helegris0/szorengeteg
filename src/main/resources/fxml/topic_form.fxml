@@ -10,7 +10,7 @@
 <?import javafx.geometry.Insets?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" prefHeight="350.0" prefWidth="600.0" 
+         id="AnchorPane" prefHeight="350.0" prefWidth="700.0" 
          xmlns="http://javafx.com/javafx/8">
     <VBox>
         <HBox spacing="5">
@@ -31,9 +31,9 @@
                 <Button fx:id="btnAddWordsFromFile" text="%form.add_from_file" />
             </VBox>
         </HBox>
-        <TableView fx:id="tableView" prefWidth="595" prefHeight="378">
+        <TableView fx:id="tableView" prefWidth="695" prefHeight="379">
             <columns>
-                <TableColumn fx:id="colImage" text="%form.image" prefWidth="35.0" sortable="false">
+                <TableColumn fx:id="colImage" text="%form.image" prefWidth="38.0" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="imageView" />
                     </cellValueFactory>
@@ -43,12 +43,12 @@
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colDescription" text="%form.description" prefWidth="375.0">
+                <TableColumn fx:id="colDescription" text="%form.description" prefWidth="465.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="%form.delete_row" prefWidth="50.0" sortable="false">
+                <TableColumn text="%form.delete_row" prefWidth="57.0" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="btnDelete" />
                     </cellValueFactory>

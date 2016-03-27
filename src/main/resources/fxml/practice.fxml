@@ -22,18 +22,18 @@
                        pickOnBounds="true" preserveRatio="true" />
             <VBox>
                 <Label fx:id="lblDescription" wrapText="true"
-                       style="-fx-font: NORMAL 18 Arial;" />
+                       style="-fx-font-size: 14pt;" />
             </VBox>
         </HBox>
-        <HBox spacing="15">
-            <TextField fx:id="txtWord" />
+        <HBox spacing="15" alignment="CENTER">
+            <TextField fx:id="txtWord" prefWidth="200" />
             <Button fx:id="btnCheck" text="%practice.check" />
         </HBox>
-        <HBox spacing="15">
+        <HBox spacing="15" alignment="CENTER">
             <ClickableLabel fx:id="lblDontKnow" text="%practice.dont_know" />
             <ClickableLabel fx:id="lblHelp" text="%practice.help" />
         </HBox>
-        <HBox spacing="15">
+        <HBox spacing="15" alignment="CENTER">
             <Label fx:id="lblResult" visible="false" />
             <Button fx:id="btnNextCard" text="%practice.next" visible="false" />
         </HBox>

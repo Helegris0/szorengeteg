@@ -146,6 +146,7 @@ public abstract class CardsEditorForm extends AnchorPane {
                         + Messages.msg("form.set_image_of_word"));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initOwner(tableView.getScene().getWindow());
+                stage.setResizable(false);
                 tableView.getSelectionModel().clearSelection();
 
                 stage.showAndWait();

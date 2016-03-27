@@ -3,15 +3,14 @@ package com.helegris.szorengeteg;
 import com.helegris.szorengeteg.controller.MainView;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
     
     private final String TITLE = "Szórengeteg";
-    private final int WIDTH = 607;
-    private final int HEIGHT = 640;
+    private final int WIDTH = 707;
+    private final int HEIGHT = 660;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -21,7 +20,7 @@ public class MainApp extends Application {
         stage.setWidth(WIDTH);
         stage.setHeight(HEIGHT);
         stage.setResizable(false);
-        stage.setScene(createScene(loadMainPane()));
+        stage.setScene(new SceneStyler().createScene(loadMainPane()));
 
         stage.show();
     }
@@ -39,23 +38,6 @@ public class MainApp extends Application {
         mainView.loadContentTopics();
 
         return mainView;
-    }
-
-    /**
-     * Creates the main application scene.
-     *
-     * @param mainPane the main application layout.
-     *
-     * @return the created scene.
-     */
-    private Scene createScene(Pane mainPane) {
-        Scene scene = new Scene(mainPane);
-
-        scene.getStylesheets().setAll(
-                getClass().getResource("/styles/Styles.css").toExternalForm()
-        );
-
-        return scene;
     }
 
     /**

@@ -1,3 +1,7 @@
+.button, .combo-box, .label, .list-view, .text-area, .text-field {
+    -fx-font-size: 11pt;
+}
+
 .menu {
     -fx-padding: 0;
 }

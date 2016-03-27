@@ -8,16 +8,16 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" prefHeight="350.0" prefWidth="600.0" 
+         id="AnchorPane" prefHeight="350.0" prefWidth="700.0" 
          xmlns="http://javafx.com/javafx/8">
     <VBox>
         <Pane HBox.hgrow="ALWAYS" />
         <VBox alignment="BOTTOM_RIGHT">
             <Button fx:id="btnAddWordsFromFile" text="%form.add_from_file" />
         </VBox>
-        <TableView fx:id="tableView" prefWidth="595" prefHeight="495">
+        <TableView fx:id="tableView" prefWidth="695" prefHeight="500">
             <columns>
-                <TableColumn fx:id="colImage" text="%form.image" prefWidth="35.0" sortable="false">
+                <TableColumn fx:id="colImage" text="%form.image" prefWidth="36.0" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="imageView" />
                     </cellValueFactory>
@@ -27,7 +27,7 @@
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colDescription" text="%form.description" prefWidth="277.0">
+                <TableColumn fx:id="colDescription" text="%form.description" prefWidth="367.0">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>
@@ -37,7 +37,7 @@
                         <PropertyValueFactory property="cmbTopic" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn text="%form.delete_row" prefWidth="48.0" sortable="false">
+                <TableColumn text="%form.delete_row" prefWidth="57.0" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="btnDelete" />
                     </cellValueFactory>

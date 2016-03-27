@@ -6,13 +6,14 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
+import com.helegris.szorengeteg.SceneStyler;
 import com.helegris.szorengeteg.controller.component.ClickableLabel;
 import com.helegris.szorengeteg.controller.component.DefaultImage;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Card;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -20,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -66,10 +68,12 @@ public class PracticeView extends AnchorPane {
     public void initialize() {
         setQuestion();
         imageView.setOnMouseClicked(this::showImage);
+        txtWord.setOnAction(this::check);
         btnCheck.setOnAction(this::check);
         lblDontKnow.setOnMouseClicked(this::dontKnow);
         lblHelp.setOnMouseClicked(this::help);
         btnNextCard.setOnAction(this::nextCard);
+        btnNextCard.defaultButtonProperty().bind(btnNextCard.focusedProperty());
     }
 
     private void setQuestion() {
@@ -118,13 +122,17 @@ public class PracticeView extends AnchorPane {
 
     private void correctlyAnswered() {
         lblResult.setText(Messages.msg("practice.correct"));
+        lblResult.setTextFill(Color.web("#009600"));
         session.correctAnswer();
+        Platform.runLater(btnNextCard::requestFocus);
     }
 
     private void incorrectlyAnswered() {
         lblResult.setText(Messages.msg("practice.incorrect") + " "
                 + card.getWord());
+        lblResult.setTextFill(Color.web("#ff0000"));
         session.incorrectAnswer();
+        Platform.runLater(btnNextCard::requestFocus);
     }
 
     private void checked(boolean checked) {
@@ -147,7 +155,7 @@ public class PracticeView extends AnchorPane {
 
     private void evaluateSession() {
         Stage stage = (Stage) btnNextCard.getScene().getWindow();
-        stage.setScene(new Scene(new PracticeEndView(
+        stage.setScene(new SceneStyler().createScene(new PracticeEndView(
                 session.getCorrectAnswers(), session.getIncorrectAnswers())));
     }
 }

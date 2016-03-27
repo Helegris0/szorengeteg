@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.controller.component;
 
 import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
+import com.helegris.szorengeteg.SceneStyler;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.CardLoader;
@@ -17,7 +18,6 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -89,7 +89,8 @@ public class TopicBox extends Pane {
 
     private void startPracticeSession(ActionEvent event) {
         Stage stage = new Stage();
-        stage.setScene(new Scene(new PracticeView(new PracticeSession(topic))));
+        stage.setScene(new SceneStyler().createScene(
+                new PracticeView(new PracticeSession(topic))));
         stage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.initOwner(btnPractice.getScene().getWindow());
