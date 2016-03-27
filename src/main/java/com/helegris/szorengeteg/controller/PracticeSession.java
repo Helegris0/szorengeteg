@@ -6,7 +6,7 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.DIUtils;
-import com.helegris.szorengeteg.GlobalSettingsStore;
+import com.helegris.szorengeteg.Settings;
 import com.helegris.szorengeteg.model.CardLoader;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
@@ -37,7 +37,7 @@ public class PracticeSession {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeSession(Topic topic) {
-            sessionLength = new GlobalSettingsStore().load().getWordsPerSession();
+        sessionLength = new Settings().getWordsPerSession();
         DIUtils.injectFields(this);
         selectCards(topic);
     }

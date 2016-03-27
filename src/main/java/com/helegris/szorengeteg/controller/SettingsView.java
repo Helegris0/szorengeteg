@@ -6,8 +6,7 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
-import com.helegris.szorengeteg.GlobalSettings;
-import com.helegris.szorengeteg.GlobalSettingsStore;
+import com.helegris.szorengeteg.Settings;
 import com.helegris.szorengeteg.VistaNavigator;
 import com.helegris.szorengeteg.controller.component.NumberSpinner;
 import javafx.event.ActionEvent;
@@ -30,8 +29,7 @@ public class SettingsView extends AnchorPane {
     @FXML
     private Button btnBack;
 
-    private GlobalSettings settings;
-    private final GlobalSettingsStore store = new GlobalSettingsStore();
+    private final Settings settings = new Settings();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public SettingsView() {
@@ -40,7 +38,6 @@ public class SettingsView extends AnchorPane {
 
     @FXML
     private void initialize() {
-        settings = store.load();
         nmbWorsPerSession.setValue(settings.getWordsPerSession());
 
         btnSave.setOnAction(this::saveSettings);
@@ -49,7 +46,6 @@ public class SettingsView extends AnchorPane {
 
     private void saveSettings(ActionEvent event) {
         settings.setWordsPerSession(nmbWorsPerSession.getValue());
-        store.store(settings);
         VistaNavigator.getMainView().loadContentTopics();
     }
 
