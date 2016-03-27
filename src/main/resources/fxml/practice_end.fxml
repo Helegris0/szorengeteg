@@ -10,7 +10,6 @@
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" prefHeight="280.0" prefWidth="480.0"
          xmlns="http://javafx.com/javafx/8">
-    
     <HBox>
         <VBox maxWidth="120">
             <Label text="%practice.correct_answers" />

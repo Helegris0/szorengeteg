@@ -100,7 +100,7 @@ public abstract class TopicFormView extends CardsEditorForm {
         } catch (FileNotFoundException ex) {
             alertFileNotFound(ex, imageFile);
         } catch (IOException ex) {
-            alertIOEx(ex);
+            new FormAlert().exceptionAlert(ex);
         } catch (MissingDataException ex) {
             alertMissingData();
         } catch (ImageNotFoundException ex) {

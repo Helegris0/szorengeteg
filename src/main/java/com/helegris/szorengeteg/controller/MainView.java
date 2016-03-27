@@ -86,6 +86,7 @@ public class MainView extends AnchorPane {
         menuMap.put(mnWords, label);
 
         label = new Label(SETTINGS_TITLE);
+        label.setOnMouseClicked(event -> loadContentSettings());
         menuMap.put(mnSettings, label);
 
         label = new Label(HELP_TITLE);
@@ -125,6 +126,10 @@ public class MainView extends AnchorPane {
 
     public void loadContentWords() {
         loadContent(WORDS_TITLE, new WordsFormView());
+    }
+
+    public void loadContentSettings() {
+        loadContent(SETTINGS_TITLE, new SettingsView());
     }
 
     /**

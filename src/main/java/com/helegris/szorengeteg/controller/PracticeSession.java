@@ -6,6 +6,7 @@
 package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.DIUtils;
+import com.helegris.szorengeteg.GlobalSettingsStore;
 import com.helegris.szorengeteg.model.CardLoader;
 import com.helegris.szorengeteg.model.entity.Card;
 import com.helegris.szorengeteg.model.entity.Topic;
@@ -22,7 +23,7 @@ public class PracticeSession {
     @Inject
     private CardLoader cardLoader;
 
-    private final int sessionLength = 5;
+    private final int sessionLength;
 
     private final List<Card> sessionCards = new ArrayList<>();
     private Card currentCard;
@@ -36,6 +37,7 @@ public class PracticeSession {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeSession(Topic topic) {
+            sessionLength = new GlobalSettingsStore().load().getWordsPerSession();
         DIUtils.injectFields(this);
         selectCards(topic);
     }

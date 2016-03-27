@@ -20,9 +20,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax.inject</groupId>
-            <artifactId>javax.inject</artifactId>
-            <version>${javax.inject.version}</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.6.2</version>
         </dependency>
         
         <dependency>
@@ -35,12 +35,6 @@
             <groupId>com.google.inject.extensions</groupId>
             <artifactId>guice-persist</artifactId>
             <version>${google.guice.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>org.eclipse.persistence</groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>${eclipselink.version}</version>
         </dependency>
         
         <dependency>
@@ -57,10 +51,22 @@
         </dependency>
         
         <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>${javax.inject.version}</version>
+        </dependency>
+        
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <scope>test</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.eclipse.persistence</groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>${eclipselink.version}</version>
         </dependency>
         
         <dependency>
