@@ -11,8 +11,23 @@
          id="AnchorPane" prefHeight="350.0" prefWidth="700.0" 
          xmlns="http://javafx.com/javafx/8">
     <VBox spacing="5" >
+        <fx:define>
+            <ToggleGroup fx:id="grpWordInput"/>
+        </fx:define>
+        <fx:define>
+            <ToggleGroup fx:id="grpWordHelp"/>
+        </fx:define>
         <Label text="%settings.words_per_session" />
         <NumberSpinner fx:id="nmbWorsPerSession" />
+        <Label text="%settings.word_input" />
+        <RadioButton fx:id="rdOneField" text="%settings.one_field" toggleGroup="$grpWordInput" />
+        <RadioButton fx:id="rdCharFields" text="%settings.char_fields" toggleGroup="$grpWordInput" />
+        <Label text="%settings.word_help" />
+        <RadioButton fx:id="rdNoHelp" text="%settings.no_help" toggleGroup="$grpWordHelp" />
+        <RadioButton fx:id="rdFirstChar" text="%settings.first_char" toggleGroup="$grpWordHelp" />
+        <RadioButton fx:id="rdFirstTwoChars" text="%settings.first_two_chars" toggleGroup="$grpWordHelp" />
+        <RadioButton fx:id="rdFirstAndLastChar" text="%settings.first_and_last_char" toggleGroup="$grpWordHelp" />
+        <RadioButton fx:id="rdVowels" text="%settings.vowels" toggleGroup="$grpWordHelp" />
         <HBox>
             <Button fx:id="btnSave" text="%form.save" style="-fx-font-weight: bold;" />
             <Button fx:id="btnBack" text="%form.back" />

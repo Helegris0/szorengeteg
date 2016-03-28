@@ -1,9 +1,10 @@
-.button, .combo-box, .label, .list-view, .text-area, .text-field {
+.button, .combo-box, .label, .list-view, .radio-button, .text-area, .text-field {
     -fx-font-size: 11pt;
 }
 
 .menu {
     -fx-padding: 0;
+    -fx-font-size: 12pt;
 }
 
 .table-row-cell:filled:selected { 

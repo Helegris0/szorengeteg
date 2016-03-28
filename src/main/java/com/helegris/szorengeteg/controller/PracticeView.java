@@ -7,10 +7,11 @@ package com.helegris.szorengeteg.controller;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.SceneStyler;
+import com.helegris.szorengeteg.Settings;
 import com.helegris.szorengeteg.controller.component.ClickableLabel;
 import com.helegris.szorengeteg.controller.component.DefaultImage;
-import com.helegris.szorengeteg.controller.component.SpelledWordInput;
 import com.helegris.szorengeteg.controller.component.WordInput;
+import com.helegris.szorengeteg.controller.component.WordInputFactory;
 import com.helegris.szorengeteg.controller.component.WordInputListener;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Card;
@@ -80,6 +81,10 @@ public class PracticeView extends AnchorPane {
 
     @FXML
     public void initialize() {
+        if (Settings.WordHelp.NO_HELP.equals(new Settings().getWordHelp())) {
+            lblHelp.setVisible(false);
+        }
+
         setQuestion();
         imageView.setOnMouseClicked(this::showImage);
         lblDontKnow.setOnMouseClicked(this::dontKnow);
@@ -92,7 +97,7 @@ public class PracticeView extends AnchorPane {
         hboxInput.getChildren().clear();
         imageView.setImage(startingImage);
         lblDescription.setText(card.getDescription());
-        wordInput = new SpelledWordInput(card.getWord(), inputListener);
+        wordInput = new WordInputFactory().getWordInput(card.getWord(), inputListener);
         hboxInput.getChildren().add(wordInput);
         checked(false);
     }

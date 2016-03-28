@@ -5,6 +5,7 @@
  */
 package com.helegris.szorengeteg.controller.component;
 
+import com.helegris.szorengeteg.Settings;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
@@ -150,12 +151,43 @@ public class SpelledWordInput extends WordInput {
 
     @Override
     public void help() {
+        switch (new Settings().getWordHelp()) {
+            case FIRST_CHAR:
+                helpFirstChar();
+                break;
+            case FIRST_TWO_CHARS:
+                helpFirstTwoChars();
+                break;
+            case FIRST_AND_LAST_CHAR:
+                helpFirstAndLastChar();
+                break;
+            case VOWELS:
+                helpVowels();
+                break;
+        }
+    }
+
+    private void helpFirstChar() {
         String firstLetter = word.substring(0, 1).toUpperCase();
         fields.get(0).setText(firstLetter);
+        fields.get(1).requestFocus();
+    }
 
+    private void helpFirstTwoChars() {
+        helpFirstChar();
         String lastLetter = word.substring(word.length() - 1);
         fields.get(fields.size() - 1).setText(lastLetter);
+    }
 
-        fields.get(1).requestFocus();
+    private void helpFirstAndLastChar() {
+        helpFirstChar();
+        String secondLetter = word.substring(1, 2).toUpperCase();
+        if (fields.size() > 2) {
+            fields.get(1).setText(secondLetter);
+            fields.get(2).requestFocus();
+        }
+    }
+
+    private void helpVowels() {
     }
 }
