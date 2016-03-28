@@ -98,7 +98,7 @@ public class ImagePopup extends AnchorPane {
     protected void popupOk(ActionEvent event) {
         finalImage = imageView.getImage();
         ok = true;
-        Stage stage = (Stage) btnOk.getScene().getWindow();
+        Stage stage = (Stage) this.getScene().getWindow();
         stage.close();
     }
 

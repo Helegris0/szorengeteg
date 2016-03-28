@@ -9,6 +9,9 @@ import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.SceneStyler;
 import com.helegris.szorengeteg.controller.component.ClickableLabel;
 import com.helegris.szorengeteg.controller.component.DefaultImage;
+import com.helegris.szorengeteg.controller.component.SpelledWordInput;
+import com.helegris.szorengeteg.controller.component.WordInput;
+import com.helegris.szorengeteg.controller.component.WordInputListener;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.model.entity.Card;
 import javafx.application.Platform;
@@ -16,11 +19,11 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -41,9 +44,7 @@ public class PracticeView extends AnchorPane {
     @FXML
     private Label lblDescription;
     @FXML
-    private TextField txtWord;
-    @FXML
-    private Button btnCheck;
+    private HBox hboxInput;
     @FXML
     private ClickableLabel lblDontKnow;
     @FXML
@@ -56,6 +57,19 @@ public class PracticeView extends AnchorPane {
     private final PracticeSession session;
     private Card card;
     private boolean imageShown;
+    private WordInput wordInput;
+    private final WordInputListener inputListener = new WordInputListener() {
+
+        @Override
+        public void answeredCorrectly() {
+            answerCorrect();
+        }
+
+        @Override
+        public void answeredIncorrectly() {
+            answerIncorrect();
+        }
+    };
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeView(PracticeSession session) {
@@ -68,8 +82,6 @@ public class PracticeView extends AnchorPane {
     public void initialize() {
         setQuestion();
         imageView.setOnMouseClicked(this::showImage);
-        txtWord.setOnAction(this::check);
-        btnCheck.setOnAction(this::check);
         lblDontKnow.setOnMouseClicked(this::dontKnow);
         lblHelp.setOnMouseClicked(this::help);
         btnNextCard.setOnAction(this::nextCard);
@@ -77,9 +89,11 @@ public class PracticeView extends AnchorPane {
     }
 
     private void setQuestion() {
-        txtWord.setText("");
-        lblDescription.setText(card.getDescription());
+        hboxInput.getChildren().clear();
         imageView.setImage(startingImage);
+        lblDescription.setText(card.getDescription());
+        wordInput = new SpelledWordInput(card.getWord(), inputListener);
+        hboxInput.getChildren().add(wordInput);
         checked(false);
     }
 
@@ -95,48 +109,33 @@ public class PracticeView extends AnchorPane {
     }
 
     private void dontKnow(MouseEvent event) {
-        incorrectlyAnswered();
+        wordInput.disableButton();
+        answerIncorrect();
         checked(true);
     }
 
     private void help(MouseEvent event) {
-        String firstLetter = card.getWord().substring(0, 1);
-        txtWord.setText(firstLetter);
-        txtWord.positionCaret(1);
+        wordInput.help();
     }
 
-    private void check(ActionEvent event) {
-        if (!"".equals(txtWord.getText())) {
-            boolean correctAnswer = txtWord.getText().toLowerCase()
-                    .equals(card.getWord().toLowerCase());
-
-            if (correctAnswer) {
-                correctlyAnswered();
-            } else {
-                incorrectlyAnswered();
-            }
-
-            checked(true);
-        }
-    }
-
-    private void correctlyAnswered() {
+    private void answerCorrect() {
         lblResult.setText(Messages.msg("practice.correct"));
         lblResult.setTextFill(Color.web("#009600"));
         session.correctAnswer();
         Platform.runLater(btnNextCard::requestFocus);
+        checked(true);
     }
 
-    private void incorrectlyAnswered() {
+    private void answerIncorrect() {
         lblResult.setText(Messages.msg("practice.incorrect") + " "
-                + card.getWord());
+                + card.getWord().toUpperCase());
         lblResult.setTextFill(Color.web("#ff0000"));
         session.incorrectAnswer();
         Platform.runLater(btnNextCard::requestFocus);
+        checked(true);
     }
 
     private void checked(boolean checked) {
-        btnCheck.setDisable(checked);
         lblDontKnow.setVisible(!checked);
         lblHelp.setVisible(!checked);
         lblResult.setVisible(checked);
@@ -148,6 +147,7 @@ public class PracticeView extends AnchorPane {
         if (card != null) {
             imageShown = false;
             setQuestion();
+            this.getScene().getWindow().sizeToScene();
         } else {
             evaluateSession();
         }

@@ -116,7 +116,7 @@ public class PracticeEndView extends AnchorPane {
     }
 
     private void close(ActionEvent event) {
-        Stage stage = (Stage) btnClose.getScene().getWindow();
+        Stage stage = (Stage) this.getScene().getWindow();
         stage.close();
     }
 }

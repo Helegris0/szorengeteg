@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" prefHeight="300.0" prefWidth="450.0"
+         id="AnchorPane" prefHeight="300.0" minWidth="450.0"
          xmlns="http://javafx.com/javafx/8">
     <VBox spacing="15">
         <padding>
@@ -24,15 +24,12 @@
                        style="-fx-font-size: 14pt;" />
             </VBox>
         </HBox>
-        <HBox spacing="15" alignment="CENTER">
-            <TextField fx:id="txtWord" prefWidth="200" />
-            <Button fx:id="btnCheck" text="%practice.check" />
-        </HBox>
-        <HBox spacing="15" alignment="CENTER">
+        <HBox fx:id="hboxInput" minWidth="448.0" alignment="CENTER" />
+        <HBox minWidth="448.0" spacing="15" alignment="CENTER">
             <ClickableLabel fx:id="lblDontKnow" text="%practice.dont_know" />
             <ClickableLabel fx:id="lblHelp" text="%practice.help" />
         </HBox>
-        <HBox spacing="15" alignment="CENTER">
+        <HBox minWidth="448.0" spacing="15" alignment="CENTER">
             <Label fx:id="lblResult" visible="false" />
             <Button fx:id="btnNextCard" text="%practice.next" visible="false" />
         </HBox>
