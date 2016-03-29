@@ -1,4 +1,4 @@
-.button, .combo-box, .label, .list-view, .radio-button, .text-area, .text-field {
+.button, .check-box, .combo-box, .label, .list-view, .radio-button, .text-area, .text-field {
     -fx-font-size: 11pt;
 }
 

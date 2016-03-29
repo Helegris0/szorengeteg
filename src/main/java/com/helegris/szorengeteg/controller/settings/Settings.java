@@ -19,6 +19,7 @@ public class Settings {
     private final Preferences prefs
             = Preferences.userRoot().node(this.getClass().getName());
     private final String KEY_WORDS_PER_SESSION = "words_per_session";
+    private final String KEY_REPEAT_UNKNOWN_WORDS = "repeat_unknown_words";
     private final String KEY_WORD_INPUT = "word_input";
     private final String KEY_WORD_HELP = "word_help";
 
@@ -62,6 +63,15 @@ public class Settings {
 
     public void setWordsPerSession(int arg) {
         prefs.putInt(KEY_WORDS_PER_SESSION, arg);
+    }
+
+    public boolean isRepeatUnknownWords() {
+        boolean def = false;
+        return prefs.getBoolean(KEY_REPEAT_UNKNOWN_WORDS, def);
+    }
+
+    public void setRepeatUnknownWords(boolean arg) {
+        prefs.putBoolean(KEY_REPEAT_UNKNOWN_WORDS, arg);
     }
 
     public WordInput getWordInput() {

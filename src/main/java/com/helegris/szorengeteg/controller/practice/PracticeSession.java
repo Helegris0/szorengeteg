@@ -31,6 +31,8 @@ public class PracticeSession {
     private final List<Card> correctAnswers = new ArrayList<>();
     private final List<Card> incorrectAnswers = new ArrayList<>();
 
+    private int index;
+
     public PracticeSession() {
         this(null);
     }
@@ -72,9 +74,9 @@ public class PracticeSession {
     }
 
     public Card nextCard() {
-        int prevIndex = sessionCards.indexOf(currentCard);
-        if (prevIndex < sessionCards.size() - 1) {
-            currentCard = sessionCards.get(prevIndex + 1);
+        if (index < sessionCards.size() - 1) {
+            currentCard = sessionCards.get(index + 1);
+            index++;
             return currentCard;
         } else {
             return null;
@@ -87,6 +89,14 @@ public class PracticeSession {
 
     public void incorrectAnswer() {
         incorrectAnswers.add(currentCard);
+    }
+
+    public void repeatCard() {
+        sessionCards.add(currentCard);
+    }
+
+    public List<Card> getSessionCards() {
+        return sessionCards;
     }
 
     public Card getCurrentCard() {

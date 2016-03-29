@@ -57,8 +57,10 @@ public class PracticeView extends AnchorPane {
     private Card card;
     private boolean imageShown;
     private WordInput wordInput;
+    private final Settings settings = new Settings();
     private final boolean helpSet
-            = !Settings.WordHelp.NO_HELP.equals(new Settings().getWordHelp());
+            = !Settings.WordHelp.NO_HELP.equals(settings.getWordHelp());
+    private final boolean repeat = settings.isRepeatUnknownWords();
     private final WordInputListener inputListener = new WordInputListener() {
 
         @Override
@@ -123,7 +125,9 @@ public class PracticeView extends AnchorPane {
     private void answerCorrect() {
         lblResult.setText(Messages.msg("practice.correct"));
         lblResult.setTextFill(Color.web("#009600"));
-        session.correctAnswer();
+        if (!repeat) {
+            session.correctAnswer();
+        }
         Platform.runLater(btnNextCard::requestFocus);
         checked(true);
     }
@@ -132,7 +136,11 @@ public class PracticeView extends AnchorPane {
         lblResult.setText(Messages.msg("practice.incorrect") + " "
                 + card.getWord().toUpperCase());
         lblResult.setTextFill(Color.web("#ff0000"));
-        session.incorrectAnswer();
+        if (repeat) {
+            session.repeatCard();
+        } else {
+            session.incorrectAnswer();
+        }
         Platform.runLater(btnNextCard::requestFocus);
         checked(true);
     }
@@ -159,7 +167,15 @@ public class PracticeView extends AnchorPane {
 
     private void evaluateSession() {
         Stage stage = (Stage) btnNextCard.getScene().getWindow();
-        stage.setScene(new SceneStyler().createScene(new PracticeEndView(
-                session.getCorrectAnswers(), session.getIncorrectAnswers())));
+        PracticeEnd practiceEnd;
+
+        if (repeat) {
+            practiceEnd = new PracticeEndRepeatedView(session.getSessionCards());
+        } else {
+            practiceEnd = new PracticeEndNormalView(session.getCorrectAnswers(),
+                    session.getIncorrectAnswers());
+        }
+
+        stage.setScene(new SceneStyler().createScene(practiceEnd));
     }
 }

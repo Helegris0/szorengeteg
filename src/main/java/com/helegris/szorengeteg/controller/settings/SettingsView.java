@@ -6,15 +6,14 @@
 package com.helegris.szorengeteg.controller.settings;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
-import com.helegris.szorengeteg.controller.settings.Settings;
 import com.helegris.szorengeteg.controller.VistaNavigator;
-import com.helegris.szorengeteg.controller.settings.NumberSpinner;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -30,6 +29,8 @@ public class SettingsView extends AnchorPane {
 
     @FXML
     private NumberSpinner nmbWorsPerSession;
+    @FXML
+    private CheckBox chkRepeat;
     @FXML
     private ToggleGroup grpWordInput;
     @FXML
@@ -104,6 +105,8 @@ public class SettingsView extends AnchorPane {
     private void setDefaultValues() {
         nmbWorsPerSession.setValue(settings.getWordsPerSession());
 
+        chkRepeat.setSelected(settings.isRepeatUnknownWords());
+
         grpWordInput.getToggles().stream().forEach(toggle -> {
             RadioButton radioButton = (RadioButton) toggle;
             Settings.WordInput wordInput = wordInputRadios.get(radioButton);
@@ -125,6 +128,8 @@ public class SettingsView extends AnchorPane {
 
     private void saveSettings(ActionEvent event) {
         settings.setWordsPerSession(nmbWorsPerSession.getValue());
+
+        settings.setRepeatUnknownWords(chkRepeat.isSelected());
 
         RadioButton selectedInput = (RadioButton) grpWordInput.getSelectedToggle();
         settings.setWordInput(wordInputRadios.get(selectedInput));

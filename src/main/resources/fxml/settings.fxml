@@ -12,13 +12,14 @@
          xmlns="http://javafx.com/javafx/8">
     <VBox spacing="5" >
         <fx:define>
-            <ToggleGroup fx:id="grpWordInput"/>
+            <ToggleGroup fx:id="grpWordInput" />
         </fx:define>
         <fx:define>
-            <ToggleGroup fx:id="grpWordHelp"/>
+            <ToggleGroup fx:id="grpWordHelp" />
         </fx:define>
         <Label text="%settings.words_per_session" />
         <NumberSpinner fx:id="nmbWorsPerSession" />
+        <CheckBox fx:id="chkRepeat" text="%settings.repeat_unknown_words" />
         <Label text="%settings.word_input" />
         <RadioButton fx:id="rdOneField" text="%settings.one_field" toggleGroup="$grpWordInput" />
         <RadioButton fx:id="rdCharFields" text="%settings.char_fields" toggleGroup="$grpWordInput" />
