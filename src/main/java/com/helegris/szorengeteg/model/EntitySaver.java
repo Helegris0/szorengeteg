@@ -6,9 +6,9 @@
 package com.helegris.szorengeteg.model;
 
 import com.google.inject.persist.Transactional;
-import com.helegris.szorengeteg.model.entity.Card;
-import com.helegris.szorengeteg.model.entity.PersistentObject;
-import com.helegris.szorengeteg.model.entity.Topic;
+import com.helegris.szorengeteg.model.entities.Card;
+import com.helegris.szorengeteg.model.entities.PersistentObject;
+import com.helegris.szorengeteg.model.entities.Topic;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;

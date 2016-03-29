@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.helegris.szorengeteg.controller.component.NumberSpinner?>
+<?import com.helegris.szorengeteg.controller.settings.NumberSpinner?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>

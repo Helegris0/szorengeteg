@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.model;
 
-import com.helegris.szorengeteg.model.entity.Topic;
+import com.helegris.szorengeteg.model.entities.Topic;
 
 /**
  *

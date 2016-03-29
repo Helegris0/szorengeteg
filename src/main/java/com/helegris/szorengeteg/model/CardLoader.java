@@ -5,8 +5,8 @@
  */
 package com.helegris.szorengeteg.model;
 
-import com.helegris.szorengeteg.model.entity.Card;
-import com.helegris.szorengeteg.model.entity.Topic;
+import com.helegris.szorengeteg.model.entities.Card;
+import com.helegris.szorengeteg.model.entities.Topic;
 import java.util.List;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;

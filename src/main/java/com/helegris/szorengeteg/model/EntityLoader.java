@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.model;
 
-import com.helegris.szorengeteg.model.entity.PersistentObject;
+import com.helegris.szorengeteg.model.entities.PersistentObject;
 import java.io.Serializable;
 import java.util.List;
 import javax.inject.Inject;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.helegris.szorengeteg.controller.component.ClickableLabel?>
+<?import com.helegris.szorengeteg.controller.mainpages.ClickableLabel?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.geometry.Insets?>
