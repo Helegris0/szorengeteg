@@ -23,13 +23,11 @@ public class FileChooserHelper {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(imageDirectory));
 
-        FileChooser.ExtensionFilter extFilterJpg
+        FileChooser.ExtensionFilter extFilter
                 = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.jpg_files"), "*.JPG");
-        FileChooser.ExtensionFilter extFilterPng
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.png_files"), "*.PNG");
-        fileChooser.getExtensionFilters().addAll(extFilterJpg, extFilterPng);
+                        Messages.msg("open_dialog.images"), 
+                        "*.JPG", "*.PNG", "*.GIF");
+        fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {

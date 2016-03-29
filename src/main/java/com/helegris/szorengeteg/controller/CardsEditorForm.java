@@ -150,7 +150,7 @@ public abstract class CardsEditorForm extends AnchorPane {
                     if (rowImage != null && cardImageFile != null) {
                         row.setImageFile(cardImageFile);
                         row.setImage(rowImage);
-                    } else {
+                    } else if (rowImage == null) {
                         row.setImage(DefaultImage.getInstance());
                     }
                 }
