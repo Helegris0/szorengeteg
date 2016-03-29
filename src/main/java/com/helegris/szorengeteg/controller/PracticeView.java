@@ -59,6 +59,8 @@ public class PracticeView extends AnchorPane {
     private Card card;
     private boolean imageShown;
     private WordInput wordInput;
+    private final boolean helpSet
+            = !Settings.WordHelp.NO_HELP.equals(new Settings().getWordHelp());
     private final WordInputListener inputListener = new WordInputListener() {
 
         @Override
@@ -81,14 +83,11 @@ public class PracticeView extends AnchorPane {
 
     @FXML
     public void initialize() {
-        if (Settings.WordHelp.NO_HELP.equals(new Settings().getWordHelp())) {
-            lblHelp.setVisible(false);
-        }
-
         setQuestion();
         imageView.setOnMouseClicked(this::showImage);
         lblDontKnow.setOnMouseClicked(this::dontKnow);
         lblHelp.setOnMouseClicked(this::help);
+        lblHelp.setVisible(helpSet);
         btnNextCard.setOnAction(this::nextCard);
         btnNextCard.defaultButtonProperty().bind(btnNextCard.focusedProperty());
     }
@@ -142,7 +141,9 @@ public class PracticeView extends AnchorPane {
 
     private void checked(boolean checked) {
         lblDontKnow.setVisible(!checked);
-        lblHelp.setVisible(!checked);
+        if (helpSet) {
+            lblHelp.setVisible(!checked);
+        }
         lblResult.setVisible(checked);
         btnNextCard.setVisible(checked);
     }

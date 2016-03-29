@@ -11,6 +11,7 @@ import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -26,6 +27,8 @@ public class SpelledWordInput extends WordInput {
     private static final int FIELD_WIDTH = 32;
 
     private final List<TextField> fields = new ArrayList<>();
+
+    private final String vowels = "AÁEÉIÍOÓÖŐÜŰ";
 
     public SpelledWordInput(String word, WordInputListener listener) {
         super(word, listener);
@@ -69,7 +72,7 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void addButton() {
-        btnCheck.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+        btnCheck.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.BACK_SPACE
                     || event.getCode() == KeyCode.DELETE) {
                 fields.get(fields.size() - 1).requestFocus();
@@ -80,12 +83,11 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void setFirstField() {
-        fields.get(0).textProperty().addListener((ov, oldValue, newValue) -> {
-            if (!"".equals(newValue)) {
-                fields.get(1).requestFocus();
-                fields.get(0).setText(newValue.substring(0, 1).toUpperCase());
-            }
-        });
+        TextField firstField = fields.get(0);
+        TextField secondField = fields.get(1);
+
+        handleTextChange(firstField, secondField);
+        handleRight(firstField, secondField);
     }
 
     private void setMiddleFields() {
@@ -94,36 +96,45 @@ public class SpelledWordInput extends WordInput {
             TextField field = fields.get(i);
             TextField nextField = fields.get(i + 1);
 
-            field.textProperty().addListener((ov, oldValue, newValue) -> {
-                if (!"".equals(newValue)) {
-                    nextField.requestFocus();
-                    field.setText(newValue.substring(0, 1).toUpperCase());
-                } else {
-                    previousField.requestFocus();
-                }
-            });
-
-            handleDelete(field, previousField);
+            handleTextChange(field, nextField);
+            handleRight(field, nextField);
+            handleLeft(field, previousField);
         }
     }
 
     private void setLastField() {
-        fields.get(fields.size() - 1).textProperty().addListener((ov, oldValue, newValue) -> {
-            if (!"".equals(newValue)) {
-                btnCheck.requestFocus();
-                fields.get(fields.size() - 1)
-                        .setText(newValue.substring(0, 1).toUpperCase());
-            } else {
-                fields.get(fields.size() - 2).requestFocus();
-            }
-        });
+        TextField lastField = fields.get(fields.size() - 1);
+        TextField oneBeforeTheLastField = fields.get(fields.size() - 2);
 
-        handleDelete(fields.get(fields.size() - 1), fields.get(fields.size() - 2));
+        handleTextChange(lastField, btnCheck);
+        handleRight(lastField, btnCheck);
+        handleLeft(lastField, oneBeforeTheLastField);
     }
 
-    private void handleDelete(TextField field, TextField previousField) {
-        field.addEventHandler(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
-            if (event.getCode() == KeyCode.BACK_SPACE
+    private void handleTextChange(TextField field, Control nextControl) {
+        field.textProperty().addListener((ov, oldValue, newValue) -> {
+            if (" ".equals(newValue)) {
+                field.setText("");
+            } else if (!"".equals(newValue)) {
+                nextControl.requestFocus();
+                field.setText(newValue.substring(0, 1).toUpperCase());
+            }
+        });
+    }
+
+    private void handleRight(TextField field, Control nextControl) {
+        field.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.RIGHT) {
+                nextControl.requestFocus();
+            }
+        });
+    }
+
+    private void handleLeft(TextField field, TextField previousField) {
+        field.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+            if (event.getCode() == KeyCode.LEFT) {
+                previousField.requestFocus();
+            } else if (event.getCode() == KeyCode.BACK_SPACE
                     || event.getCode() == KeyCode.DELETE) {
                 field.setText("");
                 previousField.requestFocus();
@@ -175,12 +186,6 @@ public class SpelledWordInput extends WordInput {
 
     private void helpFirstTwoChars() {
         helpFirstChar();
-        String lastLetter = word.substring(word.length() - 1);
-        fields.get(fields.size() - 1).setText(lastLetter);
-    }
-
-    private void helpFirstAndLastChar() {
-        helpFirstChar();
         String secondLetter = word.substring(1, 2).toUpperCase();
         if (fields.size() > 2) {
             fields.get(1).setText(secondLetter);
@@ -188,6 +193,19 @@ public class SpelledWordInput extends WordInput {
         }
     }
 
+    private void helpFirstAndLastChar() {
+        String lastLetter = word.substring(word.length() - 1);
+        fields.get(fields.size() - 1).setText(lastLetter);
+        helpFirstChar();
+    }
+
     private void helpVowels() {
+        for (int i = 0; i < fields.size(); i++) {
+            String letter = word.toUpperCase().substring(i, i + 1);
+            if (vowels.contains(letter)) {
+                fields.get(i).setText(letter);
+            }
+        }
+        fields.get(0).requestFocus();
     }
 }

@@ -49,6 +49,10 @@ public class Settings {
             this.value = value;
             wordInputs.addAll(Arrays.asList(array));
         }
+
+        public List<WordInput> getWordInputs() {
+            return wordInputs;
+        }
     }
 
     public int getWordsPerSession() {
