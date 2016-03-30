@@ -88,14 +88,17 @@ public class TopicBox extends Pane {
     }
 
     private void startPracticeSession(ActionEvent event) {
-        Stage stage = new Stage();
-        stage.setScene(new SceneStyler().createScene(
+        Stage pStage = new Stage();
+        pStage.setScene(new SceneStyler().createScene(
                 new PracticeView(new PracticeSession(topic))));
-        stage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(btnPractice.getScene().getWindow());
-        stage.setResizable(false);
-        stage.showAndWait();
+        pStage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
+        pStage.initModality(Modality.APPLICATION_MODAL);
+        pStage.setResizable(false);
+        Stage thisStage = (Stage) this.getScene().getWindow();
+        pStage.initOwner(thisStage);
+        thisStage.hide();
+        pStage.showAndWait();
+        thisStage.show();
     }
 
     private void setImage() {

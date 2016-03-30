@@ -37,13 +37,16 @@ public class PracticeAllStartView extends StackPane {
     }
 
     private void startPractice(ActionEvent event) {
-        Stage stage = new Stage();
-        stage.setScene(new SceneStyler().createScene(
+        Stage pStage = new Stage();
+        pStage.setScene(new SceneStyler().createScene(
                 new PracticeView(new PracticeSession())));
-        stage.setTitle(Messages.msg("practice"));
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.initOwner(btnPractice.getScene().getWindow());
-        stage.setResizable(false);
-        stage.showAndWait();
+        pStage.setTitle(Messages.msg("practice"));
+        pStage.initModality(Modality.APPLICATION_MODAL);
+        pStage.setResizable(false);
+        Stage thisStage = (Stage) this.getScene().getWindow();
+        pStage.initOwner(thisStage);
+        thisStage.hide();
+        pStage.showAndWait();
+        thisStage.show();
     }
 }
