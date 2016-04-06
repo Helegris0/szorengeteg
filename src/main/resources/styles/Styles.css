@@ -1,10 +1,10 @@
-.button, .check-box, .combo-box, .label, .list-view, .radio-button, .text-area, .text-field {
-    -fx-font-size: 11pt;
+.root {
+    -fx-font-size: 14pt;
 }
 
 .menu {
     -fx-padding: 0;
-    -fx-font-size: 12pt;
+    -fx-font-size: 18pt;
 }
 
 .table-row-cell:filled:selected { 

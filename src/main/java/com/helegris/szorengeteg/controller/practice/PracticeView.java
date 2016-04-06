@@ -159,7 +159,6 @@ public class PracticeView extends AnchorPane {
         if (card != null) {
             imageShown = false;
             setQuestion();
-            this.getScene().getWindow().sizeToScene();
         } else {
             evaluateSession();
         }
@@ -176,6 +175,6 @@ public class PracticeView extends AnchorPane {
                     session.getIncorrectAnswers());
         }
 
-        stage.setScene(new SceneStyler().createScene(practiceEnd));
+        stage.setScene(new SceneStyler().createScene(practiceEnd, SceneStyler.Style.PRACTICE));
     }
 }

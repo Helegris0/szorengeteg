@@ -38,8 +38,8 @@ public class RowForCard {
     private File imageFile;
     private final ImageLoader imageLoader = new ImageLoader();
 
-    private static int imageWidth = 35;
-    private static int imageHeight = 30;
+    private static int imageWidth = 40;
+    private static int imageHeight = 35;
     private static ObservableList<Topic> allTopics
             = FXCollections.observableArrayList();
 

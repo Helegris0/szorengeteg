@@ -39,7 +39,8 @@ public class PracticeAllStartView extends StackPane {
     private void startPractice(ActionEvent event) {
         Stage pStage = new Stage();
         pStage.setScene(new SceneStyler().createScene(
-                new PracticeView(new PracticeSession())));
+                new PracticeView(new PracticeSession()),
+                SceneStyler.Style.PRACTICE));
         pStage.setTitle(Messages.msg("practice"));
         pStage.initModality(Modality.APPLICATION_MODAL);
         pStage.setResizable(false);

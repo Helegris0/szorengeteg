@@ -14,13 +14,23 @@ import javafx.scene.layout.Pane;
  */
 public class SceneStyler {
 
-    private final String STYLE_PATH = "/styles/Styles.css";
+    public enum Style {
 
-    public Scene createScene(Pane pane) {
+        MAIN("/styles/Styles.css"),
+        PRACTICE("/styles/practice.css");
+
+        private final String path;
+
+        private Style(String path) {
+            this.path = path;
+        }
+    }
+
+    public Scene createScene(Pane pane, Style style) {
         Scene scene = new Scene(pane);
 
         scene.getStylesheets().setAll(
-                getClass().getResource(STYLE_PATH).toExternalForm());
+                getClass().getResource(style.path).toExternalForm());
 
         return scene;
     }

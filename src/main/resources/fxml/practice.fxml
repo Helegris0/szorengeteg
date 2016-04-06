@@ -10,26 +10,21 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" prefHeight="300.0" minWidth="450.0"
-         xmlns="http://javafx.com/javafx/8">
-    <VBox spacing="15">
-        <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-        </padding>
-        <HBox spacing="5" maxWidth="450">
-            <ImageView fx:id="imageView" fitWidth="150" fitHeight="130"
+         id="AnchorPane" xmlns="http://javafx.com/javafx/8">
+    <VBox AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" 
+          AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" spacing="15">
+        <HBox spacing="5" alignment="CENTER">
+            <ImageView fx:id="imageView" fitWidth="300" fitHeight="260"
                        pickOnBounds="true" preserveRatio="true" />
-            <VBox>
                 <Label fx:id="lblDescription" wrapText="true"
-                       style="-fx-font-size: 14pt;" />
-            </VBox>
+                       style="-fx-font-size: 28pt;" />
         </HBox>
-        <HBox fx:id="hboxInput" minWidth="448.0" alignment="CENTER" />
-        <HBox minWidth="448.0" spacing="15" alignment="CENTER">
+        <HBox fx:id="hboxInput" alignment="CENTER" />
+        <HBox spacing="15" alignment="CENTER">
             <ClickableLabel fx:id="lblDontKnow" text="%practice.dont_know" />
             <ClickableLabel fx:id="lblHelp" text="%practice.help" />
         </HBox>
-        <HBox minWidth="448.0" spacing="15" alignment="CENTER">
+        <HBox spacing="15" alignment="CENTER">
             <Label fx:id="lblResult" visible="false" />
             <Button fx:id="btnNextCard" text="%practice.next" visible="false" />
         </HBox>

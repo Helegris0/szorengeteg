@@ -9,11 +9,14 @@ import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.controller.VistaNavigator;
 import com.helegris.szorengeteg.controller.ImageNotFoundException;
 import com.helegris.szorengeteg.messages.Messages;
+import com.helegris.szorengeteg.model.entities.Card;
 import com.helegris.szorengeteg.model.entities.Topic;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -115,4 +118,16 @@ public abstract class TopicFormView extends CardsEditorForm {
         }
     }
 
+    @Override
+    protected void getTransactionDone() {
+        if (rows.stream().anyMatch(RowForCard::missingData)) {
+            throw new MissingDataException();
+        }
+
+        List<Card> cards = rows.stream()
+                .filter(RowForCard::dataValidity)
+                .map(row -> row.getUpdatedCard(topic))
+                .collect(Collectors.toList());
+        entitySaver.saveTopic(topic, cards);
+    }
 }

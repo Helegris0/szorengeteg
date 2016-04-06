@@ -24,7 +24,7 @@ import javafx.scene.layout.Pane;
  */
 public class SpelledWordInput extends WordInput {
 
-    private static final int FIELD_WIDTH = 32;
+    private static final int FIELD_WIDTH = 70;
 
     private final List<TextField> fields = new ArrayList<>();
 

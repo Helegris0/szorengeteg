@@ -90,10 +90,11 @@ public class TopicBox extends Pane {
     private void startPracticeSession(ActionEvent event) {
         Stage pStage = new Stage();
         pStage.setScene(new SceneStyler().createScene(
-                new PracticeView(new PracticeSession(topic))));
+                new PracticeView(new PracticeSession(topic)),
+                SceneStyler.Style.PRACTICE));
         pStage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
         pStage.initModality(Modality.APPLICATION_MODAL);
-        pStage.setResizable(false);
+        pStage.setMaximized(true);
         Stage thisStage = (Stage) this.getScene().getWindow();
         pStage.initOwner(thisStage);
         thisStage.hide();
