@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.helegris.szorengeteg.controller.mainpages.ClickableLabel?>
+<?import com.helegris.szorengeteg.ui.ClickableLabel?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.geometry.Insets?>
@@ -13,10 +13,11 @@
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
     <VBox AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" 
           AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" spacing="15">
+        <ClickableLabel fx:id="lblAbort" text="%practice.abort" />
         <HBox spacing="5" alignment="CENTER">
             <ImageView fx:id="imageView" fitWidth="300" fitHeight="260"
                        pickOnBounds="true" preserveRatio="true" />
-                <Label fx:id="lblDescription" wrapText="true"
+            <Label fx:id="lblDescription" wrapText="true"
                        style="-fx-font-size: 28pt;" />
         </HBox>
         <HBox fx:id="hboxInput" alignment="CENTER" />

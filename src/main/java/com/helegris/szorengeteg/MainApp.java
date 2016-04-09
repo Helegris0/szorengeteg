@@ -1,8 +1,8 @@
 package com.helegris.szorengeteg;
 
-import com.helegris.szorengeteg.controller.VistaNavigator;
-import com.helegris.szorengeteg.controller.SceneStyler;
-import com.helegris.szorengeteg.controller.mainpages.MainView;
+import com.helegris.szorengeteg.ui.VistaNavigator;
+import com.helegris.szorengeteg.ui.SceneStyler;
+import com.helegris.szorengeteg.ui.mainpages.MainView;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.beans.value.ChangeListener;
