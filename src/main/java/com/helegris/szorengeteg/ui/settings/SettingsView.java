@@ -5,6 +5,7 @@
  */
 package com.helegris.szorengeteg.ui.settings;
 
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.VistaNavigator;
 import java.util.HashMap;
@@ -18,6 +19,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.AnchorPane;
+import javax.inject.Inject;
 
 /**
  *
@@ -26,6 +28,9 @@ import javafx.scene.layout.AnchorPane;
 public class SettingsView extends AnchorPane {
 
     public static final String FXML = "fxml/settings.fxml";
+    
+    @Inject
+    private Settings settings;
 
     @FXML
     private NumberSpinner nmbWorsPerSession;
@@ -39,8 +44,7 @@ public class SettingsView extends AnchorPane {
     private Button btnSave;
     @FXML
     private Button btnBack;
-
-    private final Settings settings = new Settings();
+    
     private final Map<RadioButton, Settings.WordInput> wordInputRadios
             = new HashMap<>();
     private final Map<RadioButton, Settings.WordHelp> wordHelpRadios
@@ -48,6 +52,7 @@ public class SettingsView extends AnchorPane {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public SettingsView() {
+        DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
     }
 

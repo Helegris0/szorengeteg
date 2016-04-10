@@ -5,7 +5,6 @@
  */
 package com.helegris.szorengeteg.ui.practice;
 
-import com.helegris.szorengeteg.ui.settings.Settings;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 
@@ -40,7 +39,7 @@ public class SimpleWordInput extends WordInput {
 
     @Override
     public void help() {
-        switch (new Settings().getWordHelp()) {
+        switch (settings.getWordHelp()) {
             case FIRST_CHAR:
                 helpFirstChars(1);
                 break;

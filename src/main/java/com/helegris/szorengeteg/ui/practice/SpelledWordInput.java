@@ -5,7 +5,6 @@
  */
 package com.helegris.szorengeteg.ui.practice;
 
-import com.helegris.szorengeteg.ui.settings.Settings;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
@@ -149,7 +148,7 @@ public class SpelledWordInput extends WordInput {
 
     @Override
     public void help() {
-        switch (new Settings().getWordHelp()) {
+        switch (settings.getWordHelp()) {
             case FIRST_CHAR:
                 helpFirstChar();
                 break;

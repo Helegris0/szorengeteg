@@ -5,6 +5,7 @@
  */
 package com.helegris.szorengeteg.ui.practice;
 
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.SceneStyler;
 import com.helegris.szorengeteg.ui.settings.Settings;
@@ -25,6 +26,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javax.inject.Inject;
 
 /**
  *
@@ -37,6 +39,9 @@ public class PracticeView extends AnchorPane {
     private final String SHOWIMAGE_PATH = "/images/showimage.png";
     private final Image startingImage = new Image(
             this.getClass().getResourceAsStream(SHOWIMAGE_PATH));
+    
+    @Inject
+    private Settings settings;
 
     @FXML
     private ClickableLabel lblAbort;
@@ -59,10 +64,8 @@ public class PracticeView extends AnchorPane {
     private Card card;
     private boolean imageShown;
     private WordInput wordInput;
-    private final Settings settings = new Settings();
-    private final boolean helpSet
-            = !Settings.WordHelp.NO_HELP.equals(settings.getWordHelp());
-    private final boolean repeat = settings.isRepeatUnknownWords();
+    private final boolean helpSet;
+    private final boolean repeat;
     private final WordInputListener inputListener = this::answerCorrect;
     private boolean checked;
 
@@ -70,6 +73,9 @@ public class PracticeView extends AnchorPane {
     public PracticeView(PracticeSession session) {
         this.session = session;
         this.card = session.getCurrentCard();
+        DIUtils.injectFields(this);
+        helpSet = !Settings.WordHelp.NO_HELP.equals(settings.getWordHelp());
+        repeat = settings.isRepeatUnknownWords();
         FXMLLoaderHelper.load(FXML, this);
     }
 
@@ -169,6 +175,7 @@ public class PracticeView extends AnchorPane {
         }
 
         stage.setScene(new SceneStyler().createScene(practiceEnd, SceneStyler.Style.PRACTICE));
+        stage.setMaximized(true);
     }
 
     private void abort(MouseEvent event) {

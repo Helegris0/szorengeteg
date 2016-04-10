@@ -6,7 +6,6 @@
 package com.helegris.szorengeteg.ui.forms;
 
 import com.helegris.szorengeteg.messages.Messages;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import javafx.scene.control.Alert;
@@ -20,17 +19,17 @@ import javafx.stage.Modality;
  *
  * @author Timi
  */
-public class FormAlert {
-    
-    public void exceptionAlert(IOException ioe) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(Messages.msg("alert.unexpected_error"));
-        alert.setHeaderText(ioe.getMessage());
-        alert.initModality(Modality.APPLICATION_MODAL);
+public class ExceptionAlert extends Alert {
+
+    public ExceptionAlert(Exception exception) {
+        super(AlertType.ERROR);
+        this.setTitle(Messages.msg("alert.unexpected_error"));
+        this.setHeaderText(exception.getMessage());
+        this.initModality(Modality.APPLICATION_MODAL);
 
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        ioe.printStackTrace(pw);
+        exception.printStackTrace(pw);
         String exceptionText = sw.toString();
 
         Label label = new Label("Exception stracktrace:");
@@ -49,9 +48,11 @@ public class FormAlert {
         expContent.add(label, 0, 0);
         expContent.add(textArea, 0, 1);
 
-        alert.getDialogPane().setExpandableContent(expContent);
-        alert.getDialogPane().setExpanded(true);
+        this.getDialogPane().setExpandableContent(expContent);
+        this.getDialogPane().setExpanded(true);
+    }
 
-        alert.showAndWait();
+    private ExceptionAlert(AlertType alertType) {
+        super(alertType);
     }
 }

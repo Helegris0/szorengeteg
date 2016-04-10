@@ -43,7 +43,7 @@ public class PracticeAllStartView extends StackPane {
                 SceneStyler.Style.PRACTICE));
         pStage.setTitle(Messages.msg("practice"));
         pStage.initModality(Modality.APPLICATION_MODAL);
-        pStage.setResizable(false);
+        pStage.setMaximized(true);
         Stage thisStage = (Stage) this.getScene().getWindow();
         pStage.initOwner(thisStage);
         thisStage.hide();
