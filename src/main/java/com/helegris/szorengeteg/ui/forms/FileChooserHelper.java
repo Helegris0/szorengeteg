@@ -26,7 +26,7 @@ public class FileChooserHelper {
         FileChooser.ExtensionFilter extFilter
                 = new FileChooser.ExtensionFilter(
                         Messages.msg("open_dialog.images"), 
-                        "*.JPG", "*.PNG", "*.GIF");
+                        "*.jpg", "*.png", "*.gif");
         fileChooser.getExtensionFilters().add(extFilter);
 
         File file = fileChooser.showOpenDialog(null);
@@ -42,10 +42,10 @@ public class FileChooserHelper {
 
         FileChooser.ExtensionFilter extFilterTxt
                 = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.txt_files"), "*.TXT");
+                        Messages.msg("open_dialog.txt_files"), "*.txt");
         FileChooser.ExtensionFilter extFilterCsv
                 = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.csv_files"), "*.CSV");
+                        Messages.msg("open_dialog.csv_files"), "*.csv");
         fileChooser.getExtensionFilters().addAll(extFilterTxt, extFilterCsv);
 
         File file = fileChooser.showOpenDialog(null);

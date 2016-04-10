@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Comparator;
 import java.util.List;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
@@ -88,6 +89,15 @@ public abstract class CardsEditorForm extends AnchorPane {
         sortedRows.comparatorProperty().bind(tableView.comparatorProperty());
         colWord.setComparator(new TextFieldComparator());
         colDescription.setComparator(new TextFieldComparator());
+        Platform.runLater(() -> {
+            double sum = 0;
+            for (TableColumn<RowForCard, ?> column : tableView.getColumns()) {
+                sum += column.getWidth();
+            }
+            sum -= colDescription.getWidth();
+            double tableWidth = tableView.getWidth();
+            colDescription.setPrefWidth(tableWidth - sum - 30);
+        });
     }
 
     private void setEvents() {

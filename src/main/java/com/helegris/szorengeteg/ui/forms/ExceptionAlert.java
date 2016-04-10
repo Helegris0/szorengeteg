@@ -21,8 +21,12 @@ import javafx.stage.Modality;
  */
 public class ExceptionAlert extends Alert {
 
+    private ExceptionAlert(AlertType alertType) {
+        super(alertType);
+    }
+
     public ExceptionAlert(Exception exception) {
-        super(AlertType.ERROR);
+        this(AlertType.ERROR);
         this.setTitle(Messages.msg("alert.unexpected_error"));
         this.setHeaderText(exception.getMessage());
         this.initModality(Modality.APPLICATION_MODAL);
@@ -50,9 +54,5 @@ public class ExceptionAlert extends Alert {
 
         this.getDialogPane().setExpandableContent(expContent);
         this.getDialogPane().setExpanded(true);
-    }
-
-    private ExceptionAlert(AlertType alertType) {
-        super(alertType);
     }
 }

@@ -39,7 +39,7 @@ public class PracticeView extends AnchorPane {
     private final String SHOWIMAGE_PATH = "/images/showimage.png";
     private final Image startingImage = new Image(
             this.getClass().getResourceAsStream(SHOWIMAGE_PATH));
-    
+
     @Inject
     private Settings settings;
 
@@ -159,7 +159,8 @@ public class PracticeView extends AnchorPane {
             imageShown = false;
             setQuestion();
         } else {
-            evaluateSession();
+//            evaluateSession();
+            ((Stage) this.getScene().getWindow()).close();
         }
     }
 
