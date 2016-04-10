@@ -91,9 +91,9 @@ public abstract class CardsEditorForm extends AnchorPane {
         colDescription.setComparator(new TextFieldComparator());
         Platform.runLater(() -> {
             double sum = 0;
-            for (TableColumn<RowForCard, ?> column : tableView.getColumns()) {
-                sum += column.getWidth();
-            }
+            sum = tableView.getColumns().stream().map((column) -> 
+                    column.getWidth()).reduce(sum, (accumulator, _item) -> 
+                            accumulator + _item);
             sum -= colDescription.getWidth();
             double tableWidth = tableView.getWidth();
             colDescription.setPrefWidth(tableWidth - sum - 30);
