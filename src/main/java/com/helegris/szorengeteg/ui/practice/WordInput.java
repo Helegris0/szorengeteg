@@ -5,9 +5,6 @@
  */
 package com.helegris.szorengeteg.ui.practice;
 
-import com.helegris.szorengeteg.messages.Messages;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 
 /**
@@ -17,21 +14,14 @@ import javafx.scene.layout.HBox;
 public abstract class WordInput extends HBox {
 
     protected final String word;
-    protected final Button btnCheck = new Button(Messages.msg("practice.check"));
     protected final WordInputListener listener;
 
     public WordInput(String word, WordInputListener listener) {
         this.word = word;
         this.listener = listener;
-        btnCheck.setOnAction(this::check);
-        btnCheck.defaultButtonProperty().bind(btnCheck.focusedProperty());
     }
 
-    protected abstract void check(ActionEvent event);
+    protected abstract void check();
     
     public abstract void help();
-
-    public void disableButton() {
-        btnCheck.setDisable(true);
-    }
 }

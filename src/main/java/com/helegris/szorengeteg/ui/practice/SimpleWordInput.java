@@ -6,7 +6,7 @@
 package com.helegris.szorengeteg.ui.practice;
 
 import com.helegris.szorengeteg.ui.settings.Settings;
-import javafx.event.ActionEvent;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 
 /**
@@ -20,20 +20,20 @@ public class SimpleWordInput extends WordInput {
     public SimpleWordInput(String word, WordInputListener listener) {
         super(word, listener);
         this.getChildren().add(txtInput);
-        this.getChildren().add(btnCheck);
-        txtInput.setOnAction(this::check);
+        txtInput.textProperty().addListener((
+                ObservableValue<? extends String> observable, 
+                String oldValue, String newValue) -> {
+            check();
+        });
     }
 
     @Override
-    protected void check(ActionEvent event) {
+    protected final void check() {
         String input = txtInput.getText();
 
         if (!"".equals(input)) {
-            disableButton();
             if (input.toLowerCase().equals(word.toLowerCase())) {
                 listener.answeredCorrectly();
-            } else {
-                listener.answeredIncorrectly();
             }
         }
     }

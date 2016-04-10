@@ -10,7 +10,6 @@ package com.helegris.szorengeteg.ui.practice;
  * @author Timi
  */
 public interface WordInputListener {
-    
+
     public void answeredCorrectly();
-    public void answeredIncorrectly();
 }

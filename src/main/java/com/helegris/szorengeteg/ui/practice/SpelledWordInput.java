@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -37,7 +36,6 @@ public class SpelledWordInput extends WordInput {
 
     private void setFields() {
         addFields();
-        addButton();
 
         if (fields.size() > 1) {
             setFirstField();
@@ -66,20 +64,8 @@ public class SpelledWordInput extends WordInput {
                         });
                 fields.add(field);
                 this.getChildren().add(field);
-                field.setOnAction(this::check);
             }
         }
-    }
-
-    private void addButton() {
-        btnCheck.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == KeyCode.BACK_SPACE
-                    || event.getCode() == KeyCode.DELETE) {
-                fields.get(fields.size() - 1).requestFocus();
-            }
-        });
-
-        this.getChildren().add(btnCheck);
     }
 
     private void setFirstField() {
@@ -106,8 +92,7 @@ public class SpelledWordInput extends WordInput {
         TextField lastField = fields.get(fields.size() - 1);
         TextField oneBeforeTheLastField = fields.get(fields.size() - 2);
 
-        handleTextChange(lastField, btnCheck);
-        handleRight(lastField, btnCheck);
+        handleTextChange(lastField, null);
         handleLeft(lastField, oneBeforeTheLastField);
     }
 
@@ -116,9 +101,14 @@ public class SpelledWordInput extends WordInput {
             if (" ".equals(newValue)) {
                 field.setText("");
             } else if (!"".equals(newValue)) {
-                nextControl.requestFocus();
+                if (nextControl != null) {
+                    nextControl.requestFocus();
+                } else {
+                    Platform.runLater(() -> field.selectAll());
+                }
                 field.setText(newValue.substring(0, 1).toUpperCase());
             }
+            check();
         });
     }
 
@@ -143,19 +133,16 @@ public class SpelledWordInput extends WordInput {
     }
 
     @Override
-    protected void check(ActionEvent event) {
+    protected void check() {
         String input = "";
         input = fields.stream()
                 .map(field -> field.getText())
                 .reduce(input, String::concat);
 
         if (!"".equals(input)) {
-            disableButton();
             if (input.toLowerCase().equals(
                     word.toLowerCase().replaceAll(" +", ""))) {
                 listener.answeredCorrectly();
-            } else {
-                listener.answeredIncorrectly();
             }
         }
     }

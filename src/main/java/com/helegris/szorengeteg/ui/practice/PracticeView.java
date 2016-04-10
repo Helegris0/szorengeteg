@@ -63,18 +63,8 @@ public class PracticeView extends AnchorPane {
     private final boolean helpSet
             = !Settings.WordHelp.NO_HELP.equals(settings.getWordHelp());
     private final boolean repeat = settings.isRepeatUnknownWords();
-    private final WordInputListener inputListener = new WordInputListener() {
-
-        @Override
-        public void answeredCorrectly() {
-            answerCorrect();
-        }
-
-        @Override
-        public void answeredIncorrectly() {
-            answerIncorrect();
-        }
-    };
+    private final WordInputListener inputListener = this::answerCorrect;
+    private boolean checked;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeView(PracticeSession session) {
@@ -116,7 +106,6 @@ public class PracticeView extends AnchorPane {
     }
 
     private void dontKnow(MouseEvent event) {
-        wordInput.disableButton();
         answerIncorrect();
         checked(true);
     }
@@ -128,7 +117,7 @@ public class PracticeView extends AnchorPane {
     private void answerCorrect() {
         lblResult.setText(Messages.msg("practice.correct"));
         lblResult.setTextFill(Color.web("#009600"));
-        if (!repeat) {
+        if (!repeat && !checked) {
             session.correctAnswer();
         }
         Platform.runLater(btnNextCard::requestFocus);
@@ -149,6 +138,7 @@ public class PracticeView extends AnchorPane {
     }
 
     private void checked(boolean checked) {
+        this.checked = checked;
         lblDontKnow.setVisible(!checked);
         if (helpSet) {
             lblHelp.setVisible(!checked);
