@@ -23,9 +23,10 @@ public class PracticeSession {
     @Inject
     private CardLoader cardLoader;
 
-    private final int sessionLength;
+    @Inject
+    private Settings settings;
 
-    private final List<Card> sessionCards = new ArrayList<>();
+    private List<Card> sessionCards = new ArrayList<>();
     private Card currentCard;
 
     private final List<Card> correctAnswers = new ArrayList<>();
@@ -39,7 +40,6 @@ public class PracticeSession {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeSession(Topic topic) {
-        sessionLength = new Settings().getWordsPerSession();
         DIUtils.injectFields(this);
         selectCards(topic);
     }
@@ -53,20 +53,24 @@ public class PracticeSession {
         }
 
         if (!allCards.isEmpty()) {
-            int expectedSize;
+            if (settings.isRandomOrder()) {
+                int expectedSize;
 
-            if (sessionLength > allCards.size()) {
-                expectedSize = allCards.size();
-            } else {
-                expectedSize = sessionLength;
-            }
-
-            while (sessionCards.size() < expectedSize) {
-                Card randomCard = allCards.get(
-                        (int) (Math.random() * allCards.size()));
-                if (!sessionCards.contains(randomCard)) {
-                    sessionCards.add(randomCard);
+                if (settings.isAskAll()
+                        || settings.getWordsPerSession() > allCards.size()) {
+                    expectedSize = allCards.size();
+                } else {
+                    expectedSize = settings.getWordsPerSession();
                 }
+
+                while (sessionCards.size() < expectedSize) {
+                    Card randomCard = allCards.get(
+                            (int) (Math.random() * allCards.size()));
+                    sessionCards.add(randomCard);
+                    allCards.remove(randomCard);
+                }
+            } else {
+                sessionCards = allCards;
             }
 
             currentCard = sessionCards.get(0);

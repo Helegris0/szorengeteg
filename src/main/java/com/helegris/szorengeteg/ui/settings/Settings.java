@@ -18,7 +18,9 @@ public class Settings {
 
     private final Preferences prefs
             = Preferences.userRoot().node(this.getClass().getName());
+    private final String KEY_RANDOM_ORDER = "random_order";
     private final String KEY_WORDS_PER_SESSION = "words_per_session";
+    private final String KEY_ASK_ALL = "ask_all";
     private final String KEY_REPEAT_UNKNOWN_WORDS = "repeat_unknown_words";
     private final String KEY_WORD_INPUT = "word_input";
     private final String KEY_WORD_HELP = "word_help";
@@ -56,6 +58,15 @@ public class Settings {
         }
     }
 
+    public boolean isRandomOrder() {
+        boolean def = false;
+        return prefs.getBoolean(KEY_RANDOM_ORDER, def);
+    }
+
+    public void setRandomOrder(boolean arg) {
+        prefs.putBoolean(KEY_RANDOM_ORDER, arg);
+    }
+
     public int getWordsPerSession() {
         int def = 5;
         return prefs.getInt(KEY_WORDS_PER_SESSION, def);
@@ -63,6 +74,15 @@ public class Settings {
 
     public void setWordsPerSession(int arg) {
         prefs.putInt(KEY_WORDS_PER_SESSION, arg);
+    }
+
+    public boolean isAskAll() {
+        boolean def = true;
+        return prefs.getBoolean(KEY_ASK_ALL, def);
+    }
+
+    public void setAskAll(boolean arg) {
+        prefs.putBoolean(KEY_ASK_ALL, arg);
     }
 
     public boolean isRepeatUnknownWords() {

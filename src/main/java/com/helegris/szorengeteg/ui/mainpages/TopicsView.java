@@ -19,7 +19,6 @@ import javafx.scene.layout.VBox;
 import javax.inject.Inject;
 
 /**
- * FXML Controller class
  *
  * @author Timi
  */
@@ -60,5 +59,4 @@ public class TopicsView extends ScrollPane {
             });
         }
     }
-
 }

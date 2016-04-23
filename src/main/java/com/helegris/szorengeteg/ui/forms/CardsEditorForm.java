@@ -90,13 +90,14 @@ public abstract class CardsEditorForm extends AnchorPane {
         colWord.setComparator(new TextFieldComparator());
         colDescription.setComparator(new TextFieldComparator());
         Platform.runLater(() -> {
-            double sum = 0;
-            sum = tableView.getColumns().stream().map((column) -> 
-                    column.getWidth()).reduce(sum, (accumulator, _item) -> 
-                            accumulator + _item);
+            double sum = tableView.getColumns().stream()
+                    .mapToDouble(TableColumn::getWidth).sum();
             sum -= colDescription.getWidth();
-            double tableWidth = tableView.getWidth();
-            colDescription.setPrefWidth(tableWidth - sum - 30);
+            double fullWidth = tableView.getWidth();
+            if (fullWidth == 0) {
+                fullWidth = this.getScene().getWidth();
+            }
+            colDescription.setPrefWidth(fullWidth - sum - 30);
         });
     }
 

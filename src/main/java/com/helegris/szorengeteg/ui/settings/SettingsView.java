@@ -15,6 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
@@ -28,12 +29,18 @@ import javax.inject.Inject;
 public class SettingsView extends AnchorPane {
 
     public static final String FXML = "fxml/settings.fxml";
-    
+
     @Inject
     private Settings settings;
 
     @FXML
-    private NumberSpinner nmbWorsPerSession;
+    private CheckBox chkRandomOrder;
+    @FXML
+    private Label lblWordsPerSession;
+    @FXML
+    private NumberSpinner nmbWordsPerSession;
+    @FXML
+    private CheckBox chkAskAll;
     @FXML
     private CheckBox chkRepeat;
     @FXML
@@ -44,7 +51,7 @@ public class SettingsView extends AnchorPane {
     private Button btnSave;
     @FXML
     private Button btnBack;
-    
+
     private final Map<RadioButton, Settings.WordInput> wordInputRadios
             = new HashMap<>();
     private final Map<RadioButton, Settings.WordHelp> wordHelpRadios
@@ -59,7 +66,7 @@ public class SettingsView extends AnchorPane {
     @FXML
     private void initialize() {
         fillMaps();
-        setDependency();
+        setDependencies();
         setDefaultValues();
         btnSave.setOnAction(this::saveSettings);
         btnBack.setOnAction(this::goBack);
@@ -79,7 +86,15 @@ public class SettingsView extends AnchorPane {
         }
     }
 
-    private void setDependency() {
+    private void setDependencies() {
+        chkRandomOrder.selectedProperty().addListener(
+                (ObservableValue<? extends Boolean> observable,
+                        Boolean oldValue, Boolean newValue) -> setDisable());
+
+        chkAskAll.selectedProperty().addListener(
+                (ObservableValue<? extends Boolean> observable,
+                        Boolean oldValue, Boolean newValue) -> setDisable());
+
         grpWordInput.selectedToggleProperty().addListener(
                 (ObservableValue<? extends Toggle> observable, Toggle oldValue, Toggle newValue) -> {
                     RadioButton selectedInputRd = (RadioButton) grpWordInput.getSelectedToggle();
@@ -107,10 +122,24 @@ public class SettingsView extends AnchorPane {
                 });
     }
 
-    private void setDefaultValues() {
-        nmbWorsPerSession.setValue(settings.getWordsPerSession());
+    private void setDisable() {
+        boolean disableNumberSpinner 
+                = !chkRandomOrder.isSelected() || chkAskAll.isSelected();
+        lblWordsPerSession.setDisable(disableNumberSpinner);
+        nmbWordsPerSession.setDisable(disableNumberSpinner);
+        chkAskAll.setDisable(!chkRandomOrder.isSelected());
+        if (!chkRandomOrder.isSelected()) {
+            chkAskAll.setSelected(true);
+        }
+    }
 
+    private void setDefaultValues() {
+        chkRandomOrder.setSelected(settings.isRandomOrder());
+        nmbWordsPerSession.setValue(settings.getWordsPerSession());
+        chkAskAll.setSelected(settings.isAskAll());
         chkRepeat.setSelected(settings.isRepeatUnknownWords());
+
+        setDisable();
 
         grpWordInput.getToggles().stream().forEach(toggle -> {
             RadioButton radioButton = (RadioButton) toggle;
@@ -132,8 +161,9 @@ public class SettingsView extends AnchorPane {
     }
 
     private void saveSettings(ActionEvent event) {
-        settings.setWordsPerSession(nmbWorsPerSession.getValue());
-
+        settings.setRandomOrder(chkRandomOrder.isSelected());
+        settings.setWordsPerSession(nmbWordsPerSession.getValue());
+        settings.setAskAll(chkAskAll.isSelected());
         settings.setRepeatUnknownWords(chkRepeat.isSelected());
 
         RadioButton selectedInput = (RadioButton) grpWordInput.getSelectedToggle();
