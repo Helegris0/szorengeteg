@@ -33,6 +33,11 @@
         </HBox>
         <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
             <columns>
+                <TableColumn fx:id="colPosition" text="" prefWidth="40.0" sortable="false" resizable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="positioner" />
+                    </cellValueFactory>
+                </TableColumn>
                 <TableColumn fx:id="colImage" text="%form.image" prefWidth="50.0" sortable="false" resizable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="imageView" />

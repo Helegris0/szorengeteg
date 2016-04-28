@@ -98,6 +98,7 @@ public abstract class TopicFormView extends CardsEditorForm {
         }
         try {
             prepareTopic();
+            setOrdinals();
             getTransactionDone();
             VistaNavigator.getMainView().loadContentTopics();
         } catch (FileNotFoundException ex) {
@@ -116,6 +117,10 @@ public abstract class TopicFormView extends CardsEditorForm {
         if (imageFile != null) {
             topic.setImage(IOUtils.toByteArray(new FileInputStream(imageFile)));
         }
+    }
+
+    private void setOrdinals() {
+        rows.stream().forEach(row -> row.setOrdinal(rows.indexOf(row)));
     }
 
     @Override

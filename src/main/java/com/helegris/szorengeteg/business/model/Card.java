@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.business.model;
 
-import java.util.Date;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +13,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -32,27 +31,20 @@ public class Card extends PersistentObject {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "topic_id")
     private Topic topic;
+
+    @Column(name = "ordinal")
+    private Integer ordinal;
 
     @Lob
     @Column(name = "image")
     private byte[] image;
 
-    @Column(name = "factor")
-    private double factor;
-
-    @Column(name = "last_time")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date lastTime;
-
-    @Column(name = "due_time")
-    @Temporal(javax.persistence.TemporalType.DATE)
-    private Date dueTime;
-
-    @Column(name = "rep_interval")
-    private int repInterval;
+    @Lob
+    @Column(name = "audio")
+    private byte[] audio;
 
     public Card() {
     }
@@ -91,6 +83,14 @@ public class Card extends PersistentObject {
         this.topic = topic;
     }
 
+    public Integer getOrdinal() {
+        return ordinal;
+    }
+
+    public void setOrdinal(Integer ordinal) {
+        this.ordinal = ordinal;
+    }
+
     public byte[] getImage() {
         return image;
     }
@@ -99,36 +99,11 @@ public class Card extends PersistentObject {
         this.image = image;
     }
 
-    public double getFactor() {
-        return factor;
+    public byte[] getAudio() {
+        return audio;
     }
 
-    public void setFactor(double factor) {
-        this.factor = factor;
+    public void setAudio(byte[] audio) {
+        this.audio = audio;
     }
-
-    public Date getLastTime() {
-        return lastTime;
-    }
-
-    public void setLastTime(Date lastTime) {
-        this.lastTime = lastTime;
-    }
-
-    public Date getDueTime() {
-        return dueTime;
-    }
-
-    public void setDueTime(Date dueTime) {
-        this.dueTime = dueTime;
-    }
-
-    public int getRepInterval() {
-        return repInterval;
-    }
-
-    public void setRepInterval(int repInterval) {
-        this.repInterval = repInterval;
-    }
-
 }

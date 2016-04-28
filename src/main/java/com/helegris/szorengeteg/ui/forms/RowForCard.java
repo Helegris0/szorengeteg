@@ -28,8 +28,9 @@ import javafx.scene.image.ImageView;
  */
 public class RowForCard {
 
-    private RowDeleteListener listener;
+    private RowDeleteListener deleteListener;
     private Card card = new Card();
+    private RowPositioner positioner;
     private ImageView imageView = new ImageView();
     private TextField txtWord = new TextField();
     private TextField txtDescription = new TextField();
@@ -43,8 +44,22 @@ public class RowForCard {
     private static ObservableList<Topic> allTopics
             = FXCollections.observableArrayList();
 
-    public RowForCard(RowDeleteListener listener) {
-        this.listener = listener;
+    public RowForCard(RowDeleteListener deleteListener, RowMoveListener moveListener) {
+        this.deleteListener = deleteListener;
+
+        positioner = new RowPositioner(new RowPositionListener() {
+
+            @Override
+            public void up() {
+                moveListener.moveUp(RowForCard.this);
+            }
+
+            @Override
+            public void down() {
+                moveListener.moveDown(RowForCard.this);
+            }
+        });
+
         imageView.setFitWidth(imageWidth);
         imageView.setFitHeight(imageHeight);
         imageView.setImage(DefaultImage.getInstance());
@@ -52,8 +67,8 @@ public class RowForCard {
         btnDelete.setOnAction(this::delete);
     }
 
-    public RowForCard(RowDeleteListener listener, Card card) {
-        this(listener);
+    public RowForCard(RowDeleteListener deleteListener, RowMoveListener moveListener, Card card) {
+        this(deleteListener, moveListener);
         this.card = card;
         txtWord.setText(card.getWord());
         txtDescription.setText(card.getDescription());
@@ -68,7 +83,7 @@ public class RowForCard {
     }
 
     private void delete(ActionEvent event) {
-        listener.deleteRow(this);
+        deleteListener.deleteRow(this);
     }
 
     public boolean dataValidity() {
@@ -117,12 +132,24 @@ public class RowForCard {
         topics.stream().forEach(allTopics::add);
     }
 
+    public void setOrdinal(Integer ordinal) {
+        card.setOrdinal(ordinal);
+    }
+
     public Card getCard() {
         return card;
     }
 
     public void setCard(Card card) {
         this.card = card;
+    }
+
+    public RowPositioner getPositioner() {
+        return positioner;
+    }
+
+    public void setPositioner(RowPositioner positioner) {
+        this.positioner = positioner;
     }
 
     public ImageView getImageView() {

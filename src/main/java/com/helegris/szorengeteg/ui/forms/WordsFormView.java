@@ -51,7 +51,7 @@ public class WordsFormView extends CardsEditorForm {
 
     private void loadRows() {
         cardLoader.loadAll().stream().forEach(card -> {
-            RowForCard row = new RowForCard(this::deleteRow, card);
+            RowForCard row = new RowForCard(this::deleteRow, rowMoveListener, card);
             rows.add(row);
         });
     }

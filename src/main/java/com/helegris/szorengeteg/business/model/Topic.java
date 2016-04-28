@@ -27,16 +27,16 @@ public class Topic extends PersistentObject {
     @Column(name = "image")
     private byte[] image;
 
-    @Override
-    public String toString() {
-        return name;
-    }
-
     public Topic() {
     }
 
     public Topic(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
     }
 
     public String getName() {

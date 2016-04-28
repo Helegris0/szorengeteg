@@ -43,8 +43,7 @@ public class RowForCardTestSkip {
         RowForCard.refreshAllTopics(topics);
 
         card = new Card("word", "description");
-        row = new RowForCard(x -> {
-        }, card);
+        row = new RowForCard(x -> {}, null, card);
 
         row.getTxtWord().setText(WORD);
         row.getTxtDescription().setText(DESCRIPTION);

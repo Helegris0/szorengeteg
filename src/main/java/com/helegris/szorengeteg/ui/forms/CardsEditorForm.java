@@ -14,6 +14,7 @@ import com.helegris.szorengeteg.business.service.TopicLoader;
 import com.helegris.szorengeteg.business.model.Card;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import javafx.application.Platform;
@@ -68,6 +69,25 @@ public abstract class CardsEditorForm extends AnchorPane {
     protected ObservableList<RowForCard> rows
             = FXCollections.observableArrayList();
     protected SortedList sortedRows = new SortedList(rows);
+
+    protected final RowMoveListener rowMoveListener = new RowMoveListener() {
+
+        @Override
+        public void moveUp(RowForCard row) {
+            int index = rows.indexOf(row);
+            if (index > 0) {
+                Collections.swap(rows, index, index - 1);
+            }
+        }
+
+        @Override
+        public void moveDown(RowForCard row) {
+            int index = rows.indexOf(row);
+            if (index < rows.size() - 1) {
+                Collections.swap(rows, index, index + 1);
+            }
+        }
+    };
 
     @SuppressWarnings("LeakingThisInConstructor")
     public CardsEditorForm() {
@@ -127,8 +147,10 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     protected void loadRows(List<Card> cards) {
+        cards.sort((c1, c2) -> c1.getOrdinal() != null ? c1.getOrdinal() - c2.getOrdinal() : 1);
+
         cards.stream().forEach(card -> {
-            RowForCard row = new RowForCard(this::deleteRow, card);
+            RowForCard row = new RowForCard(this::deleteRow, rowMoveListener, card);
             rows.add(row);
         });
     }
@@ -172,7 +194,7 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     protected void addRow(ActionEvent event) {
-        rows.add(new RowForCard(this::deleteRow));
+        rows.add(new RowForCard(this::deleteRow, rowMoveListener));
     }
 
     protected void alertFileNotFound(Exception ex, File file) {

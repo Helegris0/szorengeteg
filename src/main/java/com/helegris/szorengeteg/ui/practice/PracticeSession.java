@@ -70,6 +70,10 @@ public class PracticeSession {
                     allCards.remove(randomCard);
                 }
             } else {
+                if (topic != null) {
+                    allCards.sort((c1, c2) -> c1.getOrdinal() != null
+                            ? c1.getOrdinal() - c2.getOrdinal() : 1);
+                }
                 sessionCards = allCards;
             }
 
