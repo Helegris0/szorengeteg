@@ -11,6 +11,7 @@ import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.service.CardLoader;
 import com.helegris.szorengeteg.business.model.PersistentObject;
 import com.helegris.szorengeteg.business.model.Topic;
+import com.helegris.szorengeteg.ui.DefaultImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +48,8 @@ public class EditTopicView extends TopicFormView {
         if (topic.getImage() != null) {
             imageView.setImage(new ImageLoader().loadImage(topic.getImage()));
             btnDeleteImage.setVisible(true);
+        } else {
+            imageView.setImage(DefaultImage.getInstance());
         }
     }
 

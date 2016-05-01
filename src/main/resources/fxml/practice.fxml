@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.helegris.szorengeteg.ui.ClickableLabel?>
+<?import com.helegris.szorengeteg.ui.practice.VisualHelp?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.geometry.Insets?>
@@ -15,7 +16,7 @@
           AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" spacing="15">
         <ClickableLabel fx:id="lblAbort" text="%practice.abort" />
         <HBox spacing="5" alignment="CENTER">
-            <ImageView fx:id="imageView" fitWidth="300" fitHeight="260"
+            <VisualHelp fx:id="visualHelp" fitWidth="300" fitHeight="260"
                        pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="lblDescription" wrapText="true"
                        style="-fx-font-size: 28pt;" />

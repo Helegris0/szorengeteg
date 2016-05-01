@@ -11,6 +11,7 @@ import com.helegris.szorengeteg.ui.ImageNotFoundException;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
+import com.helegris.szorengeteg.ui.DefaultImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -82,7 +83,7 @@ public abstract class TopicFormView extends CardsEditorForm {
     protected void deleteImage(ActionEvent event) {
         btnDeleteImage.setVisible(false);
         imageFile = null;
-        imageView.setImage(null);
+        imageView.setImage(DefaultImage.getInstance());
     }
 
     @FXML

@@ -1,6 +1,7 @@
 package com.helegris.szorengeteg.ui.forms;
 
 import com.helegris.szorengeteg.business.model.Topic;
+import com.helegris.szorengeteg.ui.DefaultImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -9,6 +10,12 @@ import java.io.IOException;
  * @author Timi
  */
 public class NewTopicView extends TopicFormView {
+
+    @Override
+    protected void initialize() {
+        super.initialize();
+        imageView.setImage(DefaultImage.getInstance());
+    }
 
     @Override
     protected void prepareTopic() throws FileNotFoundException, IOException {

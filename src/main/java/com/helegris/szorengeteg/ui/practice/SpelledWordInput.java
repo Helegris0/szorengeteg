@@ -28,6 +28,9 @@ public class SpelledWordInput extends WordInput {
 
     private final String vowels = "AÁEÉIÍOÓÖŐÜŰ";
 
+    private boolean full;
+    private int numOfTries;
+
     public SpelledWordInput(String word, WordInputListener listener) {
         super(word, listener);
         setFields();
@@ -107,6 +110,11 @@ public class SpelledWordInput extends WordInput {
                 }
                 field.setText(newValue.substring(0, 1).toUpperCase());
             }
+            if (full) {
+                full = false;
+                numOfTries++;
+                listener.tryAgain(numOfTries);
+            }
             check();
         });
     }
@@ -133,15 +141,19 @@ public class SpelledWordInput extends WordInput {
 
     @Override
     protected void check() {
+        String expected = word.toLowerCase().replaceAll(" +", "");
         String input = "";
         input = fields.stream()
                 .map(field -> field.getText())
-                .reduce(input, String::concat);
+                .reduce(input, String::concat)
+                .toLowerCase();
 
-        if (!"".equals(input)) {
-            if (input.toLowerCase().equals(
-                    word.toLowerCase().replaceAll(" +", ""))) {
+        if (input.length() == expected.length()) {
+            if (input.equals(expected)) {
                 listener.answeredCorrectly();
+            } else {
+                listener.answeredIncorrectly();
+                full = true;
             }
         }
     }

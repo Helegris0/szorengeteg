@@ -9,18 +9,15 @@ import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.SceneStyler;
 import com.helegris.szorengeteg.ui.settings.Settings;
-import com.helegris.szorengeteg.ui.ImageLoader;
 import com.helegris.szorengeteg.ui.ClickableLabel;
-import com.helegris.szorengeteg.ui.DefaultImage;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -36,17 +33,13 @@ public class PracticeView extends AnchorPane {
 
     public static final String FXML = "fxml/practice.fxml";
 
-    private final String SHOWIMAGE_PATH = "/images/showimage.png";
-    private final Image startingImage = new Image(
-            this.getClass().getResourceAsStream(SHOWIMAGE_PATH));
-
     @Inject
     private Settings settings;
 
     @FXML
     private ClickableLabel lblAbort;
     @FXML
-    private ImageView imageView;
+    private VisualHelp visualHelp;
     @FXML
     private Label lblDescription;
     @FXML
@@ -62,11 +55,26 @@ public class PracticeView extends AnchorPane {
 
     private final PracticeSession session;
     private Card card;
-    private boolean imageShown;
     private WordInput wordInput;
     private final boolean helpSet;
     private final boolean repeat;
-    private final WordInputListener inputListener = this::answerCorrect;
+    private final WordInputListener inputListener = new WordInputListener() {
+
+        @Override
+        public void answeredCorrectly() {
+            PracticeView.this.answerCorrect();
+        }
+
+        @Override
+        public void answeredIncorrectly() {
+            PracticeView.this.answerIncorrect();
+        }
+
+        @Override
+        public void tryAgain(int numOfTries) {
+            PracticeView.this.tryAgain(numOfTries);
+        }
+    };
     private boolean checked;
 
     @SuppressWarnings("LeakingThisInConstructor")
@@ -77,42 +85,29 @@ public class PracticeView extends AnchorPane {
         helpSet = !Settings.WordHelp.NO_HELP.equals(settings.getWordHelp());
         repeat = settings.isRepeatUnknownWords();
         FXMLLoaderHelper.load(FXML, this);
+        visualHelp.setCard(card);
     }
 
     @FXML
     public void initialize() {
         setQuestion();
         lblAbort.setOnMouseClicked(this::abort);
-        imageView.setOnMouseClicked(this::showImage);
         lblDontKnow.setOnMouseClicked(this::dontKnow);
         lblHelp.setOnMouseClicked(this::help);
-        lblHelp.setVisible(helpSet);
         btnNextCard.setOnAction(this::nextCard);
         btnNextCard.defaultButtonProperty().bind(btnNextCard.focusedProperty());
     }
 
     private void setQuestion() {
         hboxInput.getChildren().clear();
-        imageView.setImage(startingImage);
         lblDescription.setText(card.getDescription());
         wordInput = new WordInputFactory().getWordInput(card.getWord(), inputListener);
         hboxInput.getChildren().add(wordInput);
         checked(false);
     }
 
-    private void showImage(MouseEvent event) {
-        if (!imageShown) {
-            if (card.getImage() != null) {
-                imageView.setImage(new ImageLoader().loadImage(card.getImage()));
-                imageShown = true;
-            } else {
-                imageView.setImage(DefaultImage.getInstance());
-            }
-        }
-    }
-
     private void dontKnow(MouseEvent event) {
-        answerIncorrect();
+        showExpectedWord();
         checked(true);
     }
 
@@ -131,7 +126,30 @@ public class PracticeView extends AnchorPane {
     }
 
     private void answerIncorrect() {
-        lblResult.setText(Messages.msg("practice.incorrect") + " "
+        lblResult.setText(Messages.msg("practice.incorrect"));
+        lblResult.setTextFill(Color.web("#0000ff"));
+        lblResult.setVisible(true);
+    }
+
+    private void tryAgain(int numOfTries) {
+        lblResult.setVisible(false);
+        switch (numOfTries) {
+            case 1:
+                if (helpSet) {
+                    lblHelp.setVisible(true);
+                }
+                break;
+            case 3:
+                visualHelp.provideHelp();
+                break;
+            case 5:
+                lblDontKnow.setVisible(true);
+                break;
+        }
+    }
+
+    private void showExpectedWord() {
+        lblResult.setText(Messages.msg("practice.expected") + " "
                 + card.getWord().toUpperCase());
         lblResult.setTextFill(Color.web("#ff0000"));
         if (repeat) {
@@ -145,10 +163,8 @@ public class PracticeView extends AnchorPane {
 
     private void checked(boolean checked) {
         this.checked = checked;
-        lblDontKnow.setVisible(!checked);
-        if (helpSet) {
-            lblHelp.setVisible(!checked);
-        }
+        lblDontKnow.setVisible(false);
+        lblHelp.setVisible(false);
         lblResult.setVisible(checked);
         btnNextCard.setVisible(checked);
     }
@@ -156,10 +172,16 @@ public class PracticeView extends AnchorPane {
     private void nextCard(ActionEvent event) {
         card = session.nextCard();
         if (card != null) {
-            imageShown = false;
             setQuestion();
+            visualHelp.setCard(card);
         } else {
 //            evaluateSession();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(Messages.msg("practice.end"));
+            alert.setHeaderText(Messages.msg("practice.end"));
+            alert.setContentText(Messages.msg("practice.end_content"));
+            alert.showAndWait();
+
             ((Stage) this.getScene().getWindow()).close();
         }
     }
