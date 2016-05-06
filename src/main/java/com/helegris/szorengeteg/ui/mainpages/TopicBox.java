@@ -9,7 +9,7 @@ import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.DefaultImage;
-import com.helegris.szorengeteg.ui.ImageLoader;
+import com.helegris.szorengeteg.ui.MediaLoader;
 import com.helegris.szorengeteg.ui.SceneStyler;
 import com.helegris.szorengeteg.ui.VistaNavigator;
 import com.helegris.szorengeteg.messages.Messages;
@@ -103,7 +103,7 @@ public class TopicBox extends Pane {
         Image image;
 
         if (topic.getImage() != null) {
-            image = new ImageLoader().loadImage(topic.getImage());
+            image = new MediaLoader().loadImage(topic.getImage());
         } else {
             image = DefaultImage.getInstance();
         }

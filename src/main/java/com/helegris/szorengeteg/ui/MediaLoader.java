@@ -9,16 +9,18 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 import org.apache.commons.io.IOUtils;
 
 /**
  *
  * @author Timi
  */
-public class ImageLoader {
+public class MediaLoader {
 
     public Image loadImage(byte[] imageBytes) {
         InputStream inputStream = new ByteArrayInputStream(imageBytes);
@@ -26,11 +28,19 @@ public class ImageLoader {
         return image;
     }
 
-    public byte[] loadImage(File imageFile) throws ImageNotFoundException {
+    public Media loadAudio(byte[] audioBytes) throws IOException {
+        File tempFile = File.createTempFile("audio", null);
+        tempFile.deleteOnExit();
+        IOUtils.write(audioBytes, new FileOutputStream(tempFile));
+        Media media = new Media(tempFile.toURI().toString());
+        return media;
+    }
+
+    public byte[] loadBytes(File file) throws NotFoundException {
         try {
-            return IOUtils.toByteArray(new FileInputStream(imageFile));
+            return IOUtils.toByteArray(new FileInputStream(file));
         } catch (FileNotFoundException e) {
-            throw new ImageNotFoundException(imageFile);
+            throw new NotFoundException(file);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

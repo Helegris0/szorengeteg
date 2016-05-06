@@ -7,7 +7,7 @@ package com.helegris.szorengeteg.ui.forms;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.VistaNavigator;
-import com.helegris.szorengeteg.ui.ImageNotFoundException;
+import com.helegris.szorengeteg.ui.NotFoundException;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
@@ -108,8 +108,8 @@ public abstract class TopicFormView extends CardsEditorForm {
             new ExceptionAlert(ex).showAndWait();
         } catch (MissingDataException ex) {
             alertMissingData();
-        } catch (ImageNotFoundException ex) {
-            alertFileNotFound(ex, ex.getImageFile());
+        } catch (NotFoundException ex) {
+            alertFileNotFound(ex, ex.getFile());
         }
     }
 

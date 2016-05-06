@@ -12,6 +12,8 @@ import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.service.EntitySaver;
 import com.helegris.szorengeteg.business.service.TopicLoader;
 import com.helegris.szorengeteg.business.model.Card;
+import com.helegris.szorengeteg.ui.AudioIcon;
+import com.helegris.szorengeteg.ui.SceneStyler;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -23,7 +25,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -55,6 +56,8 @@ public abstract class CardsEditorForm extends AnchorPane {
     protected TableView<RowForCard> tableView;
     @FXML
     protected TableColumn colImage;
+    @FXML
+    protected TableColumn colAudio;
     @FXML
     protected TableColumn colWord;
     @FXML
@@ -123,7 +126,7 @@ public abstract class CardsEditorForm extends AnchorPane {
 
     private void setEvents() {
         btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
-        tableView.setOnMouseClicked(this::cardImageAction);
+        tableView.setOnMouseClicked(this::tableClick);
         btnNewWord.setOnAction(this::addRow);
         btnBack.setOnAction(this::goBack);
     }
@@ -155,7 +158,7 @@ public abstract class CardsEditorForm extends AnchorPane {
         });
     }
 
-    protected void cardImageAction(MouseEvent event) {
+    protected void tableClick(MouseEvent event) {
         if (!rows.isEmpty()
                 && !tableView.getSelectionModel().getSelectedCells().isEmpty()) {
             TablePosition position
@@ -166,7 +169,8 @@ public abstract class CardsEditorForm extends AnchorPane {
                 Image currentImage = row.getImageView().getImage();
                 ImagePopup imagePopup = new ImagePopup(currentImage);
                 Stage stage = new Stage();
-                stage.setScene(new Scene(imagePopup));
+                stage.setScene(new SceneStyler().createScene(
+                        imagePopup, SceneStyler.Style.MAIN));
                 stage.setTitle(row.getTxtWord().getText() + " "
                         + Messages.msg("form.set_image_of_word"));
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -177,13 +181,33 @@ public abstract class CardsEditorForm extends AnchorPane {
                 stage.showAndWait();
                 if (imagePopup.isOk()) {
                     Image rowImage = imagePopup.getFinalImage();
-                    File cardImageFile = imagePopup.getImageFile();
+                    File cardImageFile = imagePopup.getFile();
                     if (rowImage != null && cardImageFile != null) {
                         row.setImageFile(cardImageFile);
                         row.setImage(rowImage);
                     } else if (rowImage == null) {
                         row.setImage(DefaultImage.getInstance());
                     }
+                }
+            } else if (colAudio.equals(position.getTableColumn())) {
+                int index = position.getRow();
+                RowForCard row = (RowForCard) sortedRows.get(index);
+                AudioPopup audioPopup = new AudioPopup(new AudioIcon(row.getAudioIcon()));
+                Stage stage = new Stage();
+                stage.setScene(new SceneStyler().createScene(
+                        audioPopup, SceneStyler.Style.MAIN));
+                stage.setTitle(row.getTxtWord().getText() + " "
+                        + Messages.msg("form.set_audio_of_word"));
+                stage.initModality(Modality.APPLICATION_MODAL);
+                stage.initOwner(tableView.getScene().getWindow());
+                stage.setResizable(false);
+                tableView.getSelectionModel().clearSelection();
+
+                stage.showAndWait();
+                if (audioPopup.isOk()) {
+                    File audioFile = audioPopup.getFile();
+                    row.setAudioFile(audioFile);
+                    row.setAudio(audioPopup.getFinalAudio());
                 }
             }
         }

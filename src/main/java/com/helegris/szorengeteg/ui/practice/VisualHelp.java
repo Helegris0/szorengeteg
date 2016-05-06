@@ -7,7 +7,7 @@ package com.helegris.szorengeteg.ui.practice;
 
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.ui.DefaultImage;
-import com.helegris.szorengeteg.ui.ImageLoader;
+import com.helegris.szorengeteg.ui.MediaLoader;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -38,7 +38,7 @@ public class VisualHelp extends ImageView {
     private void showImage(MouseEvent event) {
         if (provideHelp && !imageShown) {
             if (card.getImage() != null) {
-                this.setImage(new ImageLoader().loadImage(card.getImage()));
+                this.setImage(new MediaLoader().loadImage(card.getImage()));
                 imageShown = true;
             } else {
                 this.setImage(DefaultImage.getInstance());

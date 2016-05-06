@@ -17,6 +17,7 @@ public class FileChooserHelper {
 
     private static final String DEFAULT_PATH = System.getProperty("user.home");
     private static String imageDirectory = DEFAULT_PATH;
+    private static String audioDirectory = DEFAULT_PATH;
     private static String txtDirectory = DEFAULT_PATH;
 
     public static File getImageFile() {
@@ -32,6 +33,23 @@ public class FileChooserHelper {
         File file = fileChooser.showOpenDialog(null);
         if (file != null) {
             imageDirectory = file.getParent();
+        }
+        return file;
+    }
+
+    public static File getAudioFile() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(audioDirectory));
+
+        FileChooser.ExtensionFilter extFilter
+                = new FileChooser.ExtensionFilter(
+                        Messages.msg("open_dialog.audio_files"), 
+                        "*.mp3", "*.wav", "*.aac");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showOpenDialog(null);
+        if (file != null) {
+            audioDirectory = file.getParent();
         }
         return file;
     }

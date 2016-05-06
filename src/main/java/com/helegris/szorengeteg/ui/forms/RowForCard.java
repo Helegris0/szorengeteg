@@ -5,8 +5,9 @@
  */
 package com.helegris.szorengeteg.ui.forms;
 
-import com.helegris.szorengeteg.ui.ImageLoader;
-import com.helegris.szorengeteg.ui.ImageNotFoundException;
+import com.helegris.szorengeteg.ui.AudioIcon;
+import com.helegris.szorengeteg.ui.MediaLoader;
+import com.helegris.szorengeteg.ui.NotFoundException;
 import com.helegris.szorengeteg.ui.DefaultImage;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
@@ -21,6 +22,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.media.Media;
 
 /**
  *
@@ -32,12 +34,14 @@ public class RowForCard {
     private Card card = new Card();
     private RowPositioner positioner;
     private ImageView imageView = new ImageView();
+    private AudioIcon audioIcon = new AudioIcon();
     private TextField txtWord = new TextField();
     private TextField txtDescription = new TextField();
     private ComboBox cmbTopic = new ComboBox();
     private Button btnDelete = new Button(Messages.msg("form.delete_row"));
     private File imageFile;
-    private final ImageLoader imageLoader = new ImageLoader();
+    private File audioFile;
+    private final MediaLoader mediaLoader = new MediaLoader();
 
     private static int imageWidth = 40;
     private static int imageHeight = 35;
@@ -63,6 +67,8 @@ public class RowForCard {
         imageView.setFitWidth(imageWidth);
         imageView.setFitHeight(imageHeight);
         imageView.setImage(DefaultImage.getInstance());
+        audioIcon.setFitWidth(imageWidth);
+        audioIcon.setFitHeight(imageWidth);
         cmbTopic.setItems(allTopics);
         btnDelete.setOnAction(this::delete);
     }
@@ -70,6 +76,7 @@ public class RowForCard {
     public RowForCard(RowDeleteListener deleteListener, RowMoveListener moveListener, Card card) {
         this(deleteListener, moveListener);
         this.card = card;
+        audioIcon.setCard(card);
         txtWord.setText(card.getWord());
         txtDescription.setText(card.getDescription());
         cmbTopic.setValue(card.getTopic());
@@ -78,7 +85,7 @@ public class RowForCard {
 
     private void loadOriginalImage() {
         if (card.getImage() != null) {
-            imageView.setImage(imageLoader.loadImage(card.getImage()));
+            imageView.setImage(mediaLoader.loadImage(card.getImage()));
         }
     }
 
@@ -111,16 +118,30 @@ public class RowForCard {
         if (imageView.getImage() instanceof DefaultImage) {
             card.setImage(null);
         }
+        if (audioFile != null) {
+            card.setAudio(getAudio());
+        }
+        if (audioIcon.getAudio() == null) {
+            card.setAudio(null);
+        }
         return card;
-    }
-
-    private byte[] getImage() throws ImageNotFoundException {
-        return imageLoader.loadImage(imageFile);
     }
 
     public Card getUpdatedCard(Topic topic) {
         cmbTopic.setValue(topic);
         return getUpdatedCard();
+    }
+
+    private byte[] getImage() throws NotFoundException {
+        return mediaLoader.loadBytes(imageFile);
+    }
+
+    private byte[] getAudio() throws NotFoundException {
+        return mediaLoader.loadBytes(audioFile);
+    }
+
+    public void setAudio(Media audio) {
+        audioIcon.setAudio(audio);
     }
 
     public void setImage(Image image) {
@@ -158,6 +179,16 @@ public class RowForCard {
 
     public void setImageView(ImageView imageView) {
         this.imageView = imageView;
+    }
+
+    public AudioIcon getAudioIcon() {
+        return audioIcon;
+    }
+
+    public void setAudioIcon(AudioIcon audioIcon) {
+        this.audioIcon = audioIcon;
+        audioIcon.setFitWidth(imageWidth);
+        audioIcon.setFitHeight(imageWidth);
     }
 
     public TextField getTxtWord() {
@@ -198,6 +229,14 @@ public class RowForCard {
 
     public void setImageFile(File imageFile) {
         this.imageFile = imageFile;
+    }
+
+    public File getAudioFile() {
+        return audioFile;
+    }
+
+    public void setAudioFile(File audioFile) {
+        this.audioFile = audioFile;
     }
 
     public static int getImageWidth() {

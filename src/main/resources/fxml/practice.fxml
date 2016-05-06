@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.helegris.szorengeteg.ui.ClickableLabel?>
+<?import com.helegris.szorengeteg.ui.AudioIcon?>
 <?import com.helegris.szorengeteg.ui.practice.VisualHelp?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -29,6 +30,10 @@
         <HBox spacing="15" alignment="CENTER">
             <Label fx:id="lblResult" visible="false" />
             <Button fx:id="btnNextCard" text="%practice.next" visible="false" />
+        </HBox>
+        <HBox spacing="15" alignment="CENTER">
+            <AudioIcon fx:id="audioIcon" visible="false"
+                       fitWidth="50" fitHeight="50"/>
         </HBox>
     </VBox>
 </fx:root>

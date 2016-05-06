@@ -6,7 +6,7 @@
 package com.helegris.szorengeteg.ui.practice;
 
 import com.helegris.szorengeteg.ui.DefaultImage;
-import com.helegris.szorengeteg.ui.ImageLoader;
+import com.helegris.szorengeteg.ui.MediaLoader;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
 import javafx.beans.value.ObservableValue;
@@ -53,7 +53,7 @@ public class PracticeEnd extends AnchorPane {
 
         byte[] imageBytes = card.getImage();
         if (imageBytes != null) {
-            imageView.setImage(new ImageLoader().loadImage(imageBytes));
+            imageView.setImage(new MediaLoader().loadImage(imageBytes));
         } else {
             imageView.setImage(DefaultImage.getInstance());
         }

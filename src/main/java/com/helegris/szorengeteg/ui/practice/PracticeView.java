@@ -12,6 +12,11 @@ import com.helegris.szorengeteg.ui.settings.Settings;
 import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
+import com.helegris.szorengeteg.ui.AudioIcon;
+import com.helegris.szorengeteg.ui.MediaLoader;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javax.inject.Inject;
@@ -52,6 +58,8 @@ public class PracticeView extends AnchorPane {
     private Label lblResult;
     @FXML
     private Button btnNextCard;
+    @FXML
+    private AudioIcon audioIcon;
 
     private final PracticeSession session;
     private Card card;
@@ -96,6 +104,7 @@ public class PracticeView extends AnchorPane {
         lblHelp.setOnMouseClicked(this::help);
         btnNextCard.setOnAction(this::nextCard);
         btnNextCard.defaultButtonProperty().bind(btnNextCard.focusedProperty());
+        audioIcon.setOnMouseClicked(this::playAudio);
     }
 
     private void setQuestion() {
@@ -103,6 +112,7 @@ public class PracticeView extends AnchorPane {
         lblDescription.setText(card.getDescription());
         wordInput = new WordInputFactory().getWordInput(card.getWord(), inputListener);
         hboxInput.getChildren().add(wordInput);
+        audioIcon.setCard(card);
         checked(false);
     }
 
@@ -167,6 +177,18 @@ public class PracticeView extends AnchorPane {
         lblHelp.setVisible(false);
         lblResult.setVisible(checked);
         btnNextCard.setVisible(checked);
+        audioIcon.setVisible(checked);
+    }
+
+    private void playAudio(MouseEvent event) {
+        if (card.getAudio() != null) {
+            try {
+                MediaPlayer player = new MediaPlayer(new MediaLoader().loadAudio(card.getAudio()));
+                player.play();
+            } catch (IOException ex) {
+                Logger.getLogger(PracticeView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private void nextCard(ActionEvent event) {

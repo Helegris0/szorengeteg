@@ -6,7 +6,7 @@
 package com.helegris.szorengeteg.ui.forms;
 
 import com.helegris.szorengeteg.ui.VistaNavigator;
-import com.helegris.szorengeteg.ui.ImageLoader;
+import com.helegris.szorengeteg.ui.MediaLoader;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.service.CardLoader;
 import com.helegris.szorengeteg.business.model.PersistentObject;
@@ -46,7 +46,7 @@ public class EditTopicView extends TopicFormView {
 
     private void loadOriginalImage() {
         if (topic.getImage() != null) {
-            imageView.setImage(new ImageLoader().loadImage(topic.getImage()));
+            imageView.setImage(new MediaLoader().loadImage(topic.getImage()));
             btnDeleteImage.setVisible(true);
         } else {
             imageView.setImage(DefaultImage.getInstance());

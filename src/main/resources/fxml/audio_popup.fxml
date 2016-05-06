@@ -4,18 +4,15 @@
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" prefHeight="340.0" prefWidth="300.0" 
+         id="AnchorPane" prefHeight="300.0" prefWidth="250.0" 
          xmlns="http://javafx.com/javafx/8">
 
     <VBox AnchorPane.leftAnchor="5">
-        <StackPane prefHeight="300">
-            <ImageView fx:id="imageView" fitHeight="300.0" fitWidth="300.0" 
-                   preserveRatio="true" />
-        </StackPane>
+        <StackPane fx:id="stackPane" />
+        <Label fx:id="lblFileName" />
         <HBox>
             <Button fx:id="btnLoad" text="%form.browse" />
             <Button fx:id="btnDelete" text="%form.delete" />
