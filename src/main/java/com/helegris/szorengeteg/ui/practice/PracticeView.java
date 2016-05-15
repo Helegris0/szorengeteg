@@ -39,15 +39,15 @@ import javax.inject.Inject;
  *
  * @author Timi
  */
-public class PracticeView extends AnchorPane implements WordInputListener {
+public class PracticeView extends AnchorPane implements WordInputListener, Runnable {
 
     public static final String FXML = "fxml/practice.fxml";
 
     private static final String CLOSE_ICON_PATH = "/images/close.png";
 
+
     @Inject
     private Settings settings;
-
     @Inject
     private EntitySaver entitySaver;
 
@@ -76,14 +76,15 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     @FXML
     private RadioButton rdLastGaveUp;
 
-    private boolean nowHelp;
-    private boolean nowGaveUp;
-
     private final PracticeSession session;
     private Card card;
     private WordInput wordInput;
     private final boolean helpSet;
     private final boolean repeat;
+    private final long sleepTime;
+    private Thread thread;
+    private boolean nowHelp;
+    private boolean nowGaveUp;
     private boolean checked;
 
     @SuppressWarnings("LeakingThisInConstructor")
@@ -93,6 +94,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         DIUtils.injectFields(this);
         helpSet = !Settings.WordHelp.NO_HELP.equals(settings.getWordHelp());
         repeat = settings.isRepeatUnknownWords();
+        sleepTime = settings.getHelpSeconds() * 1000;
         FXMLLoaderHelper.load(FXML, this);
         visualHelp.setCard(card);
     }
@@ -121,6 +123,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         nowHelp = false;
         nowGaveUp = false;
         checked(false);
+        thread = new Thread(this);
+        thread.start();
     }
 
     private void dontKnow(MouseEvent event) {
@@ -162,11 +166,31 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 }
                 break;
             case 3:
-                visualHelp.provideHelp();
+                if (!visualHelp.isImageShown()) {
+                    visualHelp.provideHelp();
+                }
                 break;
             case 5:
                 lblDontKnow.setDisable(false);
                 break;
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            Thread.sleep(sleepTime);
+            if (helpSet) {
+                lblHelp.setDisable(false);
+            }
+            Thread.sleep(sleepTime);
+            if (!visualHelp.isImageShown()) {
+                visualHelp.provideHelp();
+            }
+            Thread.sleep(sleepTime);
+            lblDontKnow.setDisable(false);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PracticeView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

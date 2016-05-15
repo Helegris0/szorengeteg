@@ -24,6 +24,7 @@ public class Settings {
     private final String KEY_REPEAT_UNKNOWN_WORDS = "repeat_unknown_words";
     private final String KEY_WORD_INPUT = "word_input";
     private final String KEY_WORD_HELP = "word_help";
+    private final String KEY_HELP_SECONDS = "help_seconds";
 
     public enum WordInput {
 
@@ -126,5 +127,14 @@ public class Settings {
         if (arg.wordInputs.contains(getWordInput())) {
             prefs.put(KEY_WORD_HELP, arg.value);
         }
+    }
+
+    public int getHelpSeconds() {
+        int def = 20;
+        return prefs.getInt(KEY_HELP_SECONDS, def);
+    }
+
+    public void setHelpSeconds(int arg) {
+        prefs.putInt(KEY_HELP_SECONDS, arg);
     }
 }
