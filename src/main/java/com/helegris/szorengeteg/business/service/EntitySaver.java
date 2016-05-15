@@ -59,6 +59,11 @@ public class EntitySaver {
         em.remove(topic);
     }
 
+    @Transactional
+    public void saveCard(Card card) {
+        save(card);
+    }
+
     private void save(PersistentObject entity) {
         if (entity.getId() == null) {
             em.persist(entity);

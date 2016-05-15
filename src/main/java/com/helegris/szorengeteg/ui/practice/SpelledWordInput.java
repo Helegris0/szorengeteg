@@ -160,6 +160,7 @@ public class SpelledWordInput extends WordInput {
 
     @Override
     public void help() {
+        fields.stream().forEach(field -> field.setText(""));
         switch (settings.getWordHelp()) {
             case FIRST_CHAR:
                 helpFirstChar();

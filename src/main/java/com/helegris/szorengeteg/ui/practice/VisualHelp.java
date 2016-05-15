@@ -19,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 public class VisualHelp extends ImageView {
 
     private final String SHOWIMAGE_PATH = "/images/showimage.png";
+    private final String EMPTY_PATH = "/images/showimage_empty.png";
     private final Image startingImage = new Image(
             this.getClass().getResourceAsStream(SHOWIMAGE_PATH));
 
@@ -39,10 +40,10 @@ public class VisualHelp extends ImageView {
         if (provideHelp && !imageShown) {
             if (card.getImage() != null) {
                 this.setImage(new MediaLoader().loadImage(card.getImage()));
-                imageShown = true;
             } else {
                 this.setImage(DefaultImage.getInstance());
             }
+            imageShown = true;
         }
     }
 
@@ -50,6 +51,10 @@ public class VisualHelp extends ImageView {
         this.card = card;
         this.provideHelp = false;
         this.imageShown = false;
-        this.setImage(null);
+        this.setImage(new Image(EMPTY_PATH));
+    }
+
+    public boolean isImageShown() {
+        return imageShown;
     }
 }

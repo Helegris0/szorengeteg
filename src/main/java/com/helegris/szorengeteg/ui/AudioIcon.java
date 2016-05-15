@@ -21,8 +21,8 @@ import javafx.scene.media.MediaPlayer;
  */
 public final class AudioIcon extends ImageView implements Cloneable {
 
-    private final String AUDIO = "/images/audio.png";
-    private final String NO_AUDIO = "/images/no_audio.png";
+    private static final String AUDIO = "/images/audio.png";
+    private static final String NO_AUDIO = "/images/no_audio.png";
 
     private final Image imgDark = new Image(AUDIO);
     private final Image imgLight = new Image(NO_AUDIO);

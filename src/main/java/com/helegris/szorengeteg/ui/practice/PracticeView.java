@@ -12,7 +12,9 @@ import com.helegris.szorengeteg.ui.settings.Settings;
 import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
+import com.helegris.szorengeteg.business.service.EntitySaver;
 import com.helegris.szorengeteg.ui.AudioIcon;
+import com.helegris.szorengeteg.ui.CloseIcon;
 import com.helegris.szorengeteg.ui.MediaLoader;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -23,6 +25,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -35,15 +39,20 @@ import javax.inject.Inject;
  *
  * @author Timi
  */
-public class PracticeView extends AnchorPane {
+public class PracticeView extends AnchorPane implements WordInputListener {
 
     public static final String FXML = "fxml/practice.fxml";
+
+    private static final String CLOSE_ICON_PATH = "/images/close.png";
 
     @Inject
     private Settings settings;
 
+    @Inject
+    private EntitySaver entitySaver;
+
     @FXML
-    private ClickableLabel lblAbort;
+    private CloseIcon closeIcon;
     @FXML
     private VisualHelp visualHelp;
     @FXML
@@ -60,29 +69,21 @@ public class PracticeView extends AnchorPane {
     private Button btnNextCard;
     @FXML
     private AudioIcon audioIcon;
+    @FXML
+    private RadioButton rdLastHelp;
+    @FXML
+    private RadioButton rdLastVisual;
+    @FXML
+    private RadioButton rdLastGaveUp;
+
+    private boolean nowHelp;
+    private boolean nowGaveUp;
 
     private final PracticeSession session;
     private Card card;
     private WordInput wordInput;
     private final boolean helpSet;
     private final boolean repeat;
-    private final WordInputListener inputListener = new WordInputListener() {
-
-        @Override
-        public void answeredCorrectly() {
-            PracticeView.this.answerCorrect();
-        }
-
-        @Override
-        public void answeredIncorrectly() {
-            PracticeView.this.answerIncorrect();
-        }
-
-        @Override
-        public void tryAgain(int numOfTries) {
-            PracticeView.this.tryAgain(numOfTries);
-        }
-    };
     private boolean checked;
 
     @SuppressWarnings("LeakingThisInConstructor")
@@ -99,7 +100,8 @@ public class PracticeView extends AnchorPane {
     @FXML
     public void initialize() {
         setQuestion();
-        lblAbort.setOnMouseClicked(this::abort);
+        closeIcon.setImage(new Image(CLOSE_ICON_PATH));
+        closeIcon.setOnMouseClicked(this::abort);
         lblDontKnow.setOnMouseClicked(this::dontKnow);
         lblHelp.setOnMouseClicked(this::help);
         btnNextCard.setOnAction(this::nextCard);
@@ -110,22 +112,30 @@ public class PracticeView extends AnchorPane {
     private void setQuestion() {
         hboxInput.getChildren().clear();
         lblDescription.setText(card.getDescription());
-        wordInput = new WordInputFactory().getWordInput(card.getWord(), inputListener);
+        wordInput = new WordInputFactory().getWordInput(card.getWord(), this);
         hboxInput.getChildren().add(wordInput);
         audioIcon.setCard(card);
+        rdLastHelp.setSelected(card.isLastHelp());
+        rdLastVisual.setSelected(card.isLastVisual());
+        rdLastGaveUp.setSelected(card.isLastGaveUp());
+        nowHelp = false;
+        nowGaveUp = false;
         checked(false);
     }
 
     private void dontKnow(MouseEvent event) {
         showExpectedWord();
+        nowGaveUp = true;
         checked(true);
     }
 
     private void help(MouseEvent event) {
         wordInput.help();
+        nowHelp = true;
     }
 
-    private void answerCorrect() {
+    @Override
+    public void answeredCorrectly() {
         lblResult.setText(Messages.msg("practice.correct"));
         lblResult.setTextFill(Color.web("#009600"));
         if (!repeat && !checked) {
@@ -135,25 +145,27 @@ public class PracticeView extends AnchorPane {
         checked(true);
     }
 
-    private void answerIncorrect() {
+    @Override
+    public void answeredIncorrectly() {
         lblResult.setText(Messages.msg("practice.incorrect"));
         lblResult.setTextFill(Color.web("#0000ff"));
         lblResult.setVisible(true);
     }
 
-    private void tryAgain(int numOfTries) {
+    @Override
+    public void tryAgain(int numOfTries) {
         lblResult.setVisible(false);
         switch (numOfTries) {
             case 1:
                 if (helpSet) {
-                    lblHelp.setVisible(true);
+                    lblHelp.setDisable(false);
                 }
                 break;
             case 3:
                 visualHelp.provideHelp();
                 break;
             case 5:
-                lblDontKnow.setVisible(true);
+                lblDontKnow.setDisable(false);
                 break;
         }
     }
@@ -168,16 +180,21 @@ public class PracticeView extends AnchorPane {
             session.incorrectAnswer();
         }
         Platform.runLater(btnNextCard::requestFocus);
-        checked(true);
     }
 
     private void checked(boolean checked) {
         this.checked = checked;
-        lblDontKnow.setVisible(false);
-        lblHelp.setVisible(false);
+        lblDontKnow.setDisable(true);
+        lblHelp.setDisable(true);
         lblResult.setVisible(checked);
         btnNextCard.setVisible(checked);
         audioIcon.setVisible(checked);
+        if (checked) {
+            card.setLastHelp(nowHelp);
+            card.setLastVisual(visualHelp.isImageShown());
+            card.setLastGaveUp(nowGaveUp);
+            entitySaver.saveCard(card);
+        }
     }
 
     private void playAudio(MouseEvent event) {

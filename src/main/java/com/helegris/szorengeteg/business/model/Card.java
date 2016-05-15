@@ -46,6 +46,15 @@ public class Card extends PersistentObject {
     @Column(name = "audio")
     private byte[] audio;
 
+    @Column(name = "last_help")
+    private boolean lastHelp;
+
+    @Column(name = "last_visual")
+    private boolean lastVisual;
+
+    @Column(name = "last_gave_up")
+    private boolean lastGaveUp;
+
     public Card() {
     }
 
@@ -105,5 +114,29 @@ public class Card extends PersistentObject {
 
     public void setAudio(byte[] audio) {
         this.audio = audio;
+    }
+
+    public boolean isLastHelp() {
+        return lastHelp;
+    }
+
+    public void setLastHelp(boolean lastHelp) {
+        this.lastHelp = lastHelp;
+    }
+
+    public boolean isLastVisual() {
+        return lastVisual;
+    }
+
+    public void setLastVisual(boolean lastVisual) {
+        this.lastVisual = lastVisual;
+    }
+
+    public boolean isLastGaveUp() {
+        return lastGaveUp;
+    }
+
+    public void setLastGaveUp(boolean lastGaveUp) {
+        this.lastGaveUp = lastGaveUp;
     }
 }
