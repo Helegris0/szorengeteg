@@ -79,6 +79,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     private Card card;
     private WordInput wordInput;
     private final boolean helpSet;
+    private final boolean playAudio;
     private final boolean repeat;
     private final long sleepTime;
     private Thread thread;
@@ -92,6 +93,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         this.card = session.getCurrentCard();
         DIUtils.injectFields(this);
         helpSet = !Settings.WordHelp.NO_HELP.equals(settings.getWordHelp());
+        playAudio = settings.isPlayAudio();
         repeat = settings.isRepeatUnknownWords();
         sleepTime = settings.getHelpSeconds() * 1000;
         FXMLLoaderHelper.load(FXML, this);
@@ -179,15 +181,17 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     public void run() {
         try {
             Thread.sleep(sleepTime);
-            if (helpSet) {
+            if (helpSet && !checked) {
                 lblHelp.setDisable(false);
             }
             Thread.sleep(sleepTime);
-            if (!visualHelp.isImageShown()) {
+            if (!visualHelp.isImageShown() && !checked) {
                 visualHelp.provideHelp();
             }
             Thread.sleep(sleepTime);
-            lblDontKnow.setDisable(false);
+            if (!checked) {
+                lblDontKnow.setDisable(false);
+            }
         } catch (InterruptedException ex) {
             Logger.getLogger(PracticeView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -217,6 +221,9 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
             card.setLastVisual(visualHelp.isImageShown());
             card.setLastGaveUp(nowGaveUp);
             entitySaver.saveCard(card);
+            if (playAudio) {
+                playAudio(null);
+            }
         }
     }
 

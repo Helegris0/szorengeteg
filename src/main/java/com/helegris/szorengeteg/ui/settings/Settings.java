@@ -25,6 +25,7 @@ public class Settings {
     private final String KEY_WORD_INPUT = "word_input";
     private final String KEY_WORD_HELP = "word_help";
     private final String KEY_HELP_SECONDS = "help_seconds";
+    private final String KEY_PLAY_AUDIO = "play_audio";
 
     public enum WordInput {
 
@@ -130,11 +131,20 @@ public class Settings {
     }
 
     public int getHelpSeconds() {
-        int def = 20;
+        int def = 15;
         return prefs.getInt(KEY_HELP_SECONDS, def);
     }
 
     public void setHelpSeconds(int arg) {
         prefs.putInt(KEY_HELP_SECONDS, arg);
+    }
+
+    public boolean isPlayAudio() {
+        boolean def = true;
+        return prefs.getBoolean(KEY_PLAY_AUDIO, def);
+    }
+
+    public void setPlayAudio(boolean arg) {
+        prefs.putBoolean(KEY_PLAY_AUDIO, arg);
     }
 }

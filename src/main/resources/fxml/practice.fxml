@@ -37,7 +37,7 @@
         </HBox>
         <HBox spacing="15" alignment="CENTER">
             <AudioIcon fx:id="audioIcon" visible="false"
-                       fitWidth="50" fitHeight="50"/>
+                       fitWidth="80" fitHeight="80"/>
         </HBox>
     </VBox>
 </fx:root>
