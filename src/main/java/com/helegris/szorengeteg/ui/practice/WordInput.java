@@ -15,7 +15,7 @@ import javax.inject.Inject;
  * @author Timi
  */
 public abstract class WordInput extends HBox {
-    
+
     @Inject
     protected Settings settings;
 
@@ -30,6 +30,6 @@ public abstract class WordInput extends HBox {
     }
 
     protected abstract void check();
-    
+
     public abstract void help();
 }

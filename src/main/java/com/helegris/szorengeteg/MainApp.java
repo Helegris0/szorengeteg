@@ -15,8 +15,6 @@ import javafx.stage.Stage;
 public class MainApp extends Application {
 
     private final String TITLE = "Szórengeteg";
-    private final int WIDTH = 707;
-    private final int HEIGHT = 660;
 
     @Override
     public void start(Stage stage) throws Exception {

@@ -45,7 +45,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
 
     private static final String CLOSE_ICON_PATH = "/images/close.png";
 
-
     @Inject
     private Settings settings;
     @Inject

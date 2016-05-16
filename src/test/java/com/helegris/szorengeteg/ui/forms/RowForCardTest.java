@@ -23,7 +23,7 @@ import org.junit.Test;
  *
  * @author Timi
  */
-public class RowForCardTestSkip {
+public class RowForCardTest {
 
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
@@ -104,5 +104,4 @@ public class RowForCardTestSkip {
         assertTrue(row.dataValidity());
         assertFalse(row.missingData());
     }
-
 }

@@ -5,12 +5,14 @@
  */
 package com.helegris.szorengeteg.ui.practice;
 
+import com.helegris.szorengeteg.messages.Messages;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -68,6 +70,7 @@ public class SpelledWordInput extends WordInput {
                 this.getChildren().add(field);
             }
         }
+        fields.get(0).setTooltip(new Tooltip(Messages.msg("practice.word_input")));
     }
 
     private void setFirstField() {
@@ -206,5 +209,9 @@ public class SpelledWordInput extends WordInput {
             }
         }
         fields.get(0).requestFocus();
+    }
+
+    public List<TextField> getFields() {
+        return new ArrayList<>(fields);
     }
 }
