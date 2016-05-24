@@ -25,8 +25,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -59,21 +59,27 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     @FXML
     private HBox hboxInput;
     @FXML
-    private ClickableLabel lblDontKnow;
+    private ImageView imgInput;
+    @FXML
+    private Label lblInput;
     @FXML
     private ClickableLabel lblHelp;
+    @FXML
+    private ImageView imgHelp;
+    @FXML
+    private ClickableLabel lblDontKnow;
     @FXML
     private Label lblResult;
     @FXML
     private Button btnNextCard;
     @FXML
     private AudioIcon audioIcon;
-    @FXML
-    private RadioButton rdLastHelp;
-    @FXML
-    private RadioButton rdLastVisual;
-    @FXML
-    private RadioButton rdLastGaveUp;
+//    @FXML
+//    private RadioButton rdLastHelp;
+//    @FXML
+//    private RadioButton rdLastVisual;
+//    @FXML
+//    private RadioButton rdLastGaveUp;
 
     private final PracticeSession session;
     private Card card;
@@ -86,6 +92,8 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     private boolean nowHelp;
     private boolean nowGaveUp;
     private boolean checked;
+
+    private final Image IMG_RIGHT_GRAY = new Image("/images/triangle_left_gray.png");
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeView(PracticeSession session) {
@@ -105,27 +113,37 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         setQuestion();
         closeIcon.setImage(new Image(CLOSE_ICON_PATH));
         closeIcon.setOnMouseClicked(this::abort);
+        lblInput.setOnMouseClicked(this::showInput);
         lblDontKnow.setOnMouseClicked(this::dontKnow);
         lblHelp.setOnMouseClicked(this::help);
         btnNextCard.setOnAction(this::nextCard);
         btnNextCard.defaultButtonProperty().bind(btnNextCard.focusedProperty());
         audioIcon.setOnMouseClicked(this::playAudio);
+        imgInput.setImage(IMG_RIGHT_GRAY);
+        imgHelp.setImage(IMG_RIGHT_GRAY);
     }
 
     private void setQuestion() {
         hboxInput.getChildren().clear();
         lblDescription.setText(card.getDescription());
         wordInput = new WordInputFactory().getWordInput(card.getWord(), this);
+        wordInput.setVisible(false);
+        lblInput.setDisable(false);
         hboxInput.getChildren().add(wordInput);
         audioIcon.setCard(card);
-        rdLastHelp.setSelected(card.isLastHelp());
-        rdLastVisual.setSelected(card.isLastVisual());
-        rdLastGaveUp.setSelected(card.isLastGaveUp());
+//        rdLastHelp.setSelected(card.isLastHelp());
+//        rdLastVisual.setSelected(card.isLastVisual());
+//        rdLastGaveUp.setSelected(card.isLastGaveUp());
         nowHelp = false;
         nowGaveUp = false;
         checked(false);
         thread = new Thread(this);
         thread.start();
+    }
+
+    private void showInput(MouseEvent event) {
+        wordInput.setVisible(true);
+        lblInput.setDisable(true);
     }
 
     private void dontKnow(MouseEvent event) {
@@ -198,9 +216,11 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     }
 
     private void showExpectedWord() {
-        lblResult.setText(Messages.msg("practice.expected") + " "
-                + card.getWord().toUpperCase());
-        lblResult.setTextFill(Color.web("#ff0000"));
+//        lblResult.setText(Messages.msg("practice.expected") + " "
+//                + card.getWord().toUpperCase());
+//        lblResult.setTextFill(Color.web("#ff0000"));
+        wordInput.revealWord();
+        lblResult.setText("");
         if (repeat) {
             session.repeatCard();
         } else {

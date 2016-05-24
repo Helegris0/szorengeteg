@@ -5,10 +5,8 @@
  */
 package com.helegris.szorengeteg.ui.practice;
 
-import com.helegris.szorengeteg.messages.Messages;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 
 /**
  *
@@ -27,7 +25,6 @@ public class SimpleWordInput extends WordInput {
             txtInput.setText(newValue.toUpperCase());
             check();
         });
-        txtInput.setTooltip(new Tooltip(Messages.msg("practice.word_input")));
     }
 
     @Override
@@ -58,6 +55,11 @@ public class SimpleWordInput extends WordInput {
         txtInput.setText(word.substring(0, endIndex));
         txtInput.requestFocus();
         txtInput.positionCaret(endIndex);
+    }
+
+    @Override
+    public void revealWord() {
+        txtInput.setText(word);
     }
 
     public String getFieldText() {

@@ -32,4 +32,6 @@ public abstract class WordInput extends HBox {
     protected abstract void check();
 
     public abstract void help();
+
+    public abstract void revealWord();
 }

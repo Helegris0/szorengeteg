@@ -131,7 +131,7 @@ public class Settings {
     }
 
     public int getHelpSeconds() {
-        int def = 15;
+        int def = 10;
         return prefs.getInt(KEY_HELP_SECONDS, def);
     }
 

@@ -14,28 +14,35 @@
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
-    <VBox AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" 
-          AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" spacing="15">
-        <CloseIcon fx:id="closeIcon" fitWidth="64" fitHeight="64" />
-        <HBox spacing="5" alignment="CENTER">
-            <RadioButton fx:id="rdLastVisual" disable="true" />
+    <CloseIcon fx:id="closeIcon" AnchorPane.rightAnchor="0"
+               fitWidth="64" fitHeight="64" />
+    <VBox AnchorPane.topAnchor="15" AnchorPane.leftAnchor="15"
+          AnchorPane.rightAnchor="65" spacing="15">
+        <HBox spacing="5" alignment="CENTER_LEFT">
             <VisualHelp fx:id="visualHelp" fitWidth="300" fitHeight="260"
-                       pickOnBounds="true" preserveRatio="true" />
+                        pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="lblDescription" wrapText="true"
-                       style="-fx-font-size: 28pt;" />
+                   style="-fx-font-size: 28pt;" />
         </HBox>
-        <HBox fx:id="hboxInput" alignment="CENTER" />
-        <HBox spacing="15" alignment="CENTER">
-            <RadioButton fx:id="rdLastGaveUp" disable="true" />
-            <ClickableLabel fx:id="lblDontKnow" text="%practice.dont_know" />
-            <RadioButton fx:id="rdLastHelp" disable="true" />
-            <ClickableLabel fx:id="lblHelp" text="%practice.help" />
+        <HBox spacing="15">
+            <HBox fx:id="hboxInput" />
+            <VBox>
+                <HBox spacing="5" alignment="CENTER_LEFT" prefHeight="70">
+                    <ImageView fx:id="imgInput" fitWidth="50" fitHeight="50" />
+                    <ClickableLabel fx:id="lblInput" text="A kért szó beírásának helye" />
+                </HBox>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <ImageView fx:id="imgHelp" fitWidth="50" fitHeight="50" />
+                    <ClickableLabel fx:id="lblHelp" text="%practice.help" />
+                </HBox>
+            </VBox>
         </HBox>
-        <HBox spacing="15" alignment="CENTER">
+        <ClickableLabel fx:id="lblDontKnow" text="%practice.dont_know" />
+        <HBox spacing="15">
             <Label fx:id="lblResult" visible="false" />
             <Button fx:id="btnNextCard" text="%practice.next" visible="false" />
         </HBox>
-        <HBox spacing="15" alignment="CENTER">
+        <HBox spacing="15">
             <AudioIcon fx:id="audioIcon" visible="false"
                        fitWidth="80" fitHeight="80"/>
         </HBox>
