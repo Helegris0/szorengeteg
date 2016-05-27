@@ -3,6 +3,7 @@
 <?import com.helegris.szorengeteg.ui.AudioIcon?>
 <?import com.helegris.szorengeteg.ui.ClickableLabel?>
 <?import com.helegris.szorengeteg.ui.CloseIcon?>
+<?import com.helegris.szorengeteg.ui.practice.PracticeLabel?>
 <?import com.helegris.szorengeteg.ui.practice.VisualHelp?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -37,14 +38,19 @@
                 </HBox>
             </VBox>
         </HBox>
-        <ClickableLabel fx:id="lblDontKnow" text="%practice.dont_know" />
+        <VBox spacing="-10">
+            <HBox spacing="5" alignment="CENTER_LEFT" prefHeight="70">
+                <ImageView fx:id="imgGiveUp" fitWidth="50" fitHeight="50" />
+                <ClickableLabel fx:id="lblGiveUp" text="%practice.give_up" />
+            </HBox>
+            <HBox spacing="5" alignment="CENTER_LEFT" prefHeight="70">
+                <ImageView fx:id="imgPlayAudio" fitWidth="50" fitHeight="50" />
+                <ClickableLabel fx:id="lblPlayAudio" text="%practice.play_audio" />
+            </HBox>
+        </VBox>
         <HBox spacing="15">
             <Label fx:id="lblResult" visible="false" />
             <Button fx:id="btnNextCard" text="%practice.next" visible="false" />
-        </HBox>
-        <HBox spacing="15">
-            <AudioIcon fx:id="audioIcon" visible="false"
-                       fitWidth="80" fitHeight="80"/>
         </HBox>
     </VBox>
 </fx:root>

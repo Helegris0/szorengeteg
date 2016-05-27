@@ -13,7 +13,6 @@ import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.service.EntitySaver;
-import com.helegris.szorengeteg.ui.AudioIcon;
 import com.helegris.szorengeteg.ui.CloseIcon;
 import com.helegris.szorengeteg.ui.MediaLoader;
 import java.io.IOException;
@@ -61,25 +60,34 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     @FXML
     private ImageView imgInput;
     @FXML
-    private Label lblInput;
-    @FXML
-    private ClickableLabel lblHelp;
+    private ClickableLabel lblInput;
     @FXML
     private ImageView imgHelp;
     @FXML
-    private ClickableLabel lblDontKnow;
+    private ClickableLabel lblHelp;
+    @FXML
+    private ImageView imgGiveUp;
+    @FXML
+    private ClickableLabel lblGiveUp;
+    @FXML
+    private ImageView imgPlayAudio;
+    @FXML
+    private ClickableLabel lblPlayAudio;
     @FXML
     private Label lblResult;
     @FXML
     private Button btnNextCard;
-    @FXML
-    private AudioIcon audioIcon;
 //    @FXML
 //    private RadioButton rdLastHelp;
 //    @FXML
 //    private RadioButton rdLastVisual;
 //    @FXML
 //    private RadioButton rdLastGaveUp;
+
+    private PracticeControl pcInput;
+    private PracticeControl pcHelp;
+    private PracticeControl pcGiveUp;
+    private PracticeControl pcPlayAudio;
 
     private final PracticeSession session;
     private Card card;
@@ -110,17 +118,23 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
 
     @FXML
     public void initialize() {
+        pcInput = new PracticeControl(
+                PracticeControl.Direction.LEFT, imgInput, lblInput,
+                this::showInput, true);
+        pcHelp = new PracticeControl(
+                PracticeControl.Direction.LEFT, imgHelp, lblHelp,
+                this::help, false);
+        pcGiveUp = new PracticeControl(
+                PracticeControl.Direction.RIGHT, imgGiveUp, lblGiveUp,
+                this::giveUp, false);
+        pcPlayAudio = new PracticeControl(
+                PracticeControl.Direction.RIGHT, imgPlayAudio, lblPlayAudio,
+                this::playAudio, false);
         setQuestion();
         closeIcon.setImage(new Image(CLOSE_ICON_PATH));
         closeIcon.setOnMouseClicked(this::abort);
-        lblInput.setOnMouseClicked(this::showInput);
-        lblDontKnow.setOnMouseClicked(this::dontKnow);
-        lblHelp.setOnMouseClicked(this::help);
         btnNextCard.setOnAction(this::nextCard);
         btnNextCard.defaultButtonProperty().bind(btnNextCard.focusedProperty());
-        audioIcon.setOnMouseClicked(this::playAudio);
-        imgInput.setImage(IMG_RIGHT_GRAY);
-        imgHelp.setImage(IMG_RIGHT_GRAY);
     }
 
     private void setQuestion() {
@@ -128,31 +142,32 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         lblDescription.setText(card.getDescription());
         wordInput = new WordInputFactory().getWordInput(card.getWord(), this);
         wordInput.setVisible(false);
-        lblInput.setDisable(false);
+        pcInput.setEnabled(true);
+        pcHelp.setEnabled(false);
+        pcPlayAudio.setEnabled(false);
         hboxInput.getChildren().add(wordInput);
-        audioIcon.setCard(card);
 //        rdLastHelp.setSelected(card.isLastHelp());
 //        rdLastVisual.setSelected(card.isLastVisual());
 //        rdLastGaveUp.setSelected(card.isLastGaveUp());
         nowHelp = false;
         nowGaveUp = false;
         checked(false);
+    }
+
+    private void showInput() {
+        wordInput.setVisible(true);
+        pcInput.setEnabled(false);
         thread = new Thread(this);
         thread.start();
     }
 
-    private void showInput(MouseEvent event) {
-        wordInput.setVisible(true);
-        lblInput.setDisable(true);
-    }
-
-    private void dontKnow(MouseEvent event) {
+    private void giveUp() {
         showExpectedWord();
         nowGaveUp = true;
         checked(true);
     }
 
-    private void help(MouseEvent event) {
+    private void help() {
         wordInput.help();
         nowHelp = true;
     }
@@ -181,7 +196,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         switch (numOfTries) {
             case 1:
                 if (helpSet) {
-                    lblHelp.setDisable(false);
+                    pcHelp.setEnabled(true);
                 }
                 break;
             case 3:
@@ -190,7 +205,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
                 }
                 break;
             case 5:
-                lblDontKnow.setDisable(false);
+                pcGiveUp.setEnabled(true);
                 break;
         }
     }
@@ -200,7 +215,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         try {
             Thread.sleep(sleepTime);
             if (helpSet && !checked) {
-                lblHelp.setDisable(false);
+                pcHelp.setEnabled(true);
             }
             Thread.sleep(sleepTime);
             if (!visualHelp.isImageShown() && !checked) {
@@ -208,10 +223,10 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
             }
             Thread.sleep(sleepTime);
             if (!checked) {
-                lblDontKnow.setDisable(false);
+                pcGiveUp.setEnabled(true);
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(PracticeView.class.getName()).log(Level.SEVERE, null, ex);
+            Thread.currentThread().interrupt();
         }
     }
 
@@ -231,23 +246,28 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
 
     private void checked(boolean checked) {
         this.checked = checked;
-        lblDontKnow.setDisable(true);
-        lblHelp.setDisable(true);
+        pcGiveUp.setEnabled(false);
+        pcHelp.setEnabled(false);
+        if (checked && card.getAudio() != null) {
+            pcPlayAudio.setEnabled(true);
+        }
         lblResult.setVisible(checked);
         btnNextCard.setVisible(checked);
-        audioIcon.setVisible(checked);
         if (checked) {
+            if (thread != null) {
+                thread.interrupt();
+            }
             card.setLastHelp(nowHelp);
             card.setLastVisual(visualHelp.isImageShown());
             card.setLastGaveUp(nowGaveUp);
             entitySaver.saveCard(card);
             if (playAudio) {
-                playAudio(null);
+                playAudio();
             }
         }
     }
 
-    private void playAudio(MouseEvent event) {
+    private void playAudio() {
         if (card.getAudio() != null) {
             try {
                 MediaPlayer player = new MediaPlayer(new MediaLoader().loadAudio(card.getAudio()));
