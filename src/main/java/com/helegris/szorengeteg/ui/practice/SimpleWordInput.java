@@ -14,22 +14,27 @@ import javafx.scene.control.TextField;
  */
 public class SimpleWordInput extends WordInput {
 
-    private final TextField txtInput = new TextField();
+    private final TextField field = new TextField();
 
     public SimpleWordInput(String word, WordInputListener listener) {
         super(word, listener);
-        this.getChildren().add(txtInput);
-        txtInput.textProperty().addListener((
-                ObservableValue<? extends String> observable, 
+        this.getChildren().add(field);
+        field.textProperty().addListener((
+                ObservableValue<? extends String> observable,
                 String oldValue, String newValue) -> {
-            txtInput.setText(newValue.toUpperCase());
-            check();
-        });
+                    field.setText(newValue.toUpperCase());
+                    check();
+                });
+    }
+
+    @Override
+    public void requestFocus() {
+        field.requestFocus();
     }
 
     @Override
     protected final void check() {
-        String input = txtInput.getText();
+        String input = field.getText();
 
         if (!"".equals(input)) {
             if (input.toLowerCase().equals(word.toLowerCase())) {
@@ -51,18 +56,18 @@ public class SimpleWordInput extends WordInput {
     }
 
     private void helpFirstChars(int endIndex) {
-        txtInput.clear();
-        txtInput.setText(word.substring(0, endIndex));
-        txtInput.requestFocus();
-        txtInput.positionCaret(endIndex);
+        field.clear();
+        field.setText(word.substring(0, endIndex));
+        field.requestFocus();
+        field.positionCaret(endIndex);
     }
 
     @Override
     public void revealWord() {
-        txtInput.setText(word);
+        field.setText(word);
     }
 
     public String getFieldText() {
-        return txtInput.getText();
+        return field.getText();
     }
 }

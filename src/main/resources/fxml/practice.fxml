@@ -30,7 +30,7 @@
             <VBox>
                 <HBox spacing="5" alignment="CENTER_LEFT" prefHeight="70">
                     <ImageView fx:id="imgInput" fitWidth="50" fitHeight="50" />
-                    <ClickableLabel fx:id="lblInput" text="A kért szó beírásának helye" />
+                    <ClickableLabel fx:id="lblInput" text="%practice.word_input" />
                 </HBox>
                 <HBox spacing="5" alignment="CENTER_LEFT">
                     <ImageView fx:id="imgHelp" fitWidth="50" fitHeight="50" />
@@ -48,9 +48,17 @@
                 <ClickableLabel fx:id="lblPlayAudio" text="%practice.play_audio" />
             </HBox>
         </VBox>
-        <HBox spacing="15">
-            <Label fx:id="lblResult" visible="false" />
-            <Button fx:id="btnNextCard" text="%practice.next" visible="false" />
+        <Label fx:id="lblResult" visible="false" />
+        <HBox spacing="5">
+            <ImageView fx:id="imgNext" fitWidth="50" fitHeight="50" />
+            <ClickableLabel fx:id="lblNext" text="%practice.next" />
+            <ImageView fx:id="imgPrev" fitWidth="50" fitHeight="50" />
+            <ClickableLabel fx:id="lblPrev" text="%practice.prev" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <ImageView fx:id="imgJump" fitWidth="50" fitHeight="50" />
+            <TextField fx:id="txtJump" prefWidth="70" prefHeight="50"
+                       style="-fx-font-size: 24;" />
+            <Label fx:id="lblJump" />
         </HBox>
     </VBox>
 </fx:root>

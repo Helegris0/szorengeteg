@@ -29,6 +29,9 @@ public abstract class WordInput extends HBox {
         DIUtils.injectFields(this);
     }
 
+    @Override
+    public abstract void requestFocus();
+
     protected abstract void check();
 
     public abstract void help();

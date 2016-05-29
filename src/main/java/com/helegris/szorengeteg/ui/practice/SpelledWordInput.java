@@ -140,6 +140,11 @@ public class SpelledWordInput extends WordInput {
     }
 
     @Override
+    public void requestFocus() {
+        fields.get(0).requestFocus();
+    }
+
+    @Override
     protected void check() {
         String expected = word.toLowerCase().replaceAll(" +", "");
         String input = "";

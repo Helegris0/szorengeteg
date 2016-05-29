@@ -16,12 +16,14 @@ import javafx.scene.input.MouseEvent;
  */
 public class PracticeControl {
 
-    private static final Image L_GRAY = new Image("/images/triangle_left_gray.png");
+    private static final Image U_GRAY = new Image("/images/triangle_up_gray.png");
+    private static final Image U_DIS = new Image("/images/triangle_up_disabled.png");
     private static final Image R_GRAY = new Image("/images/triangle_right_gray.png");
-    private static final Image L_DIS = new Image("/images/triangle_left_disabled.png");
     private static final Image R_DIS = new Image("/images/triangle_right_disabled.png");
-
-    private static final int IMAGE_SIZE = 50;
+    private static final Image D_GRAY = new Image("/images/triangle_down_gray.png");
+    private static final Image D_DIS = new Image("/images/triangle_down_disabled.png");
+    private static final Image L_GRAY = new Image("/images/triangle_left_gray.png");
+    private static final Image L_DIS = new Image("/images/triangle_left_disabled.png");
 
     private final ImageView imageView;
     private final ClickableLabel label;
@@ -35,13 +37,21 @@ public class PracticeControl {
     public PracticeControl(Direction direction, ImageView imageView,
             ClickableLabel label, Runnable function, boolean enable) {
         switch (direction) {
-            case LEFT:
-                imgEnabled = L_GRAY;
-                imgDisabled = L_DIS;
+            case UP:
+                imgEnabled = U_GRAY;
+                imgDisabled = U_DIS;
                 break;
             case RIGHT:
                 imgEnabled = R_GRAY;
                 imgDisabled = R_DIS;
+                break;
+            case DOWN:
+                imgEnabled = D_GRAY;
+                imgDisabled = D_DIS;
+                break;
+            case LEFT:
+                imgEnabled = L_GRAY;
+                imgDisabled = L_DIS;
                 break;
             default:
                 imgEnabled = R_GRAY;
@@ -49,8 +59,6 @@ public class PracticeControl {
         }
 
         this.imageView = imageView;
-        imageView.setFitWidth(IMAGE_SIZE);
-        imageView.setFitHeight(IMAGE_SIZE);
 
         this.label = label;
 
@@ -63,8 +71,10 @@ public class PracticeControl {
 
     public enum Direction {
 
-        LEFT,
-        RIGHT
+        UP,
+        RIGHT,
+        DOWN,
+        LEFT
     }
 
     private void action(MouseEvent event) {

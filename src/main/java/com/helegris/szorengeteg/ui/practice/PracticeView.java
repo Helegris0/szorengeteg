@@ -7,7 +7,6 @@ package com.helegris.szorengeteg.ui.practice;
 
 import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
-import com.helegris.szorengeteg.ui.SceneStyler;
 import com.helegris.szorengeteg.ui.settings.Settings;
 import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.messages.Messages;
@@ -18,14 +17,14 @@ import com.helegris.szorengeteg.ui.MediaLoader;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -74,20 +73,34 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     @FXML
     private ClickableLabel lblPlayAudio;
     @FXML
+    private ImageView imgNext;
+    @FXML
+    private ClickableLabel lblNext;
+    @FXML
+    private ImageView imgPrev;
+    @FXML
+    private ClickableLabel lblPrev;
+    @FXML
     private Label lblResult;
     @FXML
-    private Button btnNextCard;
+    private ImageView imgJump;
+    @FXML
+    private TextField txtJump;
+    @FXML
+    private Label lblJump;
+
 //    @FXML
 //    private RadioButton rdLastHelp;
 //    @FXML
 //    private RadioButton rdLastVisual;
 //    @FXML
 //    private RadioButton rdLastGaveUp;
-
     private PracticeControl pcInput;
     private PracticeControl pcHelp;
     private PracticeControl pcGiveUp;
     private PracticeControl pcPlayAudio;
+    private PracticeControl pcNext;
+    private PracticeControl pcPrev;
 
     private final PracticeSession session;
     private Card card;
@@ -101,7 +114,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     private boolean nowGaveUp;
     private boolean checked;
 
-    private final Image IMG_RIGHT_GRAY = new Image("/images/triangle_left_gray.png");
+    private final Image IMG_RIGHT_GRAY = new Image("/images/triangle_right_gray.png");
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeView(PracticeSession session) {
@@ -130,22 +143,37 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         pcPlayAudio = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgPlayAudio, lblPlayAudio,
                 this::playAudio, false);
+        pcNext = new PracticeControl(
+                PracticeControl.Direction.DOWN, imgNext, lblNext,
+                this::nextCard, true);
+        pcPrev = new PracticeControl(
+                PracticeControl.Direction.UP, imgPrev, lblPrev,
+                this::prevCard, false);
         setQuestion();
         closeIcon.setImage(new Image(CLOSE_ICON_PATH));
         closeIcon.setOnMouseClicked(this::abort);
-        btnNextCard.setOnAction(this::nextCard);
-        btnNextCard.defaultButtonProperty().bind(btnNextCard.focusedProperty());
+        imgJump.setImage(IMG_RIGHT_GRAY);
+        lblJump.setText("/" + session.getLength());
+        imgJump.setOnMouseClicked(this::jump);
+        txtJump.setOnKeyPressed((KeyEvent event) -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                jump(null);
+            }
+        });
     }
 
     private void setQuestion() {
-        hboxInput.getChildren().clear();
         lblDescription.setText(card.getDescription());
+        hboxInput.getChildren().clear();
         wordInput = new WordInputFactory().getWordInput(card.getWord(), this);
         wordInput.setVisible(false);
+        hboxInput.getChildren().add(wordInput);
         pcInput.setEnabled(true);
         pcHelp.setEnabled(false);
         pcPlayAudio.setEnabled(false);
-        hboxInput.getChildren().add(wordInput);
+        pcPrev.setEnabled(session.getIndex() > 0);
+        txtJump.setDisable(true);
+        txtJump.setText(Integer.toString(session.getIndex() + 1));
 //        rdLastHelp.setSelected(card.isLastHelp());
 //        rdLastVisual.setSelected(card.isLastVisual());
 //        rdLastGaveUp.setSelected(card.isLastGaveUp());
@@ -156,6 +184,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
 
     private void showInput() {
         wordInput.setVisible(true);
+        wordInput.requestFocus();
         pcInput.setEnabled(false);
         thread = new Thread(this);
         thread.start();
@@ -176,10 +205,9 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     public void answeredCorrectly() {
         lblResult.setText(Messages.msg("practice.correct"));
         lblResult.setTextFill(Color.web("#009600"));
-        if (!repeat && !checked) {
-            session.correctAnswer();
-        }
-        Platform.runLater(btnNextCard::requestFocus);
+//        if (!repeat && !checked) {
+//            session.correctAnswer();
+//        }
         checked(true);
     }
 
@@ -239,9 +267,8 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         if (repeat) {
             session.repeatCard();
         } else {
-            session.incorrectAnswer();
+//            session.incorrectAnswer();
         }
-        Platform.runLater(btnNextCard::requestFocus);
     }
 
     private void checked(boolean checked) {
@@ -252,7 +279,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
             pcPlayAudio.setEnabled(true);
         }
         lblResult.setVisible(checked);
-        btnNextCard.setVisible(checked);
         if (checked) {
             if (thread != null) {
                 thread.interrupt();
@@ -278,7 +304,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         }
     }
 
-    private void nextCard(ActionEvent event) {
+    private void nextCard() {
         card = session.nextCard();
         if (card != null) {
             setQuestion();
@@ -295,21 +321,50 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         }
     }
 
-    private void evaluateSession() {
-        Stage stage = (Stage) btnNextCard.getScene().getWindow();
-        PracticeEnd practiceEnd;
-
-        if (repeat) {
-            practiceEnd = new PracticeEndRepeatedView(session.getSessionCards());
-        } else {
-            practiceEnd = new PracticeEndNormalView(session.getCorrectAnswers(),
-                    session.getIncorrectAnswers());
+    private void prevCard() {
+        Card prev = session.prevCard();
+        if (prev != null) {
+            card = prev;
+            setQuestion();
+            visualHelp.setCard(card);
         }
-
-        stage.setScene(new SceneStyler().createScene(practiceEnd, SceneStyler.Style.PRACTICE));
-        stage.setMaximized(true);
     }
 
+    private void jump(MouseEvent event) {
+        if (txtJump.isDisable()) {
+            txtJump.setDisable(false);
+            txtJump.requestFocus();
+        } else {
+            try {
+                int number = Integer.parseInt(txtJump.getText());
+                if (number != session.getIndex() + 1
+                        && 0 < number && number <= session.getLength()) {
+                    card = session.jumpTo(number - 1);
+                    setQuestion();
+                    visualHelp.setCard(card);
+                } else {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException ex) {
+                txtJump.setText(Integer.toString(session.getIndex() + 1));
+            }
+        }
+    }
+
+//    private void evaluateSession() {
+//        Stage stage = (Stage) btnNextCard.getScene().getWindow();
+//        PracticeEnd practiceEnd;
+//
+//        if (repeat) {
+//            practiceEnd = new PracticeEndRepeatedView(session.getSessionCards());
+//        } else {
+//            practiceEnd = new PracticeEndNormalView(session.getCorrectAnswers(),
+//                    session.getIncorrectAnswers());
+//        }
+//
+//        stage.setScene(new SceneStyler().createScene(practiceEnd, SceneStyler.Style.PRACTICE));
+//        stage.setMaximized(true);
+//    }
     private void abort(MouseEvent event) {
         Stage stage = (Stage) this.getScene().getWindow();
         stage.close();
