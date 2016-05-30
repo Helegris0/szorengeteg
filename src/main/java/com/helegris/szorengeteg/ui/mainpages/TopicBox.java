@@ -19,6 +19,7 @@ import com.helegris.szorengeteg.ui.practice.PracticeSession;
 import com.helegris.szorengeteg.ui.practice.PracticeView;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -43,18 +44,16 @@ public class TopicBox extends Pane {
     @FXML
     private ImageView imageView;
     @FXML
-    private Label lblName;
+    private ClickableLabel lblName;
     @FXML
     private ClickableLabel lblEdit;
-    @FXML
-    private ClickableLabel lblInfo;
     @FXML
     private Label lblNumberOfWords;
     @FXML
     private Button btnPractice;
 
     private final Topic topic;
-    private boolean infoVisibility;
+    private int numOfCards;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public TopicBox(Topic topic) {
@@ -66,37 +65,50 @@ public class TopicBox extends Pane {
     @FXML
     protected void initialize() {
         setImage();
+        numOfCards = cardLoader.loadByTopic(topic).size();
         lblName.setText(topic.getName());
         lblEdit.setOnMouseClicked(this::editTopic);
-        lblInfo.setOnMouseClicked(this::toggleInfoVisibility);
-        lblNumberOfWords.setVisible(infoVisibility);
-        lblNumberOfWords.setText(Messages.msg("topicbox.allwords")
-                + cardLoader.loadByTopic(topic).size());
+        lblNumberOfWords.setText(numOfCards + " "
+                + Messages.msg("topicbox.words"));
         btnPractice.setOnAction(this::startPracticeSession);
+        imageView.setOnMouseClicked(this::startPracticeSession);
+        lblName.setOnMouseClicked(this::startPracticeSession);
     }
 
     protected void editTopic(MouseEvent event) {
         VistaNavigator.getMainView().loadContentEditTopic(topic);
     }
 
-    private void toggleInfoVisibility(MouseEvent event) {
-        infoVisibility = !infoVisibility;
-        lblNumberOfWords.setVisible(infoVisibility);
+    private void startPracticeSession() {
+        if (numOfCards > 0) {
+            Stage pStage = new Stage();
+            pStage.setScene(new SceneStyler().createScene(
+                    new PracticeView(new PracticeSession(topic)),
+                    SceneStyler.Style.PRACTICE));
+            pStage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
+            pStage.initModality(Modality.APPLICATION_MODAL);
+            pStage.setMaximized(true);
+            Stage thisStage = (Stage) this.getScene().getWindow();
+            pStage.initOwner(thisStage);
+            thisStage.hide();
+            pStage.showAndWait();
+            thisStage.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(Messages.msg("topicbox.alert.title"));
+            alert.setHeaderText(topic.getName() + " "
+                    + Messages.msg("topicbox.alert.header"));
+            alert.setContentText(Messages.msg("topicbox.alert.content"));
+            alert.showAndWait();
+        }
     }
 
     private void startPracticeSession(ActionEvent event) {
-        Stage pStage = new Stage();
-        pStage.setScene(new SceneStyler().createScene(
-                new PracticeView(new PracticeSession(topic)),
-                SceneStyler.Style.PRACTICE));
-        pStage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
-        pStage.initModality(Modality.APPLICATION_MODAL);
-        pStage.setMaximized(true);
-        Stage thisStage = (Stage) this.getScene().getWindow();
-        pStage.initOwner(thisStage);
-        thisStage.hide();
-        pStage.showAndWait();
-        thisStage.show();
+        startPracticeSession();
+    }
+
+    private void startPracticeSession(MouseEvent event) {
+        startPracticeSession();
     }
 
     private void setImage() {

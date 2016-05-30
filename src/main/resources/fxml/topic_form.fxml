@@ -13,23 +13,29 @@
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
     <VBox AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" 
           AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
-        <HBox spacing="5">
-            <Label text="%form.topic_name" />
-            <TextField fx:id="txtName" />
+        <HBox spacing="15">
+            <VBox>
+                <Label text="%form.topic_name" />
+                <TextField fx:id="txtName" />
+            </VBox>
+            <VBox>
+                <Label text="%form.topic_image" />
+                <HBox spacing="5">
+                    <ImageView fx:id="imageView" fitHeight="100" fitWidth="115" />
+                    <VBox>
+                        <Button fx:id="btnLoadImage" text="%form.browse" />
+                        <Button fx:id="btnDeleteImage" text="%form.delete" visible="false" />
+                    </VBox>
+                    <Pane HBox.hgrow="ALWAYS" />
+                </HBox>
+            </VBox>
             <Pane HBox.hgrow="ALWAYS" />
             <Button fx:id="btnDeleteTopic" text="%form.delete_topic" />
         </HBox>
-        <Label text="%form.topic_image" />
-        <HBox spacing="5">
-            <ImageView fx:id="imageView" fitHeight="100" fitWidth="115" />
-            <VBox>
-                <Button fx:id="btnLoadImage" text="%form.browse" />
-                <Button fx:id="btnDeleteImage" text="%form.delete" visible="false" />
-            </VBox>
+        <HBox>
+            <Button fx:id="btnNewWord1" text="%form.new_word" />
             <Pane HBox.hgrow="ALWAYS" />
-            <VBox alignment="BOTTOM_RIGHT">
-                <Button fx:id="btnAddWordsFromFile" text="%form.add_from_file" />
-            </VBox>
+            <Button fx:id="btnAddWordsFromFile" text="%form.add_from_file" />
         </HBox>
         <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
             <columns>
@@ -66,7 +72,7 @@
             </columns>
         </TableView>
         <HBox AnchorPane.bottomAnchor="0">
-            <Button fx:id="btnNewWord" text="%form.new_word" />
+            <Button fx:id="btnNewWord2" text="%form.new_word" />
             <Pane HBox.hgrow="ALWAYS" />
             <Button fx:id="btnSave" text="%form.save" style="-fx-font-weight: bold;" />
             <Button fx:id="btnBack" text="%form.back" />

@@ -14,7 +14,6 @@
         <MenuBar fx:id="menuBar" HBox.hgrow="ALWAYS">
             <menus>
                 <Menu fx:id="mnTopics"></Menu>
-                <Menu fx:id="mnPractice"></Menu>
                 <Menu fx:id="mnNewTopic"></Menu>
                 <Menu fx:id="mnWords"></Menu>
                 <Menu fx:id="mnSettings"></Menu>

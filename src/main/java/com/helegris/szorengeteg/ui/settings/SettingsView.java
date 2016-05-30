@@ -42,8 +42,6 @@ public class SettingsView extends AnchorPane {
     @FXML
     private CheckBox chkAskAll;
     @FXML
-    private CheckBox chkRepeat;
-    @FXML
     private ToggleGroup grpWordInput;
     @FXML
     private ToggleGroup grpWordHelp;
@@ -141,7 +139,6 @@ public class SettingsView extends AnchorPane {
         chkRandomOrder.setSelected(settings.isRandomOrder());
         nmbWordsPerSession.setValue(settings.getWordsPerSession());
         chkAskAll.setSelected(settings.isAskAll());
-        chkRepeat.setSelected(settings.isRepeatUnknownWords());
         nmbHelpSeconds.setValue(settings.getHelpSeconds());
         chkPlayAudio.setSelected(settings.isPlayAudio());
 
@@ -170,7 +167,6 @@ public class SettingsView extends AnchorPane {
         settings.setRandomOrder(chkRandomOrder.isSelected());
         settings.setWordsPerSession(nmbWordsPerSession.getValue());
         settings.setAskAll(chkAskAll.isSelected());
-        settings.setRepeatUnknownWords(chkRepeat.isSelected());
         settings.setHelpSeconds(nmbHelpSeconds.getValue());
         settings.setPlayAudio(chkPlayAudio.isSelected());
 

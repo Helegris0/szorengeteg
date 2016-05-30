@@ -116,7 +116,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     private WordInput wordInput;
     private final boolean helpSet;
     private final boolean playAudio;
-    private final boolean repeat;
     private final long sleepTime;
     private Thread thread;
     private boolean nowHelp;
@@ -130,7 +129,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         DIUtils.injectFields(this);
         helpSet = !Settings.WordHelp.NO_HELP.equals(settings.getWordHelp());
         playAudio = settings.isPlayAudio();
-        repeat = settings.isRepeatUnknownWords();
         sleepTime = settings.getHelpSeconds() * 1000;
         FXMLLoaderHelper.load(FXML, this);
         visualHelp.setCard(card);
@@ -228,9 +226,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     public void answeredCorrectly() {
         lblResult.setText(Messages.msg("practice.correct"));
         lblResult.setTextFill(Color.web("#009600"));
-//        if (!repeat && !checked) {
-//            session.correctAnswer();
-//        }
         checked(true);
     }
 
@@ -244,58 +239,55 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     @Override
     public void tryAgain(int numOfTries) {
         lblResult.setVisible(false);
-        switch (numOfTries) {
-            case 1:
-                if (helpSet && !checked) {
-                    pcHelp.setEnabled(true);
-                }
-                break;
-            case 3:
-                if (!visualHelp.isImageShown() && !checked) {
-                    pcVisual.setEnabled(true);
-                }
-                break;
-            case 5:
-                pcGiveUp.setEnabled(true);
-                break;
-        }
+        numOfTries += 1;
+        numOfTries /= 2;
+        helpStep(numOfTries);
     }
 
     @Override
     public void run() {
         try {
             Thread.sleep(sleepTime);
-            if (helpSet && !checked) {
-                pcHelp.setEnabled(true);
-            }
+            helpStep(1);
             Thread.sleep(sleepTime);
-            if (!visualHelp.isImageShown() && !checked) {
-                pcVisual.setEnabled(true);
-            }
+            helpStep(2);
             Thread.sleep(sleepTime);
-            if (!checked && !checked) {
-                pcGiveUp.setEnabled(true);
-            }
+            helpStep(3);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
     }
 
+    private void helpStep(int step) {
+        switch (step) {
+            case 1:
+                if (helpSet && !checked) {
+                    pcHelp.setEnabled(true);
+                }
+                break;
+            case 2:
+                if (!visualHelp.isImageShown() && !checked) {
+                    pcVisual.setEnabled(true);
+                }
+                break;
+            case 3:
+                if (!checked) {
+                    pcGiveUp.setEnabled(true);
+                }
+                break;
+        }
+    }
+
     private void showExpectedWord() {
-//        lblResult.setText(Messages.msg("practice.expected") + " "
-//                + card.getWord().toUpperCase());
-//        lblResult.setTextFill(Color.web("#ff0000"));
         wordInput.revealWord();
         lblResult.setText("");
-        if (repeat) {
-            session.repeatCard();
-        } else {
-//            session.incorrectAnswer();
-        }
     }
 
     private void checked(boolean checked) {
         this.checked = checked;
+        if (thread != null) {
+            thread.interrupt();
+        }
         pcGiveUp.setEnabled(false);
         pcHelp.setEnabled(false);
         pcVisual.setEnabled(false);
@@ -304,9 +296,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         }
         lblResult.setVisible(checked);
         if (checked) {
-            if (thread != null) {
-                thread.interrupt();
-            }
             card.setLastHelp(nowHelp);
             card.setLastVisual(visualHelp.isImageShown());
             card.setLastGaveUp(nowGaveUp);
@@ -371,20 +360,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         }
     }
 
-//    private void evaluateSession() {
-//        Stage stage = (Stage) btnNextCard.getScene().getWindow();
-//        PracticeEnd practiceEnd;
-//
-//        if (repeat) {
-//            practiceEnd = new PracticeEndRepeatedView(session.getSessionCards());
-//        } else {
-//            practiceEnd = new PracticeEndNormalView(session.getCorrectAnswers(),
-//                    session.getIncorrectAnswers());
-//        }
-//
-//        stage.setScene(new SceneStyler().createScene(practiceEnd, SceneStyler.Style.PRACTICE));
-//        stage.setMaximized(true);
-//    }
     private void abort(MouseEvent event) {
         Stage stage = (Stage) this.getScene().getWindow();
         stage.close();

@@ -8,7 +8,6 @@ package com.helegris.szorengeteg.ui.mainpages;
 import com.helegris.szorengeteg.ui.forms.NewTopicView;
 import com.helegris.szorengeteg.ui.forms.WordsFormView;
 import com.helegris.szorengeteg.ui.forms.EditTopicView;
-import com.helegris.szorengeteg.ui.practice.PracticeAllStartView;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.settings.SettingsView;
 import com.helegris.szorengeteg.messages.Messages;
@@ -31,7 +30,6 @@ public class MainView extends AnchorPane {
     public static final String FXML = "fxml/main.fxml";
 
     public static final String TOPICS_TITLE = Messages.msg("menu.topics");
-    public static final String PRACTICE_TITLE = Messages.msg("practice");
     public static final String NEW_TOPIC_TITLE = Messages.msg("menu.new_topic");
     public static final String EDIT_TOPIC_TITLE = Messages.msg("menu.edit_topic");
     public static final String WORDS_TITLE = Messages.msg("menu.words");
@@ -40,8 +38,6 @@ public class MainView extends AnchorPane {
 
     @FXML
     private Menu mnTopics;
-    @FXML
-    private Menu mnPractice;
     @FXML
     private Menu mnNewTopic;
     @FXML
@@ -73,10 +69,6 @@ public class MainView extends AnchorPane {
         label.setOnMouseClicked(event -> loadContentTopics());
         initMenuLabel(mnTopics, label);
 
-        label = new Label(PRACTICE_TITLE);
-        label.setOnMouseClicked(event -> loadContentPractice());
-        initMenuLabel(mnPractice, label);
-
         label = new Label(NEW_TOPIC_TITLE);
         label.setOnMouseClicked(event -> loadContentNewTopic());
         initMenuLabel(mnNewTopic, label);
@@ -106,10 +98,6 @@ public class MainView extends AnchorPane {
 
     public void loadContentTopics() {
         loadContent(TOPICS_TITLE, new TopicsView());
-    }
-
-    public void loadContentPractice() {
-        loadContent(PRACTICE_TITLE, new PracticeAllStartView());
     }
 
     public void loadContentNewTopic() {

@@ -21,7 +21,6 @@ public class Settings {
     private final String KEY_RANDOM_ORDER = "random_order";
     private final String KEY_WORDS_PER_SESSION = "words_per_session";
     private final String KEY_ASK_ALL = "ask_all";
-    private final String KEY_REPEAT_UNKNOWN_WORDS = "repeat_unknown_words";
     private final String KEY_WORD_INPUT = "word_input";
     private final String KEY_WORD_HELP = "word_help";
     private final String KEY_HELP_SECONDS = "help_seconds";
@@ -85,15 +84,6 @@ public class Settings {
 
     public void setAskAll(boolean arg) {
         prefs.putBoolean(KEY_ASK_ALL, arg);
-    }
-
-    public boolean isRepeatUnknownWords() {
-        boolean def = false;
-        return prefs.getBoolean(KEY_REPEAT_UNKNOWN_WORDS, def);
-    }
-
-    public void setRepeatUnknownWords(boolean arg) {
-        prefs.putBoolean(KEY_REPEAT_UNKNOWN_WORDS, arg);
     }
 
     public WordInput getWordInput() {

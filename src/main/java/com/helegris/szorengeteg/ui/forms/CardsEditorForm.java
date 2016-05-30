@@ -51,6 +51,10 @@ public abstract class CardsEditorForm extends AnchorPane {
     protected TopicLoader topicLoader;
 
     @FXML
+    protected Button btnNewWord1;
+    @FXML
+    protected Button btnNewWord2;
+    @FXML
     protected Button btnAddWordsFromFile;
     @FXML
     protected TableView<RowForCard> tableView;
@@ -62,8 +66,6 @@ public abstract class CardsEditorForm extends AnchorPane {
     protected TableColumn colWord;
     @FXML
     protected TableColumn colDescription;
-    @FXML
-    protected Button btnNewWord;
     @FXML
     protected Button btnSave;
     @FXML
@@ -127,7 +129,8 @@ public abstract class CardsEditorForm extends AnchorPane {
     private void setEvents() {
         btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
         tableView.setOnMouseClicked(this::tableClick);
-        btnNewWord.setOnAction(this::addRow);
+        btnNewWord1.setOnAction(this::addRow);
+        btnNewWord2.setOnAction(this::addRow);
         btnBack.setOnAction(this::goBack);
     }
 

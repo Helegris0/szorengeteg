@@ -12,10 +12,11 @@
          xmlns="http://javafx.com/javafx/8">
     <VBox AnchorPane.topAnchor="0" AnchorPane.rightAnchor="0" 
           AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0">
-        <Pane HBox.hgrow="ALWAYS" />
-        <VBox alignment="BOTTOM_RIGHT">
+        <HBox>
+            <Button fx:id="btnNewWord1" text="%form.new_word" />
+            <Pane HBox.hgrow="ALWAYS" />
             <Button fx:id="btnAddWordsFromFile" text="%form.add_from_file" />
-        </VBox>
+        </HBox>
         <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
             <columns>
                 <TableColumn fx:id="colImage" text="%form.image" prefWidth="50.0" sortable="false" resizable="false">
@@ -51,7 +52,7 @@
             </columns>
         </TableView>
         <HBox AnchorPane.bottomAnchor="0">
-            <Button fx:id="btnNewWord" text="%form.new_word" />
+            <Button fx:id="btnNewWord2" text="%form.new_word" />
             <Pane HBox.hgrow="ALWAYS" />
             <Button fx:id="btnSave" text="%form.save" style="-fx-font-weight: bold;" />
             <Button fx:id="btnBack" text="%form.back" />

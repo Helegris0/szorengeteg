@@ -21,7 +21,6 @@
         <Label fx:id="lblWordsPerSession" text="%settings.words_per_session" />
         <NumberSpinner fx:id="nmbWordsPerSession" />
         <CheckBox fx:id="chkAskAll" text="%settings.ask_all" />
-        <CheckBox fx:id="chkRepeat" text="%settings.repeat_unknown_words" />
         <Label text="%settings.word_input" />
         <RadioButton fx:id="rdOneField" text="%settings.one_field" toggleGroup="$grpWordInput" />
         <RadioButton fx:id="rdCharFields" text="%settings.char_fields" toggleGroup="$grpWordInput" />
