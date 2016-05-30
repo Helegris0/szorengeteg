@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -55,6 +54,10 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     @FXML
     private Label lblDescription;
     @FXML
+    private ImageView imgVisual;
+    @FXML
+    private ClickableLabel lblVisual;
+    @FXML
     private HBox hboxInput;
     @FXML
     private ImageView imgInput;
@@ -73,6 +76,10 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     @FXML
     private ClickableLabel lblPlayAudio;
     @FXML
+    private Label lblResult;
+    @FXML
+    private Label lblLast;
+    @FXML
     private ImageView imgNext;
     @FXML
     private ClickableLabel lblNext;
@@ -81,13 +88,13 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     @FXML
     private ClickableLabel lblPrev;
     @FXML
-    private Label lblResult;
+    private ClickableLabel lblJump;
     @FXML
     private ImageView imgJump;
     @FXML
     private TextField txtJump;
     @FXML
-    private Label lblJump;
+    private Label lblSum;
 
 //    @FXML
 //    private RadioButton rdLastHelp;
@@ -97,10 +104,12 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
 //    private RadioButton rdLastGaveUp;
     private PracticeControl pcInput;
     private PracticeControl pcHelp;
+    private PracticeControl pcVisual;
     private PracticeControl pcGiveUp;
     private PracticeControl pcPlayAudio;
     private PracticeControl pcNext;
     private PracticeControl pcPrev;
+    private PracticeControl pcJump;
 
     private final PracticeSession session;
     private Card card;
@@ -113,8 +122,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     private boolean nowHelp;
     private boolean nowGaveUp;
     private boolean checked;
-
-    private final Image IMG_RIGHT_GRAY = new Image("/images/triangle_right_gray.png");
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeView(PracticeSession session) {
@@ -137,6 +144,9 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         pcHelp = new PracticeControl(
                 PracticeControl.Direction.LEFT, imgHelp, lblHelp,
                 this::help, false);
+        pcVisual = new PracticeControl(
+                PracticeControl.Direction.UP, imgVisual, lblVisual,
+                this::showImage, false);
         pcGiveUp = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgGiveUp, lblGiveUp,
                 this::giveUp, false);
@@ -149,15 +159,16 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         pcPrev = new PracticeControl(
                 PracticeControl.Direction.UP, imgPrev, lblPrev,
                 this::prevCard, false);
+        pcJump = new PracticeControl(
+                PracticeControl.Direction.RIGHT, imgJump, lblJump,
+                this::jump, true);
         setQuestion();
         closeIcon.setImage(new Image(CLOSE_ICON_PATH));
         closeIcon.setOnMouseClicked(this::abort);
-        imgJump.setImage(IMG_RIGHT_GRAY);
-        lblJump.setText("/" + session.getLength());
-        imgJump.setOnMouseClicked(this::jump);
+        lblSum.setText("/" + session.getLength());
         txtJump.setOnKeyPressed((KeyEvent event) -> {
             if (event.getCode() == KeyCode.ENTER) {
-                jump(null);
+                jump();
             }
         });
     }
@@ -174,6 +185,13 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         pcPrev.setEnabled(session.getIndex() > 0);
         txtJump.setDisable(true);
         txtJump.setText(Integer.toString(session.getIndex() + 1));
+        if (session.getIndex() == session.getLength() - 1) {
+            lblNext.setText(Messages.msg("practice.end"));
+            lblLast.setVisible(true);
+        } else {
+            lblNext.setText(Messages.msg("practice.next"));
+            lblLast.setVisible(false);
+        }
 //        rdLastHelp.setSelected(card.isLastHelp());
 //        rdLastVisual.setSelected(card.isLastVisual());
 //        rdLastGaveUp.setSelected(card.isLastGaveUp());
@@ -188,6 +206,11 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         pcInput.setEnabled(false);
         thread = new Thread(this);
         thread.start();
+    }
+
+    private void showImage() {
+        visualHelp.showImage(null);
+        pcVisual.setEnabled(false);
     }
 
     private void giveUp() {
@@ -223,13 +246,13 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         lblResult.setVisible(false);
         switch (numOfTries) {
             case 1:
-                if (helpSet) {
+                if (helpSet && !checked) {
                     pcHelp.setEnabled(true);
                 }
                 break;
             case 3:
-                if (!visualHelp.isImageShown()) {
-                    visualHelp.provideHelp();
+                if (!visualHelp.isImageShown() && !checked) {
+                    pcVisual.setEnabled(true);
                 }
                 break;
             case 5:
@@ -247,10 +270,10 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
             }
             Thread.sleep(sleepTime);
             if (!visualHelp.isImageShown() && !checked) {
-                visualHelp.provideHelp();
+                pcVisual.setEnabled(true);
             }
             Thread.sleep(sleepTime);
-            if (!checked) {
+            if (!checked && !checked) {
                 pcGiveUp.setEnabled(true);
             }
         } catch (InterruptedException ex) {
@@ -275,6 +298,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         this.checked = checked;
         pcGiveUp.setEnabled(false);
         pcHelp.setEnabled(false);
+        pcVisual.setEnabled(false);
         if (checked && card.getAudio() != null) {
             pcPlayAudio.setEnabled(true);
         }
@@ -290,6 +314,9 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
             if (playAudio) {
                 playAudio();
             }
+            lblNext.setStyle("-fx-font-weight: bold");
+        } else {
+            lblNext.setStyle("-fx-font-weight: regular");
         }
     }
 
@@ -310,14 +337,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
             setQuestion();
             visualHelp.setCard(card);
         } else {
-//            evaluateSession();
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle(Messages.msg("practice.end"));
-            alert.setHeaderText(Messages.msg("practice.end"));
-            alert.setContentText(Messages.msg("practice.end_content"));
-            alert.showAndWait();
-
-            ((Stage) this.getScene().getWindow()).close();
+            abort(null);
         }
     }
 
@@ -330,7 +350,7 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         }
     }
 
-    private void jump(MouseEvent event) {
+    private void jump() {
         if (txtJump.isDisable()) {
             txtJump.setDisable(false);
             txtJump.requestFocus();

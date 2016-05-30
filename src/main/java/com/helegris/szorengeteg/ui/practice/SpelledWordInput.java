@@ -156,6 +156,7 @@ public class SpelledWordInput extends WordInput {
         if (input.length() == expected.length()) {
             if (input.equals(expected)) {
                 listener.answeredCorrectly();
+                disable();
             } else {
                 listener.answeredIncorrectly();
                 full = true;
@@ -218,6 +219,11 @@ public class SpelledWordInput extends WordInput {
         for (int i = 0; i < fields.size(); i++) {
             fields.get(i).setText(word.substring(i, i + 1));
         }
+        disable();
+    }
+
+    private void disable() {
+        fields.stream().forEach(field -> field.setDisable(true));
     }
 
     public List<TextField> getFields() {

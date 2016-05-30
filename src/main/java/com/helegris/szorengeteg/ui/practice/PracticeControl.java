@@ -59,8 +59,18 @@ public class PracticeControl {
         }
 
         this.imageView = imageView;
-
         this.label = label;
+
+        imageView.setOnMouseEntered(e -> {
+            if (enabled) {
+                label.setUnderline(true);
+            }
+        });
+        imageView.setOnMouseExited(e -> {
+            if (enabled) {
+                label.setUnderline(false);
+            }
+        });
 
         this.function = function;
         imageView.setOnMouseClicked(this::action);

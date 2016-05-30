@@ -18,47 +18,56 @@
     <CloseIcon fx:id="closeIcon" AnchorPane.rightAnchor="0"
                fitWidth="64" fitHeight="64" />
     <VBox AnchorPane.topAnchor="15" AnchorPane.leftAnchor="15"
-          AnchorPane.rightAnchor="65" spacing="15">
+          AnchorPane.rightAnchor="65" spacing="10">
         <HBox spacing="5" alignment="CENTER_LEFT">
             <VisualHelp fx:id="visualHelp" fitWidth="300" fitHeight="260"
                         pickOnBounds="true" preserveRatio="true" />
             <Label fx:id="lblDescription" wrapText="true"
                    style="-fx-font-size: 28pt;" />
         </HBox>
+        <HBox spacing="5" alignment="CENTER_LEFT">
+            <ImageView fx:id="imgVisual" fitWidth="40" fitHeight="40" />
+            <ClickableLabel fx:id="lblVisual" text="%practice.visual_help" />
+        </HBox>
         <HBox spacing="15">
             <HBox fx:id="hboxInput" />
-            <VBox>
+            <VBox spacing="-10">
                 <HBox spacing="5" alignment="CENTER_LEFT" prefHeight="70">
-                    <ImageView fx:id="imgInput" fitWidth="50" fitHeight="50" />
+                    <ImageView fx:id="imgInput" fitWidth="40" fitHeight="40" />
                     <ClickableLabel fx:id="lblInput" text="%practice.word_input" />
                 </HBox>
                 <HBox spacing="5" alignment="CENTER_LEFT">
-                    <ImageView fx:id="imgHelp" fitWidth="50" fitHeight="50" />
+                    <ImageView fx:id="imgHelp" fitWidth="40" fitHeight="40" />
                     <ClickableLabel fx:id="lblHelp" text="%practice.help" />
                 </HBox>
             </VBox>
         </HBox>
-        <VBox spacing="-10">
-            <HBox spacing="5" alignment="CENTER_LEFT" prefHeight="70">
-                <ImageView fx:id="imgGiveUp" fitWidth="50" fitHeight="50" />
+        <VBox>
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <ImageView fx:id="imgGiveUp" fitWidth="40" fitHeight="40" />
                 <ClickableLabel fx:id="lblGiveUp" text="%practice.give_up" />
             </HBox>
-            <HBox spacing="5" alignment="CENTER_LEFT" prefHeight="70">
-                <ImageView fx:id="imgPlayAudio" fitWidth="50" fitHeight="50" />
+            <HBox spacing="5" alignment="CENTER_LEFT">
+                <ImageView fx:id="imgPlayAudio" fitWidth="40" fitHeight="40" />
                 <ClickableLabel fx:id="lblPlayAudio" text="%practice.play_audio" />
             </HBox>
         </VBox>
-        <Label fx:id="lblResult" visible="false" />
-        <HBox spacing="5">
-            <ImageView fx:id="imgNext" fitWidth="50" fitHeight="50" />
+        <HBox>
+            <Label fx:id="lblResult" visible="false" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblLast" text="%practice.last" visible="false" />
+        </HBox>
+        <HBox spacing="5" alignment="CENTER_LEFT">
+            <ImageView fx:id="imgNext" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblNext" text="%practice.next" />
-            <ImageView fx:id="imgPrev" fitWidth="50" fitHeight="50" />
+            <ImageView fx:id="imgPrev" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblPrev" text="%practice.prev" />
             <Pane HBox.hgrow="ALWAYS" />
-            <ImageView fx:id="imgJump" fitWidth="50" fitHeight="50" />
+            <ClickableLabel fx:id="lblJump" text="%practice.jump" />
+            <ImageView fx:id="imgJump" fitWidth="40" fitHeight="40" />
             <TextField fx:id="txtJump" prefWidth="70" prefHeight="50"
                        style="-fx-font-size: 24;" />
-            <Label fx:id="lblJump" />
+            <Label fx:id="lblSum" />
         </HBox>
     </VBox>
 </fx:root>
