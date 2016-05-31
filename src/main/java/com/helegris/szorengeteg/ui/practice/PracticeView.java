@@ -96,12 +96,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     @FXML
     private Label lblSum;
 
-//    @FXML
-//    private RadioButton rdLastHelp;
-//    @FXML
-//    private RadioButton rdLastVisual;
-//    @FXML
-//    private RadioButton rdLastGaveUp;
     private PracticeControl pcInput;
     private PracticeControl pcHelp;
     private PracticeControl pcVisual;
@@ -138,28 +132,28 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
     public void initialize() {
         pcInput = new PracticeControl(
                 PracticeControl.Direction.LEFT, imgInput, lblInput,
-                this::showInput, true);
+                this::showInput, true, false);
         pcHelp = new PracticeControl(
                 PracticeControl.Direction.LEFT, imgHelp, lblHelp,
-                this::help, false);
+                this::help, false, card.isLastHelp());
         pcVisual = new PracticeControl(
                 PracticeControl.Direction.UP, imgVisual, lblVisual,
-                this::showImage, false);
+                this::showImage, false, card.isLastVisual());
         pcGiveUp = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgGiveUp, lblGiveUp,
-                this::giveUp, false);
+                this::giveUp, false, card.isLastGaveUp());
         pcPlayAudio = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgPlayAudio, lblPlayAudio,
-                this::playAudio, false);
+                this::playAudio, false, false);
         pcNext = new PracticeControl(
                 PracticeControl.Direction.DOWN, imgNext, lblNext,
-                this::nextCard, true);
+                this::nextCard, true, false);
         pcPrev = new PracticeControl(
                 PracticeControl.Direction.UP, imgPrev, lblPrev,
-                this::prevCard, false);
+                this::prevCard, false, false);
         pcJump = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgJump, lblJump,
-                this::jump, true);
+                this::jump, true, false);
         setQuestion();
         closeIcon.setImage(new Image(CLOSE_ICON_PATH));
         closeIcon.setOnMouseClicked(this::abort);
@@ -167,6 +161,11 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         txtJump.setOnKeyPressed((KeyEvent event) -> {
             if (event.getCode() == KeyCode.ENTER) {
                 jump();
+            }
+        });
+        this.setOnKeyPressed((KeyEvent event) -> {
+            if (checked && event.getCode().equals(KeyCode.ENTER)) {
+                nextCard();
             }
         });
     }
@@ -177,6 +176,9 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
         wordInput = new WordInputFactory().getWordInput(card.getWord(), this);
         wordInput.setVisible(false);
         hboxInput.getChildren().add(wordInput);
+        pcHelp.updateSpecial(card.isLastHelp());
+        pcVisual.updateSpecial(card.isLastVisual());
+        pcGiveUp.updateSpecial(card.isLastGaveUp());
         pcInput.setEnabled(true);
         pcHelp.setEnabled(false);
         pcPlayAudio.setEnabled(false);
@@ -190,9 +192,6 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
             lblNext.setText(Messages.msg("practice.next"));
             lblLast.setVisible(false);
         }
-//        rdLastHelp.setSelected(card.isLastHelp());
-//        rdLastVisual.setSelected(card.isLastVisual());
-//        rdLastGaveUp.setSelected(card.isLastGaveUp());
         nowHelp = false;
         nowGaveUp = false;
         checked(false);
@@ -304,6 +303,8 @@ public class PracticeView extends AnchorPane implements WordInputListener, Runna
                 playAudio();
             }
             lblNext.setStyle("-fx-font-weight: bold");
+            lblNext.setFocusTraversable(true);
+            lblNext.requestFocus();
         } else {
             lblNext.setStyle("-fx-font-weight: regular");
         }

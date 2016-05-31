@@ -223,7 +223,10 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void disable() {
-        fields.stream().forEach(field -> field.setDisable(true));
+        fields.stream().forEach(field -> {
+            field.setDisable(true);
+            field.setStyle("-fx-opacity: 1.0;");
+        });
     }
 
     public List<TextField> getFields() {

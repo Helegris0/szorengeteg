@@ -65,6 +65,8 @@ public class SimpleWordInput extends WordInput {
     @Override
     public void revealWord() {
         field.setText(word);
+        field.setDisable(true);
+        field.setStyle("-fx-opacity: 1.0;");
     }
 
     public String getFieldText() {
