@@ -50,8 +50,6 @@ public class SettingsView extends AnchorPane {
     @FXML
     private Button btnBack;
     @FXML
-    private NumberSpinner nmbHelpSeconds;
-    @FXML
     private CheckBox chkPlayAudio;
 
     private final Map<RadioButton, Settings.WordInput> wordInputRadios
@@ -139,7 +137,6 @@ public class SettingsView extends AnchorPane {
         chkRandomOrder.setSelected(settings.isRandomOrder());
         nmbWordsPerSession.setValue(settings.getWordsPerSession());
         chkAskAll.setSelected(settings.isAskAll());
-        nmbHelpSeconds.setValue(settings.getHelpSeconds());
         chkPlayAudio.setSelected(settings.isPlayAudio());
 
         setDisable();
@@ -167,7 +164,6 @@ public class SettingsView extends AnchorPane {
         settings.setRandomOrder(chkRandomOrder.isSelected());
         settings.setWordsPerSession(nmbWordsPerSession.getValue());
         settings.setAskAll(chkAskAll.isSelected());
-        settings.setHelpSeconds(nmbHelpSeconds.getValue());
         settings.setPlayAudio(chkPlayAudio.isSelected());
 
         RadioButton selectedInput = (RadioButton) grpWordInput.getSelectedToggle();

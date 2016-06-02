@@ -41,32 +41,27 @@
                 </HBox>
             </VBox>
         </HBox>
-        <VBox>
-            <HBox spacing="5" alignment="CENTER_LEFT">
-                <ImageView fx:id="imgGiveUp" fitWidth="40" fitHeight="40" />
-                <ClickableLabel fx:id="lblGiveUp" text="%practice.give_up" />
-            </HBox>
-            <HBox spacing="5" alignment="CENTER_LEFT">
-                <ImageView fx:id="imgPlayAudio" fitWidth="40" fitHeight="40" />
-                <ClickableLabel fx:id="lblPlayAudio" text="%practice.play_audio" />
-            </HBox>
-        </VBox>
-        <HBox>
-            <Label fx:id="lblResult" visible="false" />
+        <HBox spacing="10">
+            <VBox>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <ImageView fx:id="imgGiveUp" fitWidth="40" fitHeight="40" />
+                    <ClickableLabel fx:id="lblGiveUp" text="%practice.give_up"
+                                    minWidth="300" />
+                </HBox>
+                <HBox spacing="5" alignment="CENTER_LEFT">
+                    <ImageView fx:id="imgPlayAudio" fitWidth="40" fitHeight="40" />
+                    <ClickableLabel fx:id="lblPlayAudio" text="%practice.play_audio" />
+                </HBox>
+            </VBox>
             <Pane HBox.hgrow="ALWAYS" />
-            <Label fx:id="lblLast" text="%practice.last" visible="false" />
+            <Label fx:id="lblLast" text="%practice.last" wrapText="true" 
+                   visible="false" />
         </HBox>
         <HBox spacing="5" alignment="CENTER_LEFT">
             <ImageView fx:id="imgNext" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblNext" text="%practice.next" />
             <ImageView fx:id="imgPrev" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblPrev" text="%practice.prev" />
-            <Pane HBox.hgrow="ALWAYS" />
-            <ClickableLabel fx:id="lblJump" text="%practice.jump" />
-            <ImageView fx:id="imgJump" fitWidth="40" fitHeight="40" />
-            <TextField fx:id="txtJump" prefWidth="70" prefHeight="50"
-                       style="-fx-font-size: 24;" />
-            <Label fx:id="lblSum" />
         </HBox>
     </VBox>
 </fx:root>

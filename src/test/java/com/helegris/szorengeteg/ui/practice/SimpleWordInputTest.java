@@ -30,19 +30,7 @@ public class SimpleWordInputTest {
     private Settings.WordInput originalInputSetting;
     private Settings.WordHelp originalHelpSetting;
 
-    private final WordInputListener listener = new WordInputListener() {
-
-        @Override
-        public void answeredCorrectly() {
-        }
-
-        @Override
-        public void answeredIncorrectly() {
-        }
-
-        @Override
-        public void tryAgain(int numOfTries) {
-        }
+    private final WordInputListener listener = () -> {
     };
     private SimpleWordInput input;
 

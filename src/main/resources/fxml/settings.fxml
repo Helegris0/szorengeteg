@@ -30,8 +30,6 @@
         <RadioButton fx:id="rdFirstTwoChars" text="%settings.first_two_chars" toggleGroup="$grpWordHelp" />
         <RadioButton fx:id="rdFirstAndLastChar" text="%settings.first_and_last_char" toggleGroup="$grpWordHelp" />
         <RadioButton fx:id="rdVowels" text="%settings.vowels" toggleGroup="$grpWordHelp" />
-        <Label fx:id="lblHelpSeconds" text="%settings.help_seconds" />
-        <NumberSpinner fx:id="nmbHelpSeconds" />
         <CheckBox fx:id="chkPlayAudio" text="%settings.play_audio" />
         <HBox>
             <Button fx:id="btnSave" text="%form.save" style="-fx-font-weight: bold;" />

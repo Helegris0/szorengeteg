@@ -11,9 +11,5 @@ package com.helegris.szorengeteg.ui.practice;
  */
 public interface WordInputListener {
 
-    public void answeredCorrectly();
-
-    public void answeredIncorrectly();
-
-    public void tryAgain(int numOfTries);
+    public void fullInput();
 }

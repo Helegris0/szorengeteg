@@ -23,7 +23,6 @@ public class Settings {
     private final String KEY_ASK_ALL = "ask_all";
     private final String KEY_WORD_INPUT = "word_input";
     private final String KEY_WORD_HELP = "word_help";
-    private final String KEY_HELP_SECONDS = "help_seconds";
     private final String KEY_PLAY_AUDIO = "play_audio";
 
     public enum WordInput {
@@ -118,15 +117,6 @@ public class Settings {
         if (arg.wordInputs.contains(getWordInput())) {
             prefs.put(KEY_WORD_HELP, arg.value);
         }
-    }
-
-    public int getHelpSeconds() {
-        int def = 10;
-        return prefs.getInt(KEY_HELP_SECONDS, def);
-    }
-
-    public void setHelpSeconds(int arg) {
-        prefs.putInt(KEY_HELP_SECONDS, arg);
     }
 
     public boolean isPlayAudio() {

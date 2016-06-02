@@ -36,85 +36,66 @@ public class PracticeControl {
     private final ImageView imageView;
     private final ClickableLabel label;
 
-    private Image imgEnabled;
-    private Image imgDisabled;
+    private final Image image;
+    private final Image imageUsed;
+    private final Image imageDisabled;
+    private final Image imageUsedDisabled;
 
-    private final Direction direction;
     private final Runnable function;
+
+    private boolean used;
     private boolean enabled;
 
     public PracticeControl(Direction direction, ImageView imageView,
-            ClickableLabel label, Runnable function, boolean enable, boolean special) {
-        this.direction = direction;
-        updateSpecial(special);
-
+            ClickableLabel label, Runnable function) {
         this.imageView = imageView;
         this.label = label;
+
+        switch (direction) {
+            case UP:
+                image = U_GRAY;
+                imageUsed = U_RED;
+                imageDisabled = U_GRAY_DIS;
+                imageUsedDisabled = U_RED_DIS;
+                break;
+            case RIGHT:
+                image = R_GRAY;
+                imageUsed = R_RED;
+                imageDisabled = R_GRAY_DIS;
+                imageUsedDisabled = R_RED_DIS;
+                break;
+            case DOWN:
+                image = D_GRAY;
+                imageUsed = D_RED;
+                imageDisabled = D_GRAY_DIS;
+                imageUsedDisabled = D_RED_DIS;
+                break;
+            case LEFT:
+                image = L_GRAY;
+                imageUsed = L_RED;
+                imageDisabled = L_GRAY_DIS;
+                imageUsedDisabled = L_RED_DIS;
+                break;
+            default:
+                image = R_GRAY;
+                imageUsed = R_RED;
+                imageDisabled = R_GRAY_DIS;
+                imageUsedDisabled = R_RED_DIS;
+        }
 
         imageView.setOnMouseEntered(e -> {
             if (enabled) {
                 label.setUnderline(true);
             }
         });
-        imageView.setOnMouseExited(e -> {
-            if (enabled) {
-                label.setUnderline(false);
-            }
-        });
+        imageView.setOnMouseExited(e -> label.setUnderline(false));
 
         this.function = function;
         imageView.setOnMouseClicked(this::action);
         label.setOnMouseClicked(this::action);
+        label.setStyle("-fx-opacity: 1.0;");
 
-        setEnabled(enable);
-    }
-
-    public void updateSpecial(boolean special) {
-        if (special) {
-            switch (direction) {
-                case UP:
-                    imgEnabled = U_RED;
-                    imgDisabled = U_RED_DIS;
-                    break;
-                case RIGHT:
-                    imgEnabled = R_RED;
-                    imgDisabled = R_RED_DIS;
-                    break;
-                case DOWN:
-                    imgEnabled = D_RED;
-                    imgDisabled = D_RED_DIS;
-                    break;
-                case LEFT:
-                    imgEnabled = L_RED;
-                    imgDisabled = L_RED_DIS;
-                    break;
-                default:
-                    imgEnabled = R_RED;
-                    imgDisabled = R_RED_DIS;
-            }
-        } else {
-            switch (direction) {
-                case UP:
-                    imgEnabled = U_GRAY;
-                    imgDisabled = U_GRAY_DIS;
-                    break;
-                case RIGHT:
-                    imgEnabled = R_GRAY;
-                    imgDisabled = R_GRAY_DIS;
-                    break;
-                case DOWN:
-                    imgEnabled = D_GRAY;
-                    imgDisabled = D_GRAY_DIS;
-                    break;
-                case LEFT:
-                    imgEnabled = L_GRAY;
-                    imgDisabled = L_GRAY_DIS;
-                    break;
-                default:
-                    imgEnabled = R_GRAY;
-                    imgDisabled = R_GRAY_DIS;
-            }
-        }
+        setEnabled(true);
     }
 
     public enum Direction {
@@ -131,10 +112,32 @@ public class PracticeControl {
         }
     }
 
+    private void updateImage() {
+        if (enabled) {
+            imageView.setImage(used ? imageUsed : image);
+        } else {
+            imageView.setImage(used ? imageUsedDisabled : imageDisabled);
+        }
+    }
+
+    public void use() {
+        used = true;
+        setEnabled(false);
+    }
+
+    public void setUsed(boolean used) {
+        this.used = used;
+        updateImage();
+    }
+
     public final void setEnabled(boolean enabled) {
         this.enabled = enabled;
-        Image image = enabled ? imgEnabled : imgDisabled;
-        imageView.setImage(image);
-        label.setDisable(!enabled);
+        this.label.setDisable(!enabled);
+        updateImage();
+    }
+
+    public void setVisible(boolean visible) {
+        imageView.setVisible(visible);
+        label.setVisible(visible);
     }
 }

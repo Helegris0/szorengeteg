@@ -38,7 +38,7 @@ public class SimpleWordInput extends WordInput {
 
         if (!"".equals(input)) {
             if (input.toLowerCase().equals(word.toLowerCase())) {
-                listener.answeredCorrectly();
+                listener.fullInput();
             }
         }
     }

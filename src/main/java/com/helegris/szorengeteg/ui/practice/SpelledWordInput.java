@@ -23,16 +23,15 @@ import javafx.scene.layout.Pane;
 public class SpelledWordInput extends WordInput {
 
     private static final int FIELD_WIDTH = 70;
+    private static final String vowels = "AÁEÉIÍOÓÖŐÜŰ";
 
     private final List<TextField> fields = new ArrayList<>();
 
-    private final String vowels = "AÁEÉIÍOÓÖŐÜŰ";
-
-    private boolean full;
-    private int numOfTries;
+    private final String expectedInput;
 
     public SpelledWordInput(String word, WordInputListener listener) {
         super(word, listener);
+        expectedInput = word.toUpperCase().replaceAll(" +", "");
         setFields();
     }
 
@@ -99,23 +98,26 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void handleTextChange(TextField field, Control nextControl) {
+        int index = fields.indexOf(field);
+        String expectedLetter = expectedInput.substring(index, index + 1);
+
         field.textProperty().addListener((ov, oldValue, newValue) -> {
-            if (" ".equals(newValue)) {
-                field.setText("");
+            if (oldValue.equals(expectedLetter)) {
+                field.setText(oldValue);
             } else if (!"".equals(newValue)) {
-                if (nextControl != null) {
-                    nextControl.requestFocus();
+                newValue = newValue.substring(0, 1).toUpperCase();
+                if (newValue.equals(expectedLetter)) {
+                    if (nextControl != null) {
+                        nextControl.requestFocus();
+                    } else {
+                        Platform.runLater(() -> field.selectAll());
+                    }
+                    field.setText(newValue);
                 } else {
-                    Platform.runLater(() -> field.selectAll());
+                    field.setText("");
                 }
-                field.setText(newValue.substring(0, 1).toUpperCase());
+                check();
             }
-            if (full) {
-                full = false;
-                numOfTries++;
-                listener.tryAgain(numOfTries);
-            }
-            check();
         });
     }
 
@@ -133,7 +135,6 @@ public class SpelledWordInput extends WordInput {
                 previousField.requestFocus();
             } else if (event.getCode() == KeyCode.BACK_SPACE
                     || event.getCode() == KeyCode.DELETE) {
-                field.setText("");
                 previousField.requestFocus();
             }
         });
@@ -146,21 +147,14 @@ public class SpelledWordInput extends WordInput {
 
     @Override
     protected void check() {
-        String expected = word.toLowerCase().replaceAll(" +", "");
         String input = "";
         input = fields.stream()
                 .map(field -> field.getText())
-                .reduce(input, String::concat)
-                .toLowerCase();
+                .reduce(input, String::concat);
 
-        if (input.length() == expected.length()) {
-            if (input.equals(expected)) {
-                listener.answeredCorrectly();
-                disable();
-            } else {
-                listener.answeredIncorrectly();
-                full = true;
-            }
+        if (input.equals(expectedInput)) {
+            listener.fullInput();
+            disable();
         }
     }
 
