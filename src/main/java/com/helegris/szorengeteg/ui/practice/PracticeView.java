@@ -12,6 +12,7 @@ import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.service.EntitySaver;
+import com.helegris.szorengeteg.ui.AudioIcon;
 import com.helegris.szorengeteg.ui.CloseIcon;
 import com.helegris.szorengeteg.ui.MediaLoader;
 import java.io.IOException;
@@ -74,6 +75,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     @FXML
     private ClickableLabel lblPlayAudio;
     @FXML
+    private ImageView audioIcon;
+    @FXML
     private Label lblLast;
     @FXML
     private ImageView imgNext;
@@ -135,6 +138,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         pcPrev = new PracticeControl(
                 PracticeControl.Direction.UP, imgPrev, lblPrev,
                 this::prevCard);
+        audioIcon.setImage(new Image(AudioIcon.AUDIO));
+        audioIcon.setOnMouseClicked((MouseEvent event) -> playAudio());
         setQuestion();
         closeIcon.setImage(new Image(CLOSE_ICON_PATH));
         closeIcon.setOnMouseClicked(this::abort);
@@ -153,14 +158,16 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         hboxInput.getChildren().add(wordInput);
 
         pcInput.setEnabled(true);
-        pcInput.setUsed(false);
+        pcInput.resetNow();
         pcHelp.setEnabled(false);
-        pcHelp.setUsed(card.isLastHelp());
+        pcHelp.setUsedLast(card.isLastHelp());
         pcVisual.setEnabled(true);
-        pcVisual.setUsed(card.isLastVisual());
+        pcVisual.setUsedLast(card.isLastVisual());
         pcGiveUp.setEnabled(false);
-        pcGiveUp.setUsed(card.isLastGaveUp());
+        pcGiveUp.setUsedLast(card.isLastGaveUp());
+        pcPlayAudio.resetNow();
         pcPlayAudio.setVisible(false);
+        audioIcon.setVisible(false);
         pcPrev.setVisible(session.getIndex() > 0);
 
         if (session.getIndex() == session.getLength() - 1) {
@@ -178,27 +185,29 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     private void showInput() {
         wordInput.setVisible(true);
         wordInput.requestFocus();
-        pcInput.use();
+        pcInput.useAndDisable();
         pcHelp.setEnabled(true);
         pcGiveUp.setEnabled(true);
     }
 
     private void showImage() {
         visualHelp.showImage(null);
-        pcVisual.use();
+        pcVisual.useAndDisable();
     }
 
     private void giveUp() {
         showExpectedWord();
         nowGaveUp = true;
         checked(true);
-        pcGiveUp.use();
+        pcGiveUp.useAndDisable();
     }
 
     private void help() {
-        wordInput.help();
-        nowHelp = true;
-        pcHelp.use();
+        if (helpSet) {
+            wordInput.help();
+            nowHelp = true;
+            pcHelp.useAndDisable();
+        }
     }
 
     @Override
@@ -223,6 +232,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
 
             if (card.getAudio() != null) {
                 pcPlayAudio.setVisible(true);
+                audioIcon.setVisible(true);
                 if (playAudio) {
                     playAudio();
                 }
@@ -243,6 +253,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 Logger.getLogger(PracticeView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        pcPlayAudio.use();
     }
 
     private void nextCard() {

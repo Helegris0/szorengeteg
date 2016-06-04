@@ -16,34 +16,24 @@ import javafx.scene.input.MouseEvent;
  */
 public class PracticeControl {
 
-    private static final Image U_GRAY = new Image("/images/triangle_up_gray.png");
-    private static final Image U_RED = new Image("/images/triangle_up_red.png");
-    private static final Image U_GRAY_DIS = new Image("/images/triangle_up_gray_disabled.png");
-    private static final Image U_RED_DIS = new Image("/images/triangle_up_red_disabled.png");
-    private static final Image R_GRAY = new Image("/images/triangle_right_gray.png");
-    private static final Image R_RED = new Image("/images/triangle_right_red.png");
-    private static final Image R_GRAY_DIS = new Image("/images/triangle_right_gray_disabled.png");
-    private static final Image R_RED_DIS = new Image("/images/triangle_right_red_disabled.png");
-    private static final Image D_GRAY = new Image("/images/triangle_down_gray.png");
-    private static final Image D_RED = new Image("/images/triangle_down_red.png");
-    private static final Image D_GRAY_DIS = new Image("/images/triangle_down_gray_disabled.png");
-    private static final Image D_RED_DIS = new Image("/images/triangle_down_red_disabled.png");
-    private static final Image L_GRAY = new Image("/images/triangle_left_gray.png");
-    private static final Image L_RED = new Image("/images/triangle_left_red.png");
-    private static final Image L_GRAY_DIS = new Image("/images/triangle_left_gray_disabled.png");
-    private static final Image L_RED_DIS = new Image("/images/triangle_left_red_disabled.png");
+    private static final String PATH_CORE = "/images/triangle";
+    private static final String DISABLED = "_disabled";
+    private static final String EXT = ".png";
 
     private final ImageView imageView;
     private final ClickableLabel label;
 
     private final Image image;
-    private final Image imageUsed;
+    private final Image imageLast;
+    private final Image imageNow;
     private final Image imageDisabled;
-    private final Image imageUsedDisabled;
+    private final Image imageLastDisabled;
+    private final Image imageNowDisabled;
 
     private final Runnable function;
 
-    private boolean used;
+    private boolean usedLast;
+    private boolean usedNow;
     private boolean enabled;
 
     public PracticeControl(Direction direction, ImageView imageView,
@@ -51,37 +41,19 @@ public class PracticeControl {
         this.imageView = imageView;
         this.label = label;
 
-        switch (direction) {
-            case UP:
-                image = U_GRAY;
-                imageUsed = U_RED;
-                imageDisabled = U_GRAY_DIS;
-                imageUsedDisabled = U_RED_DIS;
-                break;
-            case RIGHT:
-                image = R_GRAY;
-                imageUsed = R_RED;
-                imageDisabled = R_GRAY_DIS;
-                imageUsedDisabled = R_RED_DIS;
-                break;
-            case DOWN:
-                image = D_GRAY;
-                imageUsed = D_RED;
-                imageDisabled = D_GRAY_DIS;
-                imageUsedDisabled = D_RED_DIS;
-                break;
-            case LEFT:
-                image = L_GRAY;
-                imageUsed = L_RED;
-                imageDisabled = L_GRAY_DIS;
-                imageUsedDisabled = L_RED_DIS;
-                break;
-            default:
-                image = R_GRAY;
-                imageUsed = R_RED;
-                imageDisabled = R_GRAY_DIS;
-                imageUsedDisabled = R_RED_DIS;
-        }
+        String pathCore = PATH_CORE + direction.path;
+
+        String coreStandard = pathCore + Color.GRAY.path;
+        image = new Image(coreStandard + EXT);
+        imageDisabled = new Image(coreStandard + DISABLED + EXT);
+
+        String coreNow = pathCore + Color.BLUE.path;
+        imageNow = new Image(coreNow + EXT);
+        imageNowDisabled = new Image(coreNow + DISABLED + EXT);
+
+        String coreLast = pathCore + Color.RED.path;
+        imageLast = new Image(coreLast + EXT);
+        imageLastDisabled = new Image(coreLast + DISABLED + EXT);
 
         imageView.setOnMouseEntered(e -> {
             if (enabled) {
@@ -100,10 +72,29 @@ public class PracticeControl {
 
     public enum Direction {
 
-        UP,
-        RIGHT,
-        DOWN,
-        LEFT
+        UP("_up"),
+        RIGHT("_right"),
+        DOWN("_down"),
+        LEFT("_left");
+
+        private final String path;
+
+        private Direction(String path) {
+            this.path = path;
+        }
+    }
+
+    private enum Color {
+
+        GRAY("_gray"),
+        BLUE("_blue"),
+        RED("_red");
+
+        private final String path;
+
+        private Color(String path) {
+            this.path = path;
+        }
     }
 
     private void action(MouseEvent event) {
@@ -113,21 +104,33 @@ public class PracticeControl {
     }
 
     private void updateImage() {
-        if (enabled) {
-            imageView.setImage(used ? imageUsed : image);
+        if (usedNow) {
+            imageView.setImage(enabled ? imageNow : imageNowDisabled);
+        } else if (usedLast) {
+            imageView.setImage(enabled ? imageLast : imageLastDisabled);
         } else {
-            imageView.setImage(used ? imageUsedDisabled : imageDisabled);
+            imageView.setImage(enabled ? image : imageDisabled);
         }
     }
 
     public void use() {
-        used = true;
+        usedNow = true;
+        updateImage();
+    }
+
+    public void useAndDisable() {
+        usedNow = true;
         setEnabled(false);
     }
 
-    public void setUsed(boolean used) {
-        this.used = used;
+    public void resetNow() {
+        usedNow = false;
         updateImage();
+    }
+
+    public void setUsedLast(boolean usedLast) {
+        this.usedLast = usedLast;
+        resetNow();
     }
 
     public final void setEnabled(boolean enabled) {

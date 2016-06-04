@@ -51,6 +51,7 @@
                 <HBox spacing="5" alignment="CENTER_LEFT">
                     <ImageView fx:id="imgPlayAudio" fitWidth="40" fitHeight="40" />
                     <ClickableLabel fx:id="lblPlayAudio" text="%practice.play_audio" />
+                    <ImageView fx:id="audioIcon" fitWidth="40" fitHeight="40" />
                 </HBox>
             </VBox>
             <Pane HBox.hgrow="ALWAYS" />
