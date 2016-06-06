@@ -27,6 +27,9 @@ public class Topic extends PersistentObject {
     @Column(name = "image")
     private byte[] image;
 
+    @Column(name = "ordinal")
+    private Integer ordinal;
+
     public Topic() {
     }
 
@@ -53,5 +56,13 @@ public class Topic extends PersistentObject {
 
     public void setImage(byte[] image) {
         this.image = image;
+    }
+
+    public Integer getOrdinal() {
+        return ordinal;
+    }
+
+    public void setOrdinal(Integer ordinal) {
+        this.ordinal = ordinal;
     }
 }

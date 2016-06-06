@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.helegris.szorengeteg.ui.forms;
+package com.helegris.szorengeteg.ui;
 
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -18,7 +18,7 @@ import javafx.scene.shape.Path;
  *
  * @author Timi
  */
-public class RowPositioner extends VBox {
+public class Positioner extends VBox {
 
     private final Button btnUp;
     private final Button btnDown;
@@ -27,7 +27,7 @@ public class RowPositioner extends VBox {
     public static final String ARROW = "Arrow";
     private final double ARROW_SIZE = 4;
 
-    public RowPositioner(RowPositionListener listener) {
+    public Positioner(PositionListener listener) {
         Path arrowUp = new Path();
         arrowUp.setId(ARROW);
         arrowUp.getElements().addAll(new MoveTo(-ARROW_SIZE, 0), new LineTo(ARROW_SIZE, 0),

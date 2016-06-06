@@ -5,6 +5,8 @@
  */
 package com.helegris.szorengeteg.ui.forms;
 
+import com.helegris.szorengeteg.ui.PositionListener;
+import com.helegris.szorengeteg.ui.Positioner;
 import com.helegris.szorengeteg.ui.AudioIcon;
 import com.helegris.szorengeteg.ui.MediaLoader;
 import com.helegris.szorengeteg.ui.NotFoundException;
@@ -32,7 +34,7 @@ public class RowForCard {
 
     private RowDeleteListener deleteListener;
     private Card card = new Card();
-    private RowPositioner positioner;
+    private Positioner positioner;
     private ImageView imageView = new ImageView();
     private AudioIcon audioIcon = new AudioIcon();
     private TextField txtWord = new TextField();
@@ -51,7 +53,7 @@ public class RowForCard {
     public RowForCard(RowDeleteListener deleteListener, RowMoveListener moveListener) {
         this.deleteListener = deleteListener;
 
-        positioner = new RowPositioner(new RowPositionListener() {
+        positioner = new Positioner(new PositionListener() {
 
             @Override
             public void up() {
@@ -165,11 +167,11 @@ public class RowForCard {
         this.card = card;
     }
 
-    public RowPositioner getPositioner() {
+    public Positioner getPositioner() {
         return positioner;
     }
 
-    public void setPositioner(RowPositioner positioner) {
+    public void setPositioner(Positioner positioner) {
         this.positioner = positioner;
     }
 

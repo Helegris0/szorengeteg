@@ -40,6 +40,11 @@ public class EntitySaver {
     }
 
     @Transactional
+    public void saveTopics(List<Topic> topics) {
+        topics.stream().forEach(this::save);
+    }
+
+    @Transactional
     public void saveWords(List<Card> cards) {
         cards.stream().forEach(this::save);
         delete(cardLoader.loadAll(), card -> !cards.contains(card));

@@ -19,7 +19,7 @@ import org.junit.Test;
  *
  * @author Timi
  */
-public class SimpleWordInputTest {
+public class SimpleWordInputTestSkip {
 
     @Rule
     public JavaFXThreadingRule javafxRule = new JavaFXThreadingRule();
@@ -35,7 +35,7 @@ public class SimpleWordInputTest {
     private SimpleWordInput input;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public SimpleWordInputTest() {
+    public SimpleWordInputTestSkip() {
         DIUtils.injectFields(this);
     }
 

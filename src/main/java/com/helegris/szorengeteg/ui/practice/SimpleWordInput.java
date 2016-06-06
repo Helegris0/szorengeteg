@@ -22,7 +22,17 @@ public class SimpleWordInput extends WordInput {
         field.textProperty().addListener((
                 ObservableValue<? extends String> observable,
                 String oldValue, String newValue) -> {
-                    field.setText(newValue.toUpperCase());
+                    newValue = newValue.toUpperCase();
+                    String expected = word
+                    .toUpperCase()
+                    .substring(0, newValue.length());
+
+                    if (newValue.equals(expected)
+                    && newValue.length() > oldValue.length()) {
+                        field.setText(newValue);
+                    } else {
+                        field.setText(oldValue);
+                    }
                     check();
                 });
     }
@@ -37,10 +47,16 @@ public class SimpleWordInput extends WordInput {
         String input = field.getText();
 
         if (!"".equals(input)) {
-            if (input.toLowerCase().equals(word.toLowerCase())) {
+            if (input.equals(word)) {
                 listener.fullInput();
+                disable();
             }
         }
+    }
+
+    private void disable() {
+        field.setDisable(true);
+        field.setStyle("-fx-opacity: 1.0;");
     }
 
     @Override
@@ -66,7 +82,7 @@ public class SimpleWordInput extends WordInput {
     public void revealWord() {
         field.setText(word);
         field.setDisable(true);
-        field.setStyle("-fx-opacity: 1.0;");
+        disable();
     }
 
     public String getFieldText() {

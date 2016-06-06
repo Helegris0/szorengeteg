@@ -9,7 +9,6 @@ import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.settings.Settings;
 import com.helegris.szorengeteg.ui.ClickableLabel;
-import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.service.EntitySaver;
 import com.helegris.szorengeteg.ui.AudioIcon;
@@ -171,10 +170,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         pcPrev.setVisible(session.getIndex() > 0);
 
         if (session.getIndex() == session.getLength() - 1) {
-            lblNext.setText(Messages.msg("practice.end"));
             lblLast.setVisible(true);
         } else {
-            lblNext.setText(Messages.msg("practice.next"));
             lblLast.setVisible(false);
         }
         nowHelp = false;

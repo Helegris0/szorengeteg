@@ -15,6 +15,8 @@ import com.helegris.szorengeteg.ui.VistaNavigator;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.service.CardLoader;
 import com.helegris.szorengeteg.business.model.Topic;
+import com.helegris.szorengeteg.ui.PositionListener;
+import com.helegris.szorengeteg.ui.Positioner;
 import com.helegris.szorengeteg.ui.practice.PracticeSession;
 import com.helegris.szorengeteg.ui.practice.PracticeView;
 import javafx.event.ActionEvent;
@@ -42,6 +44,8 @@ public class TopicBox extends Pane {
     private CardLoader cardLoader;
 
     @FXML
+    private Pane positionerPane;
+    @FXML
     private ImageView imageView;
     @FXML
     private ClickableLabel lblName;
@@ -52,12 +56,26 @@ public class TopicBox extends Pane {
     @FXML
     private Button btnPractice;
 
+    private final Positioner positioner;
+
     private final Topic topic;
     private int numOfCards;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public TopicBox(Topic topic) {
+    public TopicBox(Topic topic, TopicBoxMoveListener moveListener) {
         this.topic = topic;
+        positioner = new Positioner(new PositionListener() {
+
+            @Override
+            public void up() {
+                moveListener.moveUp(TopicBox.this);
+            }
+
+            @Override
+            public void down() {
+                moveListener.moveDown(TopicBox.this);
+            }
+        });
         DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
     }
@@ -65,8 +83,10 @@ public class TopicBox extends Pane {
     @FXML
     protected void initialize() {
         setImage();
+        setModifyable(false);
+        setNameLabel();
+        positionerPane.getChildren().add(positioner);
         numOfCards = cardLoader.loadByTopic(topic).size();
-        lblName.setText(topic.getName());
         lblEdit.setOnMouseClicked(this::editTopic);
         lblNumberOfWords.setText(numOfCards + " "
                 + Messages.msg("topicbox.words"));
@@ -111,6 +131,12 @@ public class TopicBox extends Pane {
         startPracticeSession();
     }
 
+    public void setNameLabel() {
+        if (topic.getOrdinal() != null) {
+            lblName.setText(topic.getOrdinal() + ". " + topic.getName());
+        }
+    }
+
     private void setImage() {
         Image image;
 
@@ -121,5 +147,18 @@ public class TopicBox extends Pane {
         }
 
         imageView.setImage(image);
+    }
+
+    public void setModifyable(boolean modifyable) {
+        positioner.setVisible(modifyable);
+    }
+
+    @Override
+    public void requestFocus() {
+        btnPractice.requestFocus();
+    }
+
+    public Topic getTopic() {
+        return topic;
     }
 }
