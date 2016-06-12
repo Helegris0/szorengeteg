@@ -27,6 +27,8 @@
         <HBox spacing="5" alignment="CENTER_LEFT">
             <ImageView fx:id="imgVisual" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblVisual" text="%practice.visual_help" />
+            <ImageView fx:id="imgDefault" fitWidth="40" fitHeight="40" />
+            <ClickableLabel fx:id="lblDefault" text="%practice.default" />
         </HBox>
         <HBox spacing="15">
             <HBox fx:id="hboxInput" />
@@ -63,6 +65,8 @@
             <ClickableLabel fx:id="lblNext" text="%practice.next" />
             <ImageView fx:id="imgPrev" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblPrev" text="%practice.prev" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblOrdinal" />
         </HBox>
     </VBox>
 </fx:root>

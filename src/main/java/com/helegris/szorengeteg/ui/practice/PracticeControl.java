@@ -14,26 +14,22 @@ import javafx.scene.input.MouseEvent;
  *
  * @author Timi
  */
-public class PracticeControl {
+public final class PracticeControl {
 
     private static final String PATH_CORE = "/images/triangle";
-    private static final String DISABLED = "_disabled";
+    private static final String USED_PATH = "_used";
+    private static final String UNUSED_PATH = "_unused";
     private static final String EXT = ".png";
 
     private final ImageView imageView;
     private final ClickableLabel label;
 
-    private final Image image;
-    private final Image imageLast;
-    private final Image imageNow;
-    private final Image imageDisabled;
-    private final Image imageLastDisabled;
-    private final Image imageNowDisabled;
+    private final Image imageUsed;
+    private final Image imageUnused;
 
     private final Runnable function;
 
-    private boolean usedLast;
-    private boolean usedNow;
+    private boolean used;
     private boolean enabled;
 
     public PracticeControl(Direction direction, ImageView imageView,
@@ -41,19 +37,8 @@ public class PracticeControl {
         this.imageView = imageView;
         this.label = label;
 
-        String pathCore = PATH_CORE + direction.path;
-
-        String coreStandard = pathCore + Color.GRAY.path;
-        image = new Image(coreStandard + EXT);
-        imageDisabled = new Image(coreStandard + DISABLED + EXT);
-
-        String coreNow = pathCore + Color.BLUE.path;
-        imageNow = new Image(coreNow + EXT);
-        imageNowDisabled = new Image(coreNow + DISABLED + EXT);
-
-        String coreLast = pathCore + Color.RED.path;
-        imageLast = new Image(coreLast + EXT);
-        imageLastDisabled = new Image(coreLast + DISABLED + EXT);
+        imageUsed = new Image(PATH_CORE + direction.path + USED_PATH + EXT);
+        imageUnused = new Image(PATH_CORE + direction.path + UNUSED_PATH + EXT);
 
         imageView.setOnMouseEntered(e -> {
             if (enabled) {
@@ -65,8 +50,8 @@ public class PracticeControl {
         this.function = function;
         imageView.setOnMouseClicked(this::action);
         label.setOnMouseClicked(this::action);
-        label.setStyle("-fx-opacity: 1.0;");
 
+        setUsed(false);
         setEnabled(true);
     }
 
@@ -84,63 +69,31 @@ public class PracticeControl {
         }
     }
 
-    private enum Color {
-
-        GRAY("_gray"),
-        BLUE("_blue"),
-        RED("_red");
-
-        private final String path;
-
-        private Color(String path) {
-            this.path = path;
-        }
-    }
-
     private void action(MouseEvent event) {
         if (enabled && function != null) {
             function.run();
         }
     }
 
-    private void updateImage() {
-        if (usedNow) {
-            imageView.setImage(enabled ? imageNow : imageNowDisabled);
-        } else if (usedLast) {
-            imageView.setImage(enabled ? imageLast : imageLastDisabled);
-        } else {
-            imageView.setImage(enabled ? image : imageDisabled);
-        }
-    }
-
-    public void use() {
-        usedNow = true;
-        updateImage();
-    }
-
     public void useAndDisable() {
-        usedNow = true;
+        setUsed(true);
         setEnabled(false);
     }
-
-    public void resetNow() {
-        usedNow = false;
-        updateImage();
+    
+    public boolean isUsed() {
+        return used;
     }
 
-    public void setUsedLast(boolean usedLast) {
-        this.usedLast = usedLast;
-        resetNow();
+    public void setUsed(boolean used) {
+        this.used = used;
+        imageView.setImage(used ? imageUsed : imageUnused);
     }
 
     public final void setEnabled(boolean enabled) {
         this.enabled = enabled;
         this.label.setDisable(!enabled);
-        updateImage();
-    }
-
-    public void setVisible(boolean visible) {
-        imageView.setVisible(visible);
-        label.setVisible(visible);
+        if (!enabled) {
+            label.setStyle("-fx-font-weight: regular;-fx-opacity: 1.0;");
+        }
     }
 }

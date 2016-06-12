@@ -7,6 +7,10 @@
     -fx-font-size: 18pt;
 }
 
+.table-column {
+    -fx-alignment: CENTER;
+}
+
 .table-row-cell:filled:selected { 
     -fx-background: -fx-control-inner-background;
     -fx-background-color: -fx-table-cell-border-color, -fx-background;

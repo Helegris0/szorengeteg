@@ -44,17 +44,17 @@
                         <PropertyValueFactory property="positioner" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colImage" text="%form.image" prefWidth="50.0" sortable="false" resizable="false">
+                <TableColumn fx:id="colImage" text="%form.image" prefWidth="65.0" sortable="false" resizable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="imageView" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colAudio" text="%form.audio" prefWidth="55.0" sortable="false" resizable="false">
+                <TableColumn fx:id="colAudio" text="%form.audio" prefWidth="65.0" sortable="false" resizable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="audioIcon" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colWord" text="%form.word" prefWidth="180">
+                <TableColumn fx:id="colWord" text="%form.word" prefWidth="100">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>

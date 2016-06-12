@@ -20,10 +20,5 @@
             <Label fx:id="lblNumberOfWords" />
             <ClickableLabel fx:id="lblEdit" text="%topicbox.edit" />
         </VBox>
-        <VBox>
-            <HBox>
-                <Button fx:id="btnPractice" text="%topicbox.practice" />
-            </HBox>
-        </VBox>
     </HBox>
 </fx:root>

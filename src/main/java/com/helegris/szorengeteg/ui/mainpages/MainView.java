@@ -34,7 +34,6 @@ public class MainView extends AnchorPane {
     public static final String EDIT_TOPIC_TITLE = Messages.msg("menu.edit_topic");
     public static final String WORDS_TITLE = Messages.msg("menu.words");
     public static final String SETTINGS_TITLE = Messages.msg("menu.settings");
-    public static final String HELP_TITLE = Messages.msg("menu.help");
 
     @FXML
     private Menu mnTopics;
@@ -44,8 +43,6 @@ public class MainView extends AnchorPane {
     private Menu mnWords;
     @FXML
     private Menu mnSettings;
-    @FXML
-    private Menu mnHelp;
     @FXML
     private Label lblTitle;
     @FXML
@@ -80,9 +77,6 @@ public class MainView extends AnchorPane {
         label = new Label(SETTINGS_TITLE);
         label.setOnMouseClicked(event -> loadContentSettings());
         initMenuLabel(mnSettings, label);
-
-        label = new Label(HELP_TITLE);
-        initMenuLabel(mnHelp, label);
     }
 
     private void initMenuLabel(Menu menu, Label label) {

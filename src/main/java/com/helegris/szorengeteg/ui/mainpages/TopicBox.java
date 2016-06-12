@@ -19,10 +19,8 @@ import com.helegris.szorengeteg.ui.PositionListener;
 import com.helegris.szorengeteg.ui.Positioner;
 import com.helegris.szorengeteg.ui.practice.PracticeSession;
 import com.helegris.szorengeteg.ui.practice.PracticeView;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,8 +51,6 @@ public class TopicBox extends Pane {
     private ClickableLabel lblEdit;
     @FXML
     private Label lblNumberOfWords;
-    @FXML
-    private Button btnPractice;
 
     private final Positioner positioner;
 
@@ -90,7 +86,6 @@ public class TopicBox extends Pane {
         lblEdit.setOnMouseClicked(this::editTopic);
         lblNumberOfWords.setText(numOfCards + " "
                 + Messages.msg("topicbox.words"));
-        btnPractice.setOnAction(this::startPracticeSession);
         imageView.setOnMouseClicked(this::startPracticeSession);
         lblName.setOnMouseClicked(this::startPracticeSession);
     }
@@ -123,10 +118,6 @@ public class TopicBox extends Pane {
         }
     }
 
-    private void startPracticeSession(ActionEvent event) {
-        startPracticeSession();
-    }
-
     private void startPracticeSession(MouseEvent event) {
         startPracticeSession();
     }
@@ -151,11 +142,6 @@ public class TopicBox extends Pane {
 
     public void setModifyable(boolean modifyable) {
         positioner.setVisible(modifyable);
-    }
-
-    @Override
-    public void requestFocus() {
-        btnPractice.requestFocus();
     }
 
     public Topic getTopic() {
