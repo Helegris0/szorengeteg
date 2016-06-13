@@ -22,9 +22,12 @@ public class PracticeSession {
 
     @Inject
     private CardLoader cardLoader;
-
     @Inject
     private Settings settings;
+    @Inject
+    private PositionSaver positionSaver;
+
+    private Topic topic;
 
     private List<Card> sessionCards = new ArrayList<>();
     private Card currentCard;
@@ -35,13 +38,18 @@ public class PracticeSession {
         this(null);
     }
 
-    @SuppressWarnings("LeakingThisInConstructor")
     public PracticeSession(Topic topic) {
-        DIUtils.injectFields(this);
-        selectCards(topic);
+        this(topic, 0);
     }
 
-    private void selectCards(Topic topic) {
+    @SuppressWarnings("LeakingThisInConstructor")
+    public PracticeSession(Topic topic, int startIndex) {
+        this.topic = topic;
+        DIUtils.injectFields(this);
+        selectCards(startIndex);
+    }
+
+    private void selectCards(int startIndex) {
         List<Card> allCards;
         if (topic == null) {
             allCards = cardLoader.loadAll();
@@ -74,13 +82,15 @@ public class PracticeSession {
                 sessionCards = allCards;
             }
 
-            currentCard = sessionCards.get(0);
+            positionSaver.setTopicOrdinal(topic.getOrdinal());
+            jumpTo(startIndex);
         }
     }
 
     public Card jumpTo(int i) {
         currentCard = sessionCards.get(i);
         index = i;
+        positionSaver.setCardOrdinal(i);
         return currentCard;
     }
 
@@ -114,6 +124,10 @@ public class PracticeSession {
 
     public Card getCurrentCard() {
         return currentCard;
+    }
+
+    public Topic getTopic() {
+        return topic;
     }
 
     public int getIndex() {

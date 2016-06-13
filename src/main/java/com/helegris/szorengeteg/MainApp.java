@@ -1,31 +1,51 @@
 package com.helegris.szorengeteg;
 
+import com.helegris.szorengeteg.business.model.Topic;
+import com.helegris.szorengeteg.business.service.TopicLoader;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.VistaNavigator;
 import com.helegris.szorengeteg.ui.SceneStyler;
 import com.helegris.szorengeteg.ui.mainpages.MainView;
+import com.helegris.szorengeteg.ui.practice.PositionSaver;
+import com.helegris.szorengeteg.ui.practice.PracticeSession;
+import com.helegris.szorengeteg.ui.practice.PracticeView;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
+import javax.inject.Inject;
 
 public class MainApp extends Application {
 
-    private final String TITLE = "Szórengeteg";
+    @Inject
+    private PositionSaver positionSaver;
+    @Inject
+    private TopicLoader topicLoader;
+
+    @SuppressWarnings("LeakingThisInConstructor")
+    public MainApp() {
+        DIUtils.injectFields(this);
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
-        ApplicationContainer.getInstance();
+        Scene scene;
+        Topic topic = topicLoader.loadByOrdinal(positionSaver.getTopicOrdinal());
 
-        Pane root = loadMainPane();
-        Scene scene = new SceneStyler().createScene(root, SceneStyler.Style.MAIN);
-        stage.setScene(scene);
-        stage.setTitle(TITLE);
+        if (topic != null) {
+            scene = (new SceneStyler().createScene(new PracticeView(
+                    new PracticeSession(topic, positionSaver.getCardOrdinal())),
+                    SceneStyler.Style.PRACTICE));
+            stage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
+        } else {
+            Pane root = loadMainPane();
+            scene = new SceneStyler().createScene(root, SceneStyler.Style.MAIN);
+            stage.setTitle(Messages.msg("menu.title"));
+        }
+
         stage.setMaximized(true);
-
+        stage.setScene(scene);
         stage.show();
     }
 
@@ -44,57 +64,6 @@ public class MainApp extends Application {
         return mainView;
     }
 
-    private void letterbox(final Scene scene, final Pane contentPane) {
-        final double initWidth = scene.getWidth();
-        final double initHeight = scene.getHeight();
-        final double ratio = initWidth / initHeight;
-
-        SceneSizeChangeListener sizeListener = new SceneSizeChangeListener(scene, ratio, initHeight, initWidth, contentPane);
-        scene.widthProperty().addListener(sizeListener);
-        scene.heightProperty().addListener(sizeListener);
-    }
-
-    private static class SceneSizeChangeListener implements ChangeListener<Number> {
-
-        private final Scene scene;
-        private final double ratio;
-        private final double initHeight;
-        private final double initWidth;
-        private final Pane contentPane;
-
-        public SceneSizeChangeListener(Scene scene, double ratio, double initHeight, double initWidth, Pane contentPane) {
-            this.scene = scene;
-            this.ratio = ratio;
-            this.initHeight = initHeight;
-            this.initWidth = initWidth;
-            this.contentPane = contentPane;
-        }
-
-        @Override
-        public void changed(ObservableValue<? extends Number> observableValue, Number oldValue, Number newValue) {
-            final double newWidth = scene.getWidth();
-            final double newHeight = scene.getHeight();
-
-            double scaleFactor
-                    = newWidth / newHeight > ratio
-                            ? newHeight / initHeight
-                            : newWidth / initWidth;
-
-            if (scaleFactor >= 1) {
-                Scale scale = new Scale(scaleFactor, scaleFactor);
-                scale.setPivotX(0);
-                scale.setPivotY(0);
-                scene.getRoot().getTransforms().setAll(scale);
-
-                contentPane.setPrefWidth(newWidth / scaleFactor);
-                contentPane.setPrefHeight(newHeight / scaleFactor);
-            } else {
-                contentPane.setPrefWidth(Math.max(initWidth, newWidth));
-                contentPane.setPrefHeight(Math.max(initHeight, newHeight));
-            }
-        }
-    }
-
     /**
      * The main() method is ignored in correctly deployed JavaFX application.
      * main() serves only as fallback in case the application can not be
@@ -106,5 +75,4 @@ public class MainApp extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-
 }

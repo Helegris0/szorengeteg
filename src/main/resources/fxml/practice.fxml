@@ -14,8 +14,6 @@
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
-    <CloseIcon fx:id="closeIcon" AnchorPane.rightAnchor="0"
-               fitWidth="64" fitHeight="64" />
     <VBox AnchorPane.topAnchor="15" AnchorPane.leftAnchor="15"
           AnchorPane.rightAnchor="65" spacing="10">
         <HBox spacing="5" alignment="CENTER_LEFT">
@@ -56,9 +54,6 @@
                     <ImageView fx:id="audioIcon" fitWidth="40" fitHeight="40" />
                 </HBox>
             </VBox>
-            <Pane HBox.hgrow="ALWAYS" />
-            <Label fx:id="lblLast" text="%practice.last" wrapText="true" 
-                   visible="false" />
         </HBox>
         <HBox spacing="5" alignment="CENTER_LEFT">
             <ImageView fx:id="imgNext" fitWidth="40" fitHeight="40" />
@@ -67,6 +62,13 @@
             <ClickableLabel fx:id="lblPrev" text="%practice.prev" />
             <Pane HBox.hgrow="ALWAYS" />
             <Label fx:id="lblOrdinal" />
+        </HBox>
+        <HBox spacing="5" alignment="CENTER_LEFT">
+            <Pane HBox.hgrow="ALWAYS" />
+            <ImageView fx:id="imgChooseTopic" fitWidth="40" fitHeight="40" />
+            <ClickableLabel fx:id="lblChooseTopic" text="%practice.choose_topic" />
+            <ImageView fx:id="imgQuit" fitWidth="40" fitHeight="40" />
+            <ClickableLabel fx:id="lblQuit" text="Kilépés" />
         </HBox>
     </VBox>
 </fx:root>

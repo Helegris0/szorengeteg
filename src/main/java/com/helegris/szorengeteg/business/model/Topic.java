@@ -39,7 +39,7 @@ public class Topic extends PersistentObject {
 
     @Override
     public String toString() {
-        return name;
+        return ordinal + ". " + name;
     }
 
     public String getName() {

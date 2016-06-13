@@ -13,6 +13,7 @@ import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +35,12 @@ public class WordsFormView extends CardsEditorForm {
     @FXML
     private TableColumn colTopic;
 
+    private final Comparator<Card> cardComparator = (Card c1, Card c2)
+            -> (!Objects.equals(c1.getTopic().getOrdinal(), c2.getTopic().getOrdinal())
+                    ? c1.getTopic().getOrdinal() - c2.getTopic().getOrdinal()
+                    : c1.getTopic().getOrdinal() != null && c1.getOrdinal() != null
+                            ? c1.getOrdinal() - c2.getOrdinal() : 1);
+
     @SuppressWarnings("LeakingThisInConstructor")
     public WordsFormView() {
         DIUtils.injectFields(this);
@@ -50,7 +57,7 @@ public class WordsFormView extends CardsEditorForm {
     }
 
     private void loadRows() {
-        cardLoader.loadAll().stream().forEach(card -> {
+        cardLoader.loadAll().stream().sorted(cardComparator).forEach(card -> {
             RowForCard row = new RowForCard(this::deleteRow, rowMoveListener, card);
             rows.add(row);
         });

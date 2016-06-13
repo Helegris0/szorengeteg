@@ -9,10 +9,13 @@
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
     <VBox>
-        <ScrollPane>
-            <VBox fx:id="vBox" />
-        </ScrollPane>
         <HBox>
+            <ScrollPane>
+                <VBox fx:id="vBox" />
+            </ScrollPane>
+        </HBox>
+        <HBox>
+            <Button fx:id="btnNewTopic" text="%topics.new_topic" />
             <Button fx:id="btnModifyOrder" text="%topics.modify_order" />
             <Button fx:id="btnSave" text="%topics.save" visible="false" />
             <Button fx:id="btnCancel" text="%topics.cancel" visible="false" />

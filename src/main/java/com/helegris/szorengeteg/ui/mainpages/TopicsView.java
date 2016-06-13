@@ -11,6 +11,7 @@ import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.service.TopicLoader;
 import com.helegris.szorengeteg.business.model.Topic;
 import com.helegris.szorengeteg.business.service.EntitySaver;
+import com.helegris.szorengeteg.ui.VistaNavigator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +39,8 @@ public class TopicsView extends AnchorPane {
 
     @FXML
     private VBox vBox;
+    @FXML
+    private Button btnNewTopic;
     @FXML
     private Button btnModifyOrder;
     @FXML
@@ -79,6 +82,7 @@ public class TopicsView extends AnchorPane {
     protected void initialize() {
         loadTopics();
         createTopicBoxes();
+        btnNewTopic.setOnAction(this::newTopic);
         btnModifyOrder.setOnAction(this::allowModifyOrder);
         btnSave.setOnAction(this::saveOrder);
         btnCancel.setOnAction(this::cancel);
@@ -115,6 +119,10 @@ public class TopicsView extends AnchorPane {
             vBox.getChildren().add(topicBox);
         });
         topicBoxes.get(0).requestFocus();
+    }
+
+    private void newTopic(ActionEvent event) {
+        VistaNavigator.getMainView().loadContentNewTopic();
     }
 
     private void allowModifyOrder(ActionEvent event) {

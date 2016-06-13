@@ -94,7 +94,7 @@ public class TopicBox extends Pane {
         VistaNavigator.getMainView().loadContentEditTopic(topic);
     }
 
-    private void startPracticeSession() {
+    private void startPracticeSession(MouseEvent event) {
         if (numOfCards > 0) {
             Stage pStage = new Stage();
             pStage.setScene(new SceneStyler().createScene(
@@ -116,10 +116,6 @@ public class TopicBox extends Pane {
             alert.setContentText(Messages.msg("topicbox.alert.content"));
             alert.showAndWait();
         }
-    }
-
-    private void startPracticeSession(MouseEvent event) {
-        startPracticeSession();
     }
 
     public void setNameLabel() {
