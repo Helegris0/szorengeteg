@@ -193,8 +193,10 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void helpFirstAndLastChar() {
-        String lastLetter = word.substring(word.length() - 1);
-        fields.get(fields.size() - 1).setText(lastLetter);
+        if (word.length() > 2) {
+            String lastLetter = word.substring(word.length() - 1);
+            fields.get(fields.size() - 1).setText(lastLetter);
+        }
         helpFirstChar();
     }
 

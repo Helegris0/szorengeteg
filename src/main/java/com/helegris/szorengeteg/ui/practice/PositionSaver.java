@@ -15,10 +15,10 @@ public class PositionSaver {
 
     private final Preferences prefs
             = Preferences.userRoot().node(this.getClass().getName());
-    private final String KEY_TOPIC_ORDINAL = "topic_ordinal";
-    private final String KEY_CARD_ORDINAL = "card_ordinal";
-    private final int TOPIC_DEF = 1;
-    private final int CARD_DEF = 0;
+    private static final String KEY_TOPIC_ORDINAL = "topic_ordinal";
+    private static final String KEY_CARD_ORDINAL = "card_ordinal";
+    private static final int TOPIC_DEF = 1;
+    private static final int CARD_DEF = 0;
 
     public int getTopicOrdinal() {
         return prefs.getInt(KEY_TOPIC_ORDINAL, TOPIC_DEF);
@@ -35,5 +35,13 @@ public class PositionSaver {
 
     public void setCardOrdinal(int arg) {
         prefs.putInt(KEY_CARD_ORDINAL, arg);
+    }
+
+    public static int getTopicOrdDef() {
+        return TOPIC_DEF;
+    }
+
+    public static int getCardOrdDef() {
+        return CARD_DEF;
     }
 }

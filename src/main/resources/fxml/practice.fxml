@@ -27,6 +27,8 @@
             <ClickableLabel fx:id="lblVisual" text="%practice.visual_help" />
             <ImageView fx:id="imgDefault" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblDefault" text="%practice.default" />
+            <Pane HBox.hgrow="ALWAYS" />
+            <ClickableLabel fx:id="lblEdit" text="%practice.edit" />
         </HBox>
         <HBox spacing="15">
             <HBox fx:id="hboxInput" />

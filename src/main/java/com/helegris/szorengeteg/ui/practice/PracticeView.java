@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.ui.practice;
 
 import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
+import com.helegris.szorengeteg.MainApp;
 import com.helegris.szorengeteg.ui.settings.Settings;
 import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.business.model.Card;
@@ -49,6 +50,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     @Inject
     private EntitySaver entitySaver;
 
+    @FXML
+    private ClickableLabel lblEdit;
     @FXML
     private VisualHelp visualHelp;
     @FXML
@@ -166,6 +169,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 PracticeControl.Direction.RIGHT, imgQuit, lblQuit,
                 this::abort);
         audioIcon.setImage(new Image(AudioIcon.AUDIO));
+        lblEdit.setOnMouseClicked(event -> switchToEditor());
         setQuestion();
         this.setOnKeyPressed((KeyEvent event) -> {
             if (checked && event.getCode().equals(KeyCode.ENTER)) {
@@ -186,7 +190,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         pcDefault.setEnabled(true);
         pcDefault.setUsed(false);
         pcInput.setEnabled(false);
-        pcInput.setUsed(false);
+        pcInput.setUsed(card.isLastInput());
         pcHelp.setEnabled(false);
         pcHelp.setUsed(card.isLastHelp());
         pcVisual.setEnabled(false);
@@ -229,11 +233,20 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         pcInput.useAndDisable();
         pcHelp.setEnabled(true);
         pcGiveUp.setEnabled(true);
+        if (helpSet) {
+            setBoldness(lblHelp, true);
+        } else if (!pcVisual.isUsed()) {
+            setBoldness(lblVisual, true);
+        }
     }
 
     private void showImage() {
+        setBoldness(lblVisual, false);
         visualHelp.showImage(null);
         pcVisual.useAndDisable();
+        if (!pcGiveUp.isUsed()) {
+            setBoldness(lblGiveUp, true);
+        }
     }
 
     private void giveUp() {
@@ -244,8 +257,12 @@ public class PracticeView extends AnchorPane implements WordInputListener {
 
     private void help() {
         if (helpSet) {
+            setBoldness(lblHelp, false);
             wordInput.help();
             pcHelp.useAndDisable();
+            if (!pcVisual.isUsed()) {
+                setBoldness(lblVisual, true);
+            }
         }
     }
 
@@ -261,6 +278,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     private void checked(boolean checked) {
         this.checked = checked;
         if (checked) {
+            card.setLastInput(pcInput.isUsed());
             card.setLastHelp(pcHelp.isUsed());
             card.setLastVisual(pcVisual.isUsed());
             card.setLastGaveUp(pcGiveUp.isUsed());
@@ -273,10 +291,16 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 pcPlayAudio.setEnabled(true);
                 if (playAudio) {
                     playAudio();
+                } else {
+                    setBoldness(lblPlayAudio, true);
                 }
+            } else {
+                setBoldness(lblNext, true);
             }
 
-            setBoldness(lblNext, true);
+            setBoldness(lblHelp, false);
+            setBoldness(lblVisual, false);
+            setBoldness(lblGiveUp, false);
         } else {
             setBoldness(lblNext, false);
         }
@@ -297,6 +321,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
             }
         }
         pcPlayAudio.setUsed(true);
+        setBoldness(lblPlayAudio, false);
+        setBoldness(lblNext, true);
     }
 
     private void nextCard() {
@@ -359,7 +385,10 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         Label label = new Label(Messages.msg("practice.last"));
         label.setWrapText(true);
         Button btnNextTopic = new Button(Messages.msg("practice.next_topic"));
-        btnNextTopic.setOnAction(event -> {nextTopic(); popLast.hide();});
+        btnNextTopic.setOnAction(event -> {
+            nextTopic();
+            popLast.hide();
+        });
         Button btnOtherTopic = new Button(Messages.msg("practice.other_topic"));
         btnOtherTopic.setOnAction(event -> chooseTopic());
         Button btnQuit = new Button(Messages.msg("practice.quit"));
@@ -369,6 +398,10 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         vBox.getChildren().add(new HBox(btnNextTopic, btnOtherTopic, btnQuit));
 
         return anchorPane;
+    }
+
+    private void switchToEditor() {
+        MainApp.getInstance().setEditorScene();
     }
 
     public interface TopicChangeListener {

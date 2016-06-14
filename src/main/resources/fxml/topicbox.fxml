@@ -15,7 +15,7 @@
         <Pane fx:id="positionerPane" />
         <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="115.0" />
         <Region prefWidth="20.0" />
-        <VBox prefWidth="165.0">
+        <VBox prefWidth="350.0">
             <ClickableLabel fx:id="lblName" style="-fx-font-weight: bold;" />
             <Label fx:id="lblNumberOfWords" />
             <ClickableLabel fx:id="lblEdit" text="%topicbox.edit" />

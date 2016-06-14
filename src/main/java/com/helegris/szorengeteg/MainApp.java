@@ -1,6 +1,7 @@
 package com.helegris.szorengeteg;
 
 import com.helegris.szorengeteg.business.model.Topic;
+import com.helegris.szorengeteg.business.service.CardLoader;
 import com.helegris.szorengeteg.business.service.TopicLoader;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.VistaNavigator;
@@ -22,31 +23,65 @@ public class MainApp extends Application {
     private PositionSaver positionSaver;
     @Inject
     private TopicLoader topicLoader;
+    @Inject
+    private CardLoader cardLoader;
+
+    private static MainApp instance;
+
+    private Stage stage;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public MainApp() {
         DIUtils.injectFields(this);
+        instance = this;
     }
 
     @Override
     public void start(Stage stage) throws Exception {
-        Scene scene;
-        Topic topic = topicLoader.loadByOrdinal(positionSaver.getTopicOrdinal());
+        this.stage = stage;
 
-        if (topic != null) {
-            scene = (new SceneStyler().createScene(new PracticeView(
-                    new PracticeSession(topic, positionSaver.getCardOrdinal())),
-                    SceneStyler.Style.PRACTICE));
-            stage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
-        } else {
-            Pane root = loadMainPane();
-            scene = new SceneStyler().createScene(root, SceneStyler.Style.MAIN);
-            stage.setTitle(Messages.msg("menu.title"));
+        if (!setPracticeScene()) {
+            setEditorScene();
         }
-
-        stage.setMaximized(true);
-        stage.setScene(scene);
         stage.show();
+    }
+
+    public boolean setPracticeScene() {
+        Topic topic = topicLoader.loadByOrdinal(positionSaver.getTopicOrdinal());
+        int index = positionSaver.getCardOrdinal();
+        if (topic != null && cardLoader.loadByTopic(topic).size() > index) {
+            setPracticeScene(topic, index);
+            return true;
+        }
+        topic = topicLoader.loadByOrdinal(PositionSaver.getTopicOrdDef());
+        if (topic != null && cardLoader.loadByTopic(topic).size() > 0) {
+            setPracticeScene(topic);
+            return true;
+        }
+        return false;
+    }
+
+    public void setPracticeScene(Topic topic) {
+        setPracticeScene(topic, 0);
+    }
+
+    private void setPracticeScene(Topic topic, int index) {
+        Scene scene = (new SceneStyler().createScene(new PracticeView(
+                new PracticeSession(topic, index)),
+                SceneStyler.Style.PRACTICE));
+        stage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
+        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.setMaximized(true);
+    }
+
+    public void setEditorScene() {
+        Pane root = loadMainPane();
+        Scene scene = new SceneStyler().createScene(root, SceneStyler.Style.MAIN);
+        stage.setTitle(Messages.msg("menu.title"));
+        stage.setScene(scene);
+        stage.setMaximized(false);
+        stage.setMaximized(true);
     }
 
     /**
@@ -74,5 +109,9 @@ public class MainApp extends Application {
      */
     public static void main(String[] args) {
         launch(args);
+    }
+
+    public static MainApp getInstance() {
+        return instance;
     }
 }
