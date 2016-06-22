@@ -7,14 +7,12 @@ package com.helegris.szorengeteg.ui.mainpages;
 
 import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
-import com.helegris.szorengeteg.MainApp;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.service.TopicLoader;
 import com.helegris.szorengeteg.business.model.Topic;
 import com.helegris.szorengeteg.business.service.EntitySaver;
-import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.ui.VistaNavigator;
-import com.helegris.szorengeteg.ui.practice.PracticeControl;
+import com.helegris.szorengeteg.ui.practice.PositionSaver;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +21,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javax.inject.Inject;
@@ -40,13 +37,11 @@ public class TopicsView extends AnchorPane {
     private TopicLoader topicLoader;
     @Inject
     private EntitySaver entitySaver;
+    @Inject
+    private PositionSaver positionSaver;
 
     @FXML
     private VBox vBox;
-    @FXML
-    private ImageView imgContinue;
-    @FXML
-    private ClickableLabel lblContinue;
     @FXML
     private Button btnNewTopic;
     @FXML
@@ -55,8 +50,6 @@ public class TopicsView extends AnchorPane {
     private Button btnSave;
     @FXML
     private Button btnCancel;
-
-    private PracticeControl pcContinue;
 
     private List<Topic> topics;
     private List<TopicBox> topicBoxes;
@@ -96,9 +89,6 @@ public class TopicsView extends AnchorPane {
         btnModifyOrder.setOnAction(this::allowModifyOrder);
         btnSave.setOnAction(this::saveOrder);
         btnCancel.setOnAction(this::cancel);
-
-        pcContinue = new PracticeControl(PracticeControl.Direction.RIGHT,
-                imgContinue, lblContinue, this::continuePractice);
     }
 
     private void loadTopics() {
@@ -112,7 +102,11 @@ public class TopicsView extends AnchorPane {
         } else {
             topicBoxes = new ArrayList<>();
             topics.stream().forEach((topic) -> {
-                topicBoxes.add(new TopicBox(topic, moveListener));
+                TopicBox topicBox = new TopicBox(topic, moveListener);
+                topicBoxes.add(topicBox);
+                if (topic.equals(PositionSaver.getCurrentTopic())) {
+                    topicBox.highlight();
+                }
             });
             setTopicBoxes();
 
@@ -131,11 +125,6 @@ public class TopicsView extends AnchorPane {
         topicBoxes.stream().forEach((topicBox) -> {
             vBox.getChildren().add(topicBox);
         });
-        topicBoxes.get(0).requestFocus();
-    }
-
-    private void continuePractice() {
-        MainApp.getInstance().setPracticeScene();
     }
 
     private void newTopic(ActionEvent event) {

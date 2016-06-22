@@ -82,7 +82,7 @@ public class PracticeSession {
                 sessionCards = allCards;
             }
 
-            positionSaver.setTopicOrdinal(topic.getOrdinal());
+            positionSaver.setTopic(topic);
             jumpTo(startIndex);
         }
     }

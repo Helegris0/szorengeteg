@@ -1,0 +1,50 @@
+﻿HASZNÁLATI ÚTMUTATÓ
+
+A következő módszerrel tud egy afáziás gyorsan, több mint 500 szót megtanulni:
+
+- A program első megnyitása során az 1. témakör 1. képe jelentkezik (ezt a jobb alsó sarokban látni).
+
+- Az ① alatti szöveg a kért szó meghatározását adja, olvassa ezt nagyon gondosan, és próbálja kitalálni a szót. Ha egy szó megjelent, akkor ezt a szót még tanulni kell, hogy akármikor felhasználható legyen.
+
+- A ② mellett egy átkapcsoló gomb van. Bal egérgomb lenyomással bekapcsol, miközben a színe sötétre vált. Ez után beírhatja a kért szót az üres négyzetekbe.
+Ha nem megfelelő betűket használ, a program nem jelenít meg a megfelelő négyzetben semmit.
+A szó kitalálására további lehetősége van.
+
+- A ③ kapcsolóval segítséget kaphat. A négyzet sorban megjelenik a helyes szó első és utolsó betűje. Ha be tudja írni a kettő közötti helyekre a helyes betűket, megtalálta a kért szót.
+
+Ha a helyes betűket nem sikerült beírni, újabb segítséget kaphat.
+- A ④ kapcsoló megnyomására megjelenik a kért szó fényképe. Ha erre már be tudja írni a helyes betűket, leírta és megértette a kért szót.
+Ha a helyes betűket ez után sem sikerült beírni, újabb kérése lehet.
+- Az ⑤ kapcsoló benyomására a program beírja a szükséges betűket, a kért szó teljes egészében olvasható.
+
+A szó megismerésére van még egy segédje.
+
+- A ⑥ kapcsoló minden újabb megnyomására a hangszóróban kimondja a kért szót, hogy hang emlék segítséget adjon.
+
+Ezek után az "Előre" kapcsolóra nyomhat, hogy újabb szót kérjen.
+(az "Előre" és a "Hátra" kapcsolók folyamaton kioltott képet mutatnak.)
+
+Ha a vélt szót sajnos nem tudta kitalálni - beírni – a "témakör szám és kép szám" adatokat és az ismeretlen szót papírra kell írni.
+Amikor a szavak tanulása során 5 ki nem talált szóig jut, be kell csukni a programot, (jobb felső sarokban "X" nyomással), holnapig meg kell tanulni ezt az öt szót.
+
+A program megnyitásakor ugyanazon a helyen folytatja, amin a becsukáskor állt, de a szó beírása és a szó képe nem látszik és a ② - ⑥ kapcsolók nem működnek.
+
+Célszerű megkeresni az 5 tanult szó egyikét. Ehhez írja be a témakör számát és a kép számát a jobb alsó sarokban található mezőkbe.
+
+A képen meglátja, hogy a kért szó kigondolásakor a ② - ⑥ közül hány kapcsolót kért segítségként.
+Ha ez elsőre sikerül, akkor jeles, 5-ös a munkára! Ha viszont a ⑥ kapcsolót is kellett kérnie, akkor elégtelen, 1-es az eredménye. Ekkor meg kell keresni az okát, és javítania kell, ahogy lehet.
+
+Egy szó kitalálását újra kezdheti a ② - ⑥ kapcsolók visszaállításával. Ehhez meg kell nyomni a "Kapcsolók visszaállítása" kapcsolót.
+A ② kapcsoló megnyomása után (segéd kérés nélkül) be lehet írni a vélt szót.
+
+A programban tárolt szavak ismeretével már meg tudja magát értetni.
+
+Aki ennél többet igényel, az a szótárt a saját számára fontos témakörökkel, vagy újabb szavakkal bővítheti.
+
+A számítógép program megfelelő kezeléséhez ezt a segítséget nyomtassa ki.
+
+Mielőbbi jó beszélgetést kívánok minden társnak.
+
+Komanovics István
+gyémánt okl. gépészmérnök.
+Afáziás.

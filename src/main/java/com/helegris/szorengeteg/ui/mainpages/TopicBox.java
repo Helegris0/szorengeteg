@@ -103,6 +103,11 @@ public class TopicBox extends Pane {
         }
     }
 
+    public void highlight() {
+        lblName.setStyle("-fx-font-weight: bold;-fx-font-size: 18pt;"
+                + "-fx-background-color:rgba(85, 255, 68,0.7);");
+    }
+
     public void setNameLabel() {
         if (topic.getOrdinal() != null) {
             lblName.setText(topic.getOrdinal() + ". " + topic.getName());

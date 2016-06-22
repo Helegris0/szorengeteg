@@ -29,6 +29,8 @@ public class SpelledWordInput extends WordInput {
 
     private final String expectedInput;
 
+    private int numberOfFields = 14;
+
     public SpelledWordInput(String word, WordInputListener listener) {
         super(word, listener);
         expectedInput = word.toUpperCase().replaceAll(" +", "");
@@ -36,6 +38,10 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void setFields() {
+        if (numberOfFields < expectedInput.length()) {
+            numberOfFields = expectedInput.length();
+        }
+
         addFields();
 
         if (fields.size() > 1) {
@@ -46,8 +52,8 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void addFields() {
-        for (int i = 0; i < word.length(); i++) {
-            if (' ' == (word.charAt(i))) {
+        for (int i = 0; i < numberOfFields; i++) {
+            if (i < word.length() && ' ' == (word.charAt(i))) {
                 Pane pane = new HBox();
                 pane.setPrefWidth(FIELD_WIDTH);
                 this.getChildren().add(pane);
@@ -99,7 +105,8 @@ public class SpelledWordInput extends WordInput {
 
     private void handleTextChange(TextField field, Control nextControl) {
         int index = fields.indexOf(field);
-        String expectedLetter = expectedInput.substring(index, index + 1);
+        String expectedLetter = index < expectedInput.length()
+                ? expectedInput.substring(index, index + 1) : "";
 
         field.textProperty().addListener((ov, oldValue, newValue) -> {
             if (oldValue.equals(expectedLetter)) {
@@ -149,6 +156,7 @@ public class SpelledWordInput extends WordInput {
     protected void check() {
         String input = "";
         input = fields.stream()
+                .filter(field -> fields.indexOf(field) < expectedInput.length())
                 .map(field -> field.getText())
                 .reduce(input, String::concat);
 
@@ -178,14 +186,14 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void helpFirstChar() {
-        String firstLetter = word.substring(0, 1).toUpperCase();
+        String firstLetter = expectedInput.substring(0, 1);
         fields.get(0).setText(firstLetter);
         fields.get(1).requestFocus();
     }
 
     private void helpFirstTwoChars() {
         helpFirstChar();
-        String secondLetter = word.substring(1, 2).toUpperCase();
+        String secondLetter = expectedInput.substring(1, 2);
         if (fields.size() > 2) {
             fields.get(1).setText(secondLetter);
             fields.get(2).requestFocus();
@@ -193,16 +201,20 @@ public class SpelledWordInput extends WordInput {
     }
 
     private void helpFirstAndLastChar() {
-        if (word.length() > 2) {
-            String lastLetter = word.substring(word.length() - 1);
-            fields.get(fields.size() - 1).setText(lastLetter);
+        int index = expectedInput.length() - 1;
+        if (expectedInput.length() > 2) {
+            String lastLetter = expectedInput.substring(index);
+            fields.get(index).setText(lastLetter);
         }
         helpFirstChar();
+        for (int i = index + 1; i < fields.size(); i++) {
+            fields.get(i).setDisable(true);
+        }
     }
 
     private void helpVowels() {
         for (int i = 0; i < fields.size(); i++) {
-            String letter = word.toUpperCase().substring(i, i + 1);
+            String letter = expectedInput.toUpperCase().substring(i, i + 1);
             if (vowels.contains(letter)) {
                 fields.get(i).setText(letter);
             }
@@ -212,8 +224,8 @@ public class SpelledWordInput extends WordInput {
 
     @Override
     public void revealWord() {
-        for (int i = 0; i < fields.size(); i++) {
-            fields.get(i).setText(word.substring(i, i + 1));
+        for (int i = 0; i < expectedInput.length(); i++) {
+            fields.get(i).setText(expectedInput.substring(i, i + 1));
         }
         disable();
     }
@@ -221,7 +233,9 @@ public class SpelledWordInput extends WordInput {
     private void disable() {
         fields.stream().forEach(field -> {
             field.setDisable(true);
-            field.setStyle("-fx-opacity: 1.0;");
+            if (fields.indexOf(field) < expectedInput.length()) {
+                field.setStyle("-fx-opacity: 1.0;");
+            }
         });
     }
 

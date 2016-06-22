@@ -14,6 +14,8 @@
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
+    <ImageView fx:id="helpIcon" AnchorPane.rightAnchor="0"
+               fitWidth="64" fitHeight="64" />
     <VBox AnchorPane.topAnchor="15" AnchorPane.leftAnchor="15"
           AnchorPane.rightAnchor="65" spacing="10">
         <HBox spacing="5" alignment="CENTER_LEFT">
@@ -25,10 +27,7 @@
         <HBox spacing="5" alignment="CENTER_LEFT">
             <ImageView fx:id="imgVisual" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblVisual" text="%practice.visual_help" />
-            <ImageView fx:id="imgDefault" fitWidth="40" fitHeight="40" />
-            <ClickableLabel fx:id="lblDefault" text="%practice.default" />
             <Pane HBox.hgrow="ALWAYS" />
-            <ClickableLabel fx:id="lblEdit" text="%practice.edit" />
         </HBox>
         <HBox spacing="15">
             <HBox fx:id="hboxInput" />
@@ -56,6 +55,17 @@
                     <ImageView fx:id="audioIcon" fitWidth="40" fitHeight="40" />
                 </HBox>
             </VBox>
+            <Pane HBox.hgrow="ALWAYS" />
+            <VBox>
+                <HBox spacing="5" alignment="CENTER_RIGHT">
+                    <ClickableLabel fx:id="lblChooseTopic" text="%practice.choose_topic" />
+                    <ImageView fx:id="imgChooseTopic" fitWidth="40" fitHeight="40" />
+                </HBox>
+                <HBox spacing="5" alignment="CENTER_RIGHT">
+                    <ClickableLabel fx:id="lblDefault" text="%practice.default" />
+                    <ImageView fx:id="imgDefault" fitWidth="40" fitHeight="40" />
+                </HBox>
+            </VBox>
         </HBox>
         <HBox spacing="5" alignment="CENTER_LEFT">
             <ImageView fx:id="imgNext" fitWidth="40" fitHeight="40" />
@@ -63,12 +73,13 @@
             <ImageView fx:id="imgPrev" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblPrev" text="%practice.prev" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Label fx:id="lblOrdinal" />
+            <Label text="%practice.topic_ordinal" />
+            <Label fx:id="lblTopicOrdinal" style="-fx-border-style: solid inside;" />
+            <Label text="%practice.word_ordinal" />
+            <Label fx:id="lblWordOrdinal" style="-fx-border-style: solid inside;" />
         </HBox>
         <HBox spacing="5" alignment="CENTER_LEFT">
             <Pane HBox.hgrow="ALWAYS" />
-            <ImageView fx:id="imgChooseTopic" fitWidth="40" fitHeight="40" />
-            <ClickableLabel fx:id="lblChooseTopic" text="%practice.choose_topic" />
             <ImageView fx:id="imgQuit" fitWidth="40" fitHeight="40" />
             <ClickableLabel fx:id="lblQuit" text="Kilépés" />
         </HBox>

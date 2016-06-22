@@ -16,7 +16,8 @@
         <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="115.0" />
         <Region prefWidth="20.0" />
         <VBox prefWidth="350.0">
-            <ClickableLabel fx:id="lblName" style="-fx-font-weight: bold;" />
+            <ClickableLabel fx:id="lblName"
+                            style="-fx-font-weight: bold;-fx-font-size: 18pt;" />
             <Label fx:id="lblNumberOfWords" />
             <ClickableLabel fx:id="lblEdit" text="%topicbox.edit" />
         </VBox>

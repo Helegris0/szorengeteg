@@ -58,6 +58,9 @@ public class Card extends PersistentObject {
     @Column(name = "last_gave_up")
     private boolean lastGaveUp;
 
+    @Column(name = "last_played_audio")
+    private boolean lastPlayedAudio;
+
     public Card() {
     }
 
@@ -149,5 +152,13 @@ public class Card extends PersistentObject {
 
     public void setLastGaveUp(boolean lastGaveUp) {
         this.lastGaveUp = lastGaveUp;
+    }
+
+    public boolean isLastPlayedAudio() {
+        return lastPlayedAudio;
+    }
+
+    public void setLastPlayedAudio(boolean lastPlayedAudio) {
+        this.lastPlayedAudio = lastPlayedAudio;
     }
 }

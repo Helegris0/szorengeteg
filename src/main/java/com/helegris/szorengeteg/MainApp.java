@@ -43,6 +43,7 @@ public class MainApp extends Application {
         if (!setPracticeScene()) {
             setEditorScene();
         }
+        stage.setTitle(Messages.msg("title"));
         stage.show();
     }
 
@@ -69,7 +70,6 @@ public class MainApp extends Application {
         Scene scene = (new SceneStyler().createScene(new PracticeView(
                 new PracticeSession(topic, index)),
                 SceneStyler.Style.PRACTICE));
-        stage.setTitle(topic.getName() + " " + Messages.msg("practice.title"));
         stage.setScene(scene);
         stage.setMaximized(false);
         stage.setMaximized(true);
@@ -78,7 +78,6 @@ public class MainApp extends Application {
     public void setEditorScene() {
         Pane root = loadMainPane();
         Scene scene = new SceneStyler().createScene(root, SceneStyler.Style.MAIN);
-        stage.setTitle(Messages.msg("menu.title"));
         stage.setScene(scene);
         stage.setMaximized(false);
         stage.setMaximized(true);

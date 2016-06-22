@@ -11,16 +11,9 @@
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
     <VBox>
-        <HBox spacing="10">
             <ScrollPane>
                 <VBox fx:id="vBox" />
             </ScrollPane>
-            <HBox spacing="5" alignment="CENTER_LEFT">
-                <ImageView fx:id="imgContinue" fitWidth="50" fitHeight="50" />
-                <ClickableLabel fx:id="lblContinue" text="%topics.continue"
-                            style="-fx-font-size: 28pt;" />
-            </HBox>
-        </HBox>
         <HBox>
             <Button fx:id="btnNewTopic" text="%topics.new_topic" />
             <Button fx:id="btnModifyOrder" text="%topics.modify_order" />

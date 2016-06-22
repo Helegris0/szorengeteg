@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -51,7 +50,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     private EntitySaver entitySaver;
 
     @FXML
-    private ClickableLabel lblEdit;
+    private ImageView helpIcon;
     @FXML
     private VisualHelp visualHelp;
     @FXML
@@ -93,7 +92,9 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     @FXML
     private ClickableLabel lblPrev;
     @FXML
-    private Label lblOrdinal;
+    private Label lblTopicOrdinal;
+    @FXML
+    private Label lblWordOrdinal;
     @FXML
     private ImageView imgChooseTopic;
     @FXML
@@ -139,7 +140,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     @FXML
     public void initialize() {
         pcDefault = new PracticeControl(
-                PracticeControl.Direction.DOWN, imgDefault, lblDefault,
+                PracticeControl.Direction.RIGHT, imgDefault, lblDefault,
                 this::defaultMode);
         pcInput = new PracticeControl(
                 PracticeControl.Direction.LEFT, imgInput, lblInput,
@@ -155,7 +156,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 this::giveUp);
         pcPlayAudio = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgPlayAudio, lblPlayAudio,
-                this::playAudio);
+                this::playAudioClicked);
         pcNext = new PracticeControl(
                 PracticeControl.Direction.DOWN, imgNext, lblNext,
                 this::nextCard);
@@ -164,56 +165,63 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 this::prevCard);
         pcChooseTopic = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgChooseTopic, lblChooseTopic,
-                this::chooseTopic);
+                this::switchToTopics);
         pcQuit = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgQuit, lblQuit,
                 this::abort);
         audioIcon.setImage(new Image(AudioIcon.AUDIO));
-        lblEdit.setOnMouseClicked(event -> switchToEditor());
         setQuestion();
         this.setOnKeyPressed((KeyEvent event) -> {
             if (checked && event.getCode().equals(KeyCode.ENTER)) {
                 nextCard();
             }
         });
+        helpIcon.setImage(new Image("/images/help.png"));
+        helpIcon.setOnMouseClicked(event -> {
+            Stage helpStage = new Stage();
+            helpStage.setScene(new SceneStyler().createScene(
+                    new HelpView(), SceneStyler.Style.MAIN));
+            helpStage.setTitle("Segítség");
+            Stage thisStage = (Stage) PracticeView.this.getScene().getWindow();
+            helpStage.initOwner(thisStage);
+            helpStage.show();
+        });
     }
 
     private void setQuestion() {
         visualHelp.setCard(card);
-        lblDescription.setText(card.getDescription());
+        lblDescription.setText(card.getDescription() + " ①");
         hboxInput.getChildren().clear();
         wordInput = new WordInputFactory().getWordInput(card.getWord(), this);
         wordInput.setVisible(false);
         hboxInput.getChildren().add(wordInput);
 
-        setBoldness(lblDefault, true);
-        pcDefault.setEnabled(true);
-        pcDefault.setUsed(false);
-        pcInput.setEnabled(false);
-        pcInput.setUsed(card.isLastInput());
+        if (card.isLastInput()) {
+            setBoldness(lblDefault, true);
+            pcDefault.setEnabled(true);
+            pcInput.setUsed(card.isLastInput());
+            pcHelp.setUsed(card.isLastHelp());
+            pcVisual.setUsed(card.isLastVisual());
+            pcGiveUp.setUsed(card.isLastGaveUp());
+            pcPlayAudio.setUsed(card.isLastPlayedAudio());
+        } else {
+            defaultMode();
+        }
+        pcInput.setEnabled(!card.isLastInput());
         pcHelp.setEnabled(false);
-        pcHelp.setUsed(card.isLastHelp());
         pcVisual.setEnabled(false);
-        pcVisual.setUsed(card.isLastVisual());
         pcGiveUp.setEnabled(false);
-        pcGiveUp.setUsed(card.isLastGaveUp());
-        pcPlayAudio.setUsed(false);
         pcPlayAudio.setEnabled(false);
         pcPrev.setEnabled(session.getIndex() > 0);
 
-        lblOrdinal.setText(
-                String.format("%s. témakör (%s) %s. szava (%s szóból)",
-                        card.getTopic().getOrdinal(),
-                        card.getTopic().getName(),
-                        session.getIndex() + 1,
-                        session.getLength()));
+        lblTopicOrdinal.setText(" " + card.getTopic().getOrdinal() + ". ");
+        lblWordOrdinal.setText(" " + (session.getIndex() + 1) + ". ");
         checked(false);
     }
 
     private void defaultMode() {
         setBoldness(lblDefault, false);
         pcDefault.setEnabled(false);
-        pcDefault.setUsed(true);
 
         pcInput.setUsed(false);
         pcHelp.setUsed(false);
@@ -232,6 +240,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         wordInput.requestFocus();
         pcInput.useAndDisable();
         pcHelp.setEnabled(true);
+        pcVisual.setEnabled(true);
         pcGiveUp.setEnabled(true);
         if (helpSet) {
             setBoldness(lblHelp, true);
@@ -282,6 +291,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
             card.setLastHelp(pcHelp.isUsed());
             card.setLastVisual(pcVisual.isUsed());
             card.setLastGaveUp(pcGiveUp.isUsed());
+            card.setLastPlayedAudio(pcPlayAudio.isUsed());
             entitySaver.saveCard(card);
 
             pcHelp.setEnabled(false);
@@ -311,6 +321,17 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 : "-fx-font-weight: regular;-fx-opacity: 1.0;");
     }
 
+    private void playAudioClicked() {
+        playAudio();
+        if (!pcPlayAudio.isUsed()) {
+            pcPlayAudio.setUsed(true);
+            card.setLastPlayedAudio(true);
+            entitySaver.saveCard(card);
+            setBoldness(lblPlayAudio, false);
+            setBoldness(lblNext, true);
+        }
+    }
+
     private void playAudio() {
         if (card.getAudio() != null) {
             try {
@@ -320,9 +341,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 Logger.getLogger(PracticeView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        pcPlayAudio.setUsed(true);
-        setBoldness(lblPlayAudio, false);
-        setBoldness(lblNext, true);
     }
 
     private void nextCard() {
@@ -384,23 +402,23 @@ public class PracticeView extends AnchorPane implements WordInputListener {
 
         Label label = new Label(Messages.msg("practice.last"));
         label.setWrapText(true);
-        Button btnNextTopic = new Button(Messages.msg("practice.next_topic"));
-        btnNextTopic.setOnAction(event -> {
-            nextTopic();
-            popLast.hide();
-        });
-        Button btnOtherTopic = new Button(Messages.msg("practice.other_topic"));
-        btnOtherTopic.setOnAction(event -> chooseTopic());
-        Button btnQuit = new Button(Messages.msg("practice.quit"));
-        btnQuit.setOnAction(event -> abort());
+//        Button btnNextTopic = new Button(Messages.msg("practice.next_topic"));
+//        btnNextTopic.setOnAction(event -> {
+//            nextTopic();
+//            popLast.hide();
+//        });
+//        Button btnOtherTopic = new Button(Messages.msg("practice.other_topic"));
+//        btnOtherTopic.setOnAction(event -> chooseTopic());
+//        Button btnQuit = new Button(Messages.msg("practice.quit"));
+//        btnQuit.setOnAction(event -> abort());
 
         vBox.getChildren().add(label);
-        vBox.getChildren().add(new HBox(btnNextTopic, btnOtherTopic, btnQuit));
+//        vBox.getChildren().add(new HBox(btnNextTopic, btnOtherTopic, btnQuit));
 
         return anchorPane;
     }
 
-    private void switchToEditor() {
+    private void switchToTopics() {
         MainApp.getInstance().setEditorScene();
     }
 
