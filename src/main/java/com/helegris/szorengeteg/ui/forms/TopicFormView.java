@@ -67,7 +67,7 @@ public abstract class TopicFormView extends CardsEditorForm {
 
     @FXML
     protected void loadImage(ActionEvent event) {
-        imageFile = FileChooserHelper.getImageFile();
+        imageFile = FileChooserHelper.getImageFile(getScene().getWindow());
         if (imageFile != null) {
             try {
                 Image image = new Image(new FileInputStream(imageFile));

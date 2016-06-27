@@ -8,6 +8,7 @@ package com.helegris.szorengeteg.ui.forms;
 import com.helegris.szorengeteg.messages.Messages;
 import java.io.File;
 import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
 /**
  *
@@ -20,7 +21,7 @@ public class FileChooserHelper {
     private static String audioDirectory = DEFAULT_PATH;
     private static String txtDirectory = DEFAULT_PATH;
 
-    public static File getImageFile() {
+    public static File getImageFile(Window ownerWindow) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(imageDirectory));
 
@@ -30,14 +31,14 @@ public class FileChooserHelper {
                         "*.jpg", "*.png", "*.gif");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        File file = fileChooser.showOpenDialog(null);
+        File file = fileChooser.showOpenDialog(ownerWindow);
         if (file != null) {
             imageDirectory = file.getParent();
         }
         return file;
     }
 
-    public static File getAudioFile() {
+    public static File getAudioFile(Window ownerWindow) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(audioDirectory));
 
@@ -47,14 +48,14 @@ public class FileChooserHelper {
                         "*.mp3", "*.wav", "*.aac");
         fileChooser.getExtensionFilters().add(extFilter);
 
-        File file = fileChooser.showOpenDialog(null);
+        File file = fileChooser.showOpenDialog(ownerWindow);
         if (file != null) {
             audioDirectory = file.getParent();
         }
         return file;
     }
 
-    public static File getCsvFile() {
+    public static File getCsvFile(Window ownerWindow) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(txtDirectory));
 
@@ -66,7 +67,7 @@ public class FileChooserHelper {
                         Messages.msg("open_dialog.csv_files"), "*.csv");
         fileChooser.getExtensionFilters().addAll(extFilterTxt, extFilterCsv);
 
-        File file = fileChooser.showOpenDialog(null);
+        File file = fileChooser.showOpenDialog(ownerWindow);
         if (file != null) {
             txtDirectory = file.getParent();
         }

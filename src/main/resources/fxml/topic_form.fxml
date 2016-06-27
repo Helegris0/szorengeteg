@@ -54,7 +54,7 @@
                         <PropertyValueFactory property="audioIcon" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colWord" text="%form.word" prefWidth="100">
+                <TableColumn fx:id="colWord" text="%form.word" prefWidth="140">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>

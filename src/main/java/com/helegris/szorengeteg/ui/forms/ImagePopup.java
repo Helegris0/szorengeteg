@@ -38,13 +38,14 @@ public class ImagePopup extends FilePopup {
 
     @Override
     protected void load(ActionEvent event) {
-        file = FileChooserHelper.getImageFile();
+        file = FileChooserHelper.getImageFile(getScene().getWindow());
 
         if (file != null) {
             try {
                 Image image = new Image(new FileInputStream(file));
                 imageView.setImage(image);
                 btnDelete.setVisible(true);
+                btnOk.requestFocus();
             } catch (FileNotFoundException ex) {
                 alertFileNotFound(file);
             }

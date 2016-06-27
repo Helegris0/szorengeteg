@@ -21,6 +21,8 @@ public final class PracticeControl {
     private static final String UNUSED_PATH = "_unused";
     private static final String EXT = ".png";
 
+    private static final int IMG_SIZE = 40;
+
     private final ImageView imageView;
     private final ClickableLabel label;
 
@@ -35,6 +37,9 @@ public final class PracticeControl {
     public PracticeControl(Direction direction, ImageView imageView,
             ClickableLabel label, Runnable function) {
         this.imageView = imageView;
+        imageView.setFitWidth(IMG_SIZE);
+        imageView.setFitHeight(IMG_SIZE);
+
         this.label = label;
 
         imageUsed = new Image(PATH_CORE + direction.path + USED_PATH + EXT);
@@ -79,7 +84,7 @@ public final class PracticeControl {
         setUsed(true);
         setEnabled(false);
     }
-    
+
     public boolean isUsed() {
         return used;
     }

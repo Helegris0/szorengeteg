@@ -12,9 +12,9 @@
     <VBox>
         <TextArea fx:id="txtContent" wrapText="true" editable="false" />
         <HBox>
-            <Button text="Mentés PDF-ként" />
+            <Button fx:id="btnSavePdf" text="Mentés PDF-ként" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Button text="Bezárás" />
+            <Button fx:id="btnClose" text="Bezárás" />
         </HBox>
     </VBox>
 </fx:root>

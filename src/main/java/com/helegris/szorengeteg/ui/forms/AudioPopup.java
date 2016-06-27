@@ -44,12 +44,13 @@ public class AudioPopup extends FilePopup {
 
     @Override
     protected void load(ActionEvent event) {
-        file = FileChooserHelper.getAudioFile();
+        file = FileChooserHelper.getAudioFile(getScene().getWindow());
 
         if (file != null) {
             audioIcon.setAudio(new Media(file.toURI().toString()));
             btnDelete.setVisible(true);
             lblFileName.setText(file.getName());
+            btnOk.requestFocus();
         }
     }
 

@@ -22,7 +22,7 @@ import javafx.scene.layout.Pane;
  */
 public class SpelledWordInput extends WordInput {
 
-    private static final int FIELD_WIDTH = 70;
+    private static final int FIELD_WIDTH = 66;
     private static final String vowels = "AÁEÉIÍOÓÖŐÜŰ";
 
     private final List<TextField> fields = new ArrayList<>();

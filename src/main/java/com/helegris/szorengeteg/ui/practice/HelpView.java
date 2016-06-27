@@ -10,9 +10,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 
 /**
@@ -23,21 +28,51 @@ public class HelpView extends AnchorPane {
 
     private static final String FXML = "fxml/help.fxml";
 
+    private static final String GUIDE_PATH = "src/main/resources/text/user_guide_utf8.txt";
+    private static final String CHARSET = "utf-8";
+
     @FXML
     private TextArea txtContent;
+    @FXML
+    private Button btnSavePdf;
+    @FXML
+    private Button btnClose;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public HelpView() {
         FXMLLoaderHelper.load(FXML, this);
         try {
-            String content = FileUtils.readFileToString(new File("src/main/resources/text/user_guide_utf8.txt"), "utf-8");
+            String content = FileUtils.readFileToString(new File(GUIDE_PATH), CHARSET);
             txtContent.setText(content);
+            setHeight();
         } catch (IOException ex) {
             Logger.getLogger(HelpView.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     @FXML
-    public void initalize() {
+    private void initialize() {
+        btnClose.setOnAction(event -> ((Stage) this.getScene().getWindow()).close());
+    }
+
+    private void setHeight() {
+        Platform.runLater(() -> {
+            this.prefWidthProperty().bind(this.getScene().widthProperty());
+            txtContent.prefWidthProperty().bind(this.prefWidthProperty());
+            this.prefHeightProperty().bind(this.getScene().heightProperty());
+            txtContent.prefHeightProperty()
+                    .bind(this.prefHeightProperty()
+                            .subtract(btnSavePdf.heightProperty()));
+        });
+    }
+
+    private void savePdf(ActionEvent actionEvent) {
+        FileChooser fileChooser = new FileChooser();
+
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF fájlok (*.pdf)", "*.pdf");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        File file = fileChooser.showSaveDialog(getScene().getWindow());
+        
     }
 }

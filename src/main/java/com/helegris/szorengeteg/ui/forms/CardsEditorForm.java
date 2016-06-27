@@ -135,7 +135,7 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     protected void addWordsFromFile(ActionEvent event) {
-        File file = FileChooserHelper.getCsvFile();
+        File file = FileChooserHelper.getCsvFile(getScene().getWindow());
         if (file != null) {
             FileInput fileInput = new FileInput(file);
             try {

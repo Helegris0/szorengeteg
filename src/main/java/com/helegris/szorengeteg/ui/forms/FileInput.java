@@ -41,5 +41,4 @@ public class FileInput {
         }
         return cards;
     }
-
 }

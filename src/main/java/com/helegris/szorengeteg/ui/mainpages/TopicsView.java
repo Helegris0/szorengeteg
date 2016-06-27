@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -79,10 +80,11 @@ public class TopicsView extends AnchorPane {
     public TopicsView() {
         DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
+        Platform.runLater(() -> requestFocus());
     }
 
     @FXML
-    protected void initialize() {
+    private void initialize() {
         loadTopics();
         createTopicBoxes();
         btnNewTopic.setOnAction(this::newTopic);
