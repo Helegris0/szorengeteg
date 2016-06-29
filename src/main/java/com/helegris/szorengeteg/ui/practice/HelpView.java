@@ -34,8 +34,6 @@ public class HelpView extends AnchorPane {
     @FXML
     private TextArea txtContent;
     @FXML
-    private Button btnSavePdf;
-    @FXML
     private Button btnClose;
 
     @SuppressWarnings("LeakingThisInConstructor")
@@ -62,7 +60,7 @@ public class HelpView extends AnchorPane {
             this.prefHeightProperty().bind(this.getScene().heightProperty());
             txtContent.prefHeightProperty()
                     .bind(this.prefHeightProperty()
-                            .subtract(btnSavePdf.heightProperty()));
+                            .subtract(btnClose.heightProperty()));
         });
     }
 

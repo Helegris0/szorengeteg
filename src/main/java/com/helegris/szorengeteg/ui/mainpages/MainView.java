@@ -6,7 +6,6 @@
 package com.helegris.szorengeteg.ui.mainpages;
 
 import com.helegris.szorengeteg.ui.forms.NewTopicView;
-import com.helegris.szorengeteg.ui.forms.WordsFormView;
 import com.helegris.szorengeteg.ui.forms.EditTopicView;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.messages.Messages;
@@ -31,14 +30,14 @@ public class MainView extends AnchorPane {
     public static final String TOPICS_TITLE = Messages.msg("menu.topics");
     public static final String NEW_TOPIC_TITLE = Messages.msg("menu.new_topic");
     public static final String EDIT_TOPIC_TITLE = Messages.msg("menu.edit_topic");
-    public static final String WORDS_TITLE = Messages.msg("menu.words");
+//    public static final String WORDS_TITLE = Messages.msg("menu.words");
 
     @FXML
     private Menu mnTopics;
     @FXML
     private Menu mnNewTopic;
-    @FXML
-    private Menu mnWords;
+//    @FXML
+//    private Menu mnWords;
     @FXML
     private Label lblTitle;
     @FXML
@@ -66,9 +65,9 @@ public class MainView extends AnchorPane {
         label.setOnMouseClicked(event -> loadContentNewTopic());
         initMenuLabel(mnNewTopic, label);
 
-        label = new Label(WORDS_TITLE);
-        label.setOnMouseClicked(event -> loadContentWords());
-        initMenuLabel(mnWords, label);
+//        label = new Label(WORDS_TITLE);
+//        label.setOnMouseClicked(event -> loadContentWords());
+//        initMenuLabel(mnWords, label);
     }
 
     private void initMenuLabel(Menu menu, Label label) {
@@ -94,9 +93,9 @@ public class MainView extends AnchorPane {
         loadContent(EDIT_TOPIC_TITLE, new EditTopicView(topic));
     }
 
-    public void loadContentWords() {
-        loadContent(WORDS_TITLE, new WordsFormView());
-    }
+//    public void loadContentWords() {
+//        loadContent(WORDS_TITLE, new WordsFormView());
+//    }
 
     /**
      * Replaces the vista displayed in the vista holder with a new vista.

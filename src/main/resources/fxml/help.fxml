@@ -12,7 +12,6 @@
     <VBox>
         <TextArea fx:id="txtContent" wrapText="true" editable="false" />
         <HBox>
-            <Button fx:id="btnSavePdf" text="Mentés PDF-ként" />
             <Pane HBox.hgrow="ALWAYS" />
             <Button fx:id="btnClose" text="Bezárás" />
         </HBox>

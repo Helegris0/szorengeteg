@@ -15,7 +15,6 @@
             <menus>
                 <Menu fx:id="mnTopics"></Menu>
                 <Menu fx:id="mnNewTopic"></Menu>
-                <Menu fx:id="mnWords"></Menu>
             </menus>
         </MenuBar>
         </HBox>

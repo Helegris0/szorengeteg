@@ -18,10 +18,15 @@ import com.helegris.szorengeteg.ui.AudioIcon;
 import com.helegris.szorengeteg.ui.MediaLoader;
 import com.helegris.szorengeteg.ui.SceneStyler;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -199,6 +204,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         lblDescription.setText(card.getDescription());
         hboxInput.getChildren().clear();
         wordInput = new WordInputFactory().getWordInput(card.getWord(), this);
+        wordInput.setAlignment(Pos.CENTER);
         wordInput.setVisible(false);
         hboxInput.getChildren().add(wordInput);
 
@@ -315,7 +321,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     }
 
     private void setBoldness(Label label, boolean bold) {
-        label.setStyle(bold ? "-fx-font-weight: bold"
+        label.setStyle(bold ? "-fx-font-weight: bold;"
                 : "-fx-font-weight: regular;-fx-opacity: 1.0;");
     }
 
@@ -415,9 +421,21 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     }
 
     private void abort() {
-        popLast.hide(Duration.millis(0));
-        Stage stage = (Stage) this.getScene().getWindow();
-        stage.close();
+        ButtonType yes = new ButtonType("Igen", ButtonBar.ButtonData.YES);
+        ButtonType no = new ButtonType("Mégse", ButtonBar.ButtonData.NO);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", yes, no);
+        alert.setTitle("Kilépés");
+        alert.setHeaderText("Biztosan szeretne kilépni?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == yes) {
+            popLast.hide(Duration.millis(0));
+            Stage stage = (Stage) this.getScene().getWindow();
+            stage.close();
+        } else {
+            alert.close();
+        }
     }
 
     private AnchorPane popOverPane() {
