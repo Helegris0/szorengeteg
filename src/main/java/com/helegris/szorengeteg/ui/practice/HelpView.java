@@ -11,12 +11,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.apache.commons.io.FileUtils;
 
@@ -42,7 +40,7 @@ public class HelpView extends AnchorPane {
         try {
             String content = FileUtils.readFileToString(new File(GUIDE_PATH), CHARSET);
             txtContent.setText(content);
-            setHeight();
+            setSize();
         } catch (IOException ex) {
             Logger.getLogger(HelpView.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -53,7 +51,7 @@ public class HelpView extends AnchorPane {
         btnClose.setOnAction(event -> ((Stage) this.getScene().getWindow()).close());
     }
 
-    private void setHeight() {
+    private void setSize() {
         Platform.runLater(() -> {
             this.prefWidthProperty().bind(this.getScene().widthProperty());
             txtContent.prefWidthProperty().bind(this.prefWidthProperty());
@@ -62,15 +60,5 @@ public class HelpView extends AnchorPane {
                     .bind(this.prefHeightProperty()
                             .subtract(btnClose.heightProperty()));
         });
-    }
-
-    private void savePdf(ActionEvent actionEvent) {
-        FileChooser fileChooser = new FileChooser();
-
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PDF fájlok (*.pdf)", "*.pdf");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        File file = fileChooser.showSaveDialog(getScene().getWindow());
-        
     }
 }

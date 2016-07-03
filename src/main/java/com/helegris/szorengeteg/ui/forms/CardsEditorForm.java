@@ -127,11 +127,23 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     private void setEvents() {
-        btnAddWordsFromFile.setOnAction(this::addWordsFromFile);
+        btnAddWordsFromFile.setOnAction(this::bulkAdd);
         tableView.setOnMouseClicked(this::tableClick);
         btnNewWord1.setOnAction(this::addRow);
         btnNewWord2.setOnAction(this::addRow);
         btnBack.setOnAction(this::goBack);
+    }
+
+    private void bulkAdd(ActionEvent event) {
+        Stage bulkAddStage = new Stage();
+        BulkAddView bulkAddView = new BulkAddView();
+        bulkAddStage.setScene(new SceneStyler().createScene(
+                bulkAddView, SceneStyler.Style.MAIN));
+        bulkAddStage.setTitle("Csoportos hozzáadás");
+        bulkAddStage.initModality(Modality.APPLICATION_MODAL);
+        bulkAddStage.initOwner(getScene().getWindow());
+        bulkAddStage.showAndWait();
+        loadRows(bulkAddView.getCards());
     }
 
     protected void addWordsFromFile(ActionEvent event) {

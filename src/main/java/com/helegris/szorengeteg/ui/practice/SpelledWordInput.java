@@ -13,8 +13,6 @@ import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 
 /**
  *
@@ -33,7 +31,7 @@ public class SpelledWordInput extends WordInput {
 
     public SpelledWordInput(String word, WordInputListener listener) {
         super(word, listener);
-        expectedInput = word.toUpperCase().replaceAll(" +", "");
+        expectedInput = word.toUpperCase();
         setFields();
     }
 
@@ -53,25 +51,19 @@ public class SpelledWordInput extends WordInput {
 
     private void addFields() {
         for (int i = 0; i < numberOfFields; i++) {
-            if (i < word.length() && ' ' == (word.charAt(i))) {
-                Pane pane = new HBox();
-                pane.setPrefWidth(FIELD_WIDTH);
-                this.getChildren().add(pane);
-            } else {
-                TextField field = new TextField();
-                field.setPrefWidth(FIELD_WIDTH);
-                field.focusedProperty().addListener(
-                        (ObservableValue<? extends Boolean> observable,
-                                Boolean oldValue, Boolean newValue) -> {
-                            Platform.runLater(() -> {
-                                if (field.isFocused() && !field.getText().isEmpty()) {
-                                    field.selectAll();
-                                }
-                            });
+            TextField field = new TextField();
+            field.setPrefWidth(FIELD_WIDTH);
+            field.focusedProperty().addListener(
+                    (ObservableValue<? extends Boolean> observable,
+                            Boolean oldValue, Boolean newValue) -> {
+                        Platform.runLater(() -> {
+                            if (field.isFocused() && !field.getText().isEmpty()) {
+                                field.selectAll();
+                            }
                         });
-                fields.add(field);
-                this.getChildren().add(field);
-            }
+                    });
+            fields.add(field);
+            this.getChildren().add(field);
         }
     }
 

@@ -35,7 +35,7 @@
         <HBox>
             <Button fx:id="btnNewWord1" text="%form.new_word" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnAddWordsFromFile" text="%form.add_from_file" />
+            <Button fx:id="btnAddWordsFromFile" text="Csoportos hozzáadás" />
         </HBox>
         <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
             <columns>

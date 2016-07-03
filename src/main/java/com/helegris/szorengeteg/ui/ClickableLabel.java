@@ -15,8 +15,16 @@ public class ClickableLabel extends Label {
 
     public ClickableLabel() {
         super();
+        setMouseEvents();
+    }
+
+    public ClickableLabel(String text) {
+        super(text);
+        setMouseEvents();
+    }
+
+    private void setMouseEvents() {
         this.setOnMouseEntered(e -> this.setUnderline(true));
         this.setOnMouseExited(e -> this.setUnderline(false));
     }
-
 }

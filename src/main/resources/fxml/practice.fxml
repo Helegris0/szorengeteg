@@ -3,6 +3,7 @@
 <?import com.helegris.szorengeteg.ui.AudioIcon?>
 <?import com.helegris.szorengeteg.ui.ClickableLabel?>
 <?import com.helegris.szorengeteg.ui.CloseIcon?>
+<?import com.helegris.szorengeteg.ui.HelpControl?>
 <?import com.helegris.szorengeteg.ui.practice.VisualHelp?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -22,7 +23,7 @@
             <Label text="/Komanovics István/"
                    style="-fx-font-size: 14pt; -fx-font-style: italic;" />
         </HBox>
-        <GridPane hgap="5">
+        <GridPane hgap="10">
             <Label text="①" GridPane.columnIndex="1" GridPane.rowIndex="0"
                    GridPane.halignment="CENTER" />
             <VisualHelp fx:id="visualHelp" fitWidth="240" fitHeight="208"
@@ -92,13 +93,10 @@
         <HBox spacing="5" alignment="CENTER_LEFT">
             <ImageView fx:id="imgNext" />
             <ClickableLabel fx:id="lblNext" text="%practice.next" />
-            <ImageView fx:id="imgPrev" />
-            <ClickableLabel fx:id="lblPrev" text="%practice.prev" />
             <Pane HBox.hgrow="ALWAYS" />
             <ClickableLabel fx:id="lblQuit" text="Kilépés" />
             <ImageView fx:id="imgQuit" />
         </HBox>
     </VBox>
-    <ImageView fx:id="helpIcon" AnchorPane.rightAnchor="0"
-               fitWidth="64" fitHeight="64" />
+    <HelpControl AnchorPane.rightAnchor="0" />
 </fx:root>

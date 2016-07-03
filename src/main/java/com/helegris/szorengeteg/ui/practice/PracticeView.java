@@ -57,8 +57,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     private EntitySaver entitySaver;
 
     @FXML
-    private ImageView helpIcon;
-    @FXML
     private VisualHelp visualHelp;
     @FXML
     private Label lblDescription;
@@ -95,10 +93,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     @FXML
     private ClickableLabel lblNext;
     @FXML
-    private ImageView imgPrev;
-    @FXML
-    private ClickableLabel lblPrev;
-    @FXML
     private ImageView imgChooseTopic;
     @FXML
     private ClickableLabel lblChooseTopic;
@@ -120,7 +114,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     private PracticeControl pcGiveUp;
     private PracticeControl pcPlayAudio;
     private PracticeControl pcNext;
-    private PracticeControl pcPrev;
     private PracticeControl pcChooseTopic;
     private PracticeControl pcJump;
     private PracticeControl pcQuit;
@@ -168,9 +161,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         pcNext = new PracticeControl(
                 PracticeControl.Direction.DOWN, imgNext, lblNext,
                 this::nextCard);
-        pcPrev = new PracticeControl(
-                PracticeControl.Direction.UP, imgPrev, lblPrev,
-                this::prevCard);
         pcChooseTopic = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgChooseTopic, lblChooseTopic,
                 this::switchToTopics);
@@ -185,15 +175,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
             if (checked && event.getCode().equals(KeyCode.ENTER)) {
                 nextCard();
             }
-        });
-        helpIcon.setImage(new Image("/images/help.png"));
-        helpIcon.setOnMouseClicked(event -> {
-            Stage helpStage = new Stage();
-            HelpView helpView = new HelpView();
-            helpStage.setScene(new SceneStyler().createScene(
-                    helpView, SceneStyler.Style.MAIN));
-            helpStage.setTitle("Segítség");
-            helpStage.show();
         });
         txtTopicOrdinal.setOnMouseClicked(event -> txtTopicOrdinal.selectAll());
         txtWordOrdinal.setOnMouseClicked(event -> txtWordOrdinal.selectAll());
@@ -224,7 +205,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         pcVisual.setEnabled(false);
         pcGiveUp.setEnabled(false);
         pcPlayAudio.setEnabled(false);
-        pcPrev.setEnabled(session.getIndex() > 0);
 
         txtTopicOrdinal.setText(Integer.toString(card.getTopic().getOrdinal()));
         txtWordOrdinal.setText(Integer.toString(session.getIndex() + 1));
@@ -307,9 +287,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                 } else {
                     setBoldness(lblPlayAudio, true);
                 }
-            } else {
-                setBoldness(lblNext, true);
             }
+            setBoldness(lblNext, true);
 
             setBoldness(lblHelp, false);
             setBoldness(lblVisual, false);
@@ -332,7 +311,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
             card.setLastPlayedAudio(true);
             entitySaver.saveCard(card);
             setBoldness(lblPlayAudio, false);
-            setBoldness(lblNext, true);
         }
     }
 
@@ -398,7 +376,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
             int newWordOrd = Integer.parseInt(txtWordOrdinal.getText());
 
             if (origTopicOrd == newTopicOrd) {
-                if (0 < newWordOrd && newWordOrd < session.getLength()) {
+                if (0 < newWordOrd && newWordOrd <= session.getLength()) {
                     card = session.jumpTo(newWordOrd - 1);
                     setQuestion();
                 } else {
