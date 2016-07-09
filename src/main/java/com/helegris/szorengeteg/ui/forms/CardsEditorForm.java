@@ -27,6 +27,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
@@ -55,7 +56,9 @@ public abstract class CardsEditorForm extends AnchorPane {
     @FXML
     protected Button btnNewWord2;
     @FXML
-    protected Button btnAddWordsFromFile;
+    protected ComboBox cmbBulkAdd;
+    @FXML
+    protected Button btnBulkAdd;
     @FXML
     protected TableView<RowForCard> tableView;
     @FXML
@@ -74,6 +77,10 @@ public abstract class CardsEditorForm extends AnchorPane {
     protected ObservableList<RowForCard> rows
             = FXCollections.observableArrayList();
     protected SortedList sortedRows = new SortedList(rows);
+
+    private static final String WORD = "szó és leírás";
+    private static final String IMAGE = "kép";
+    private static final String AUDIO = "hang";
 
     protected final RowMoveListener rowMoveListener = new RowMoveListener() {
 
@@ -105,6 +112,8 @@ public abstract class CardsEditorForm extends AnchorPane {
     protected void initialize() {
         setTable();
         setEvents();
+        cmbBulkAdd.getItems().addAll(WORD, IMAGE, AUDIO);
+        cmbBulkAdd.getSelectionModel().select(0);
     }
 
     private void setTable() {
@@ -127,7 +136,7 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     private void setEvents() {
-        btnAddWordsFromFile.setOnAction(this::bulkAdd);
+        btnBulkAdd.setOnAction(this::bulkAdd);
         tableView.setOnMouseClicked(this::tableClick);
         btnNewWord1.setOnAction(this::addRow);
         btnNewWord2.setOnAction(this::addRow);
@@ -135,15 +144,54 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     private void bulkAdd(ActionEvent event) {
-        Stage bulkAddStage = new Stage();
-        BulkAddView bulkAddView = new BulkAddView();
-        bulkAddStage.setScene(new SceneStyler().createScene(
-                bulkAddView, SceneStyler.Style.MAIN));
-        bulkAddStage.setTitle("Csoportos hozzáadás");
-        bulkAddStage.initModality(Modality.APPLICATION_MODAL);
-        bulkAddStage.initOwner(getScene().getWindow());
-        bulkAddStage.showAndWait();
-        loadRows(bulkAddView.getCards());
+        if (cmbBulkAdd.isVisible()) {
+            switch ((String) cmbBulkAdd.getSelectionModel().getSelectedItem()) {
+                case WORD: {
+                    Stage stage = new Stage();
+                    BulkAddWordsView view = new BulkAddWordsView();
+                    stage.setScene(new SceneStyler().createScene(
+                            view, SceneStyler.Style.MAIN));
+                    stage.setTitle("Csoportos hozzáadás (szó és leírás)");
+                    stage.initModality(Modality.APPLICATION_MODAL);
+                    stage.initOwner(getScene().getWindow());
+                    stage.showAndWait();
+                    loadRows(view.getCards());
+                }
+                break;
+                case IMAGE: {
+                    if (sortedRows.size() > 0) {
+                        Stage stage = new Stage();
+                        BulkAddImagesView view = new BulkAddImagesView(sortedRows);
+                        stage.setScene(new SceneStyler().createScene(
+                                view, SceneStyler.Style.MAIN));
+                        stage.setTitle("Csoportos hozzáadás (kép)");
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initOwner(getScene().getWindow());
+                        stage.showAndWait();
+
+                        if (view.isOk()) {
+                            view.getImageFiles().entrySet().stream().forEach((entry) -> {
+                                ((RowForCard) sortedRows.get(entry.getKey())).setImageFile(entry.getValue());
+                            });
+                            view.getImages().entrySet().stream().forEach((entry) -> {
+                                ((RowForCard) sortedRows.get(entry.getKey())).setImage(entry.getValue());
+                            });
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Hiba");
+                        alert.setHeaderText("A témakörben még nincsenek szavak, amikhez képet lehetne hozzárendelni.");
+                        alert.setContentText("Adjon hozzá szavakat a témakörhöz.");
+                        alert.showAndWait();
+                    }
+                }
+                break;
+            }
+        } else {
+            btnBulkAdd.setText("Csoportos hozzáadás");
+            cmbBulkAdd.setVisible(true);
+            cmbBulkAdd.requestFocus();
+        }
     }
 
     protected void addWordsFromFile(ActionEvent event) {

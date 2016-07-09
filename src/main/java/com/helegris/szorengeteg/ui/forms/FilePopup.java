@@ -20,7 +20,7 @@ import javafx.stage.Stage;
  * @author Timi
  */
 public abstract class FilePopup extends AnchorPane {
-    
+
     @FXML
     protected Button btnLoad;
     @FXML
@@ -29,7 +29,7 @@ public abstract class FilePopup extends AnchorPane {
     protected Button btnOk;
     @FXML
     protected Button btnCancel;
-    
+
     protected File file;
     protected boolean ok;
 

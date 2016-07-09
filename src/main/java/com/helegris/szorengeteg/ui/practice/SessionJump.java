@@ -42,4 +42,8 @@ public class SessionJump {
     public Topic getTopic() {
         return topic;
     }
+
+    public int getLength() {
+        return cardLoader.loadByTopic(topic).size();
+    }
 }

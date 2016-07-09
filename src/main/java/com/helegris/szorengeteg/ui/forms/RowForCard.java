@@ -20,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -34,6 +35,7 @@ public class RowForCard {
 
     private RowDeleteListener deleteListener;
     private Card card = new Card();
+    private CheckBox checkBox;
     private Positioner positioner;
     private ImageView imageView = new ImageView();
     private AudioIcon audioIcon = new AudioIcon();
@@ -155,6 +157,10 @@ public class RowForCard {
         topics.stream().forEach(allTopics::add);
     }
 
+    public String getWord() {
+        return txtWord.getText();
+    }
+
     public void setOrdinal(Integer ordinal) {
         card.setOrdinal(ordinal);
     }
@@ -165,6 +171,14 @@ public class RowForCard {
 
     public void setCard(Card card) {
         this.card = card;
+    }
+
+    public CheckBox getCheckBox() {
+        return checkBox;
+    }
+
+    public void setCheckBox(CheckBox checkBox) {
+        this.checkBox = checkBox;
     }
 
     public Positioner getPositioner() {

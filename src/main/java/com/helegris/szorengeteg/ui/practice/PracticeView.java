@@ -123,7 +123,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     private WordInput wordInput;
     private final boolean playAudio;
     private boolean checked;
-    private final PopOver popLast = new PopOver(popOverPane());
+    private final PopOver popLastCard = new PopOver(popOverPaneLastCard());
+    private final PopOver popInvalidJump = new PopOver();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeView(PracticeSession session) {
@@ -332,7 +333,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
             setQuestion();
             visualHelp.setCard(card);
         } else {
-            popLast.show(lblNext);
+            popLastCard.show(lblNext);
         }
     }
 
@@ -380,7 +381,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                     card = session.jumpTo(newWordOrd - 1);
                     setQuestion();
                 } else {
-                    throw new NumberFormatException();
+                    throw new Exception("Az ugrás sikertelen - a témakörben csak " + session.getLength() + " szó van.");
                 }
             } else {
                 SessionJump jump = new SessionJump(newTopicOrd, newWordOrd);
@@ -389,12 +390,21 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                     card = session.getCurrentCard();
                     setQuestion();
                 } else {
-                    throw new NumberFormatException();
+                    if (jump.getTopic() != null) {
+                        throw new Exception("Az ugrás sikertelen - a témakörben csak " + session.getLength() + " szó van.");
+                    } else {
+                        throw new Exception("Nincs ilyen számú témakör.");
+                    }
                 }
             }
         } catch (NumberFormatException ex) {
             txtTopicOrdinal.setText(Integer.toString(origTopicOrd));
             txtWordOrdinal.setText(Integer.toString(origWordOrd));
+        } catch (Exception ex) {
+            txtTopicOrdinal.setText(Integer.toString(origTopicOrd));
+            txtWordOrdinal.setText(Integer.toString(origWordOrd));
+            popInvalidJump.setContentNode(new Label(ex.getMessage()));
+            popInvalidJump.show(imgJump);
         }
     }
 
@@ -408,7 +418,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == yes) {
-            popLast.hide(Duration.millis(0));
+            popLastCard.hide(Duration.millis(0));
             Stage stage = (Stage) this.getScene().getWindow();
             stage.close();
         } else {
@@ -416,7 +426,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         }
     }
 
-    private AnchorPane popOverPane() {
+    private AnchorPane popOverPaneLastCard() {
         VBox vBox = new VBox();
         AnchorPane anchorPane = new AnchorPane(vBox);
         vBox.setMaxWidth(600);

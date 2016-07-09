@@ -29,9 +29,9 @@ import javafx.stage.Stage;
  *
  * @author Timi
  */
-public class BulkAddView extends AnchorPane {
+public class BulkAddWordsView extends AnchorPane {
 
-    private static final String FXML = "fxml/bulk_add.fxml";
+    private static final String FXML = "fxml/bulk_add_words.fxml";
 
     @FXML
     private Label lblDescription;
@@ -56,7 +56,7 @@ public class BulkAddView extends AnchorPane {
             + " Az üres sorokat figyelmen kívül hagyjuk.";
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public BulkAddView() {
+    public BulkAddWordsView() {
         FXMLLoaderHelper.load(FXML, this);
         delimiterMap.put(rdColon, ":");
         delimiterMap.put(rdSemicolon, ";");
