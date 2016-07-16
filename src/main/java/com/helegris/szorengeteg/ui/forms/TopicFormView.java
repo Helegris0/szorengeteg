@@ -17,11 +17,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,6 +41,10 @@ public abstract class TopicFormView extends CardsEditorForm {
 
     @FXML
     protected TextField txtName;
+    @FXML
+    protected Button btnDefaultStates;
+    @FXML
+    protected Button btnDeleteWords;
     @FXML
     protected Button btnDeleteTopic;
     @FXML
@@ -59,13 +66,14 @@ public abstract class TopicFormView extends CardsEditorForm {
     @Override
     protected void initialize() {
         super.initialize();
+        btnDefaultStates.setVisible(false);
         btnDeleteTopic.setVisible(false);
         btnLoadImage.setOnAction(this::loadImage);
         btnDeleteImage.setOnAction(this::deleteImage);
+        btnDeleteWords.setOnAction(this::deleteWords);
         btnSave.setOnAction(this::submitTopic);
     }
 
-    @FXML
     protected void loadImage(ActionEvent event) {
         imageFile = FileChooserHelper.getImageFile(getScene().getWindow());
         if (imageFile != null) {
@@ -79,14 +87,33 @@ public abstract class TopicFormView extends CardsEditorForm {
         }
     }
 
-    @FXML
     protected void deleteImage(ActionEvent event) {
         btnDeleteImage.setVisible(false);
         imageFile = null;
         imageView.setImage(DefaultImage.getInstance());
     }
 
-    @FXML
+    private void deleteWords(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("A témakör szavainak törlése");
+        alert.setHeaderText("Biztosan törölni szeretné a témakör szavait?");
+        alert.setContentText("A változás mentéssel véglegesíthető.");
+
+        ButtonType typeYes = new ButtonType("Igen", ButtonBar.ButtonData.YES);
+        ButtonType typeCancel = new ButtonType("Mégse", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().add(typeYes);
+        alert.getButtonTypes().add(typeCancel);
+
+        alert.setX(getScene().getWidth() / 2);
+        alert.setY(100);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == typeYes) {
+            rows.clear();
+        }
+    }
+
     protected void submitTopic(ActionEvent event) {
         if ("".equals(txtName.getText())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);

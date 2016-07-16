@@ -5,7 +5,6 @@
  */
 package com.helegris.szorengeteg.ui;
 
-import com.helegris.szorengeteg.ui.practice.HelpView;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -57,7 +56,7 @@ public class HelpControl extends HBox {
         HelpView helpView = new HelpView();
         helpStage.setScene(new SceneStyler().createScene(
                 helpView, SceneStyler.Style.MAIN));
-        helpStage.setTitle("Segítség");
-        helpStage.show();
+        helpStage.setTitle("Súgó");
+        helpStage.showAndWait();
     }
 }

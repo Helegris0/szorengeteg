@@ -16,10 +16,14 @@ import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -94,7 +98,20 @@ public class RowForCard {
     }
 
     private void delete(ActionEvent event) {
-        deleteListener.deleteRow(this);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Sor törlése");
+        alert.setHeaderText("Biztosan törölni szeretné ezt a sort?");
+
+        ButtonType typeYes = new ButtonType("Igen", ButtonBar.ButtonData.YES);
+        ButtonType typeCancel = new ButtonType("Mégse", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().add(typeYes);
+        alert.getButtonTypes().add(typeCancel);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == typeYes) {
+            deleteListener.deleteRow(this);
+        }
     }
 
     public boolean dataValidity() {

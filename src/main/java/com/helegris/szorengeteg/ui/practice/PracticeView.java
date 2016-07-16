@@ -9,7 +9,6 @@ import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.MainApp;
 import com.helegris.szorengeteg.ui.settings.Settings;
-import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
 import com.helegris.szorengeteg.business.service.EntitySaver;
@@ -63,39 +62,39 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     @FXML
     private ImageView imgVisual;
     @FXML
-    private ClickableLabel lblVisual;
+    private Label lblVisual;
     @FXML
     private ImageView imgDefault;
     @FXML
-    private ClickableLabel lblDefault;
+    private Label lblDefault;
     @FXML
     private HBox hboxInput;
     @FXML
     private ImageView imgInput;
     @FXML
-    private ClickableLabel lblInput;
+    private Label lblInput;
     @FXML
     private ImageView imgHelp;
     @FXML
-    private ClickableLabel lblHelp;
+    private Label lblHelp;
     @FXML
     private ImageView imgGiveUp;
     @FXML
-    private ClickableLabel lblGiveUp;
+    private Label lblGiveUp;
     @FXML
     private ImageView imgPlayAudio;
     @FXML
-    private ClickableLabel lblPlayAudio;
+    private Label lblPlayAudio;
     @FXML
     private ImageView audioIcon;
     @FXML
     private ImageView imgNext;
     @FXML
-    private ClickableLabel lblNext;
+    private Label lblNext;
     @FXML
     private ImageView imgChooseTopic;
     @FXML
-    private ClickableLabel lblChooseTopic;
+    private Label lblChooseTopic;
     @FXML
     private TextField txtTopicOrdinal;
     @FXML
@@ -105,7 +104,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     @FXML
     private ImageView imgQuit;
     @FXML
-    private ClickableLabel lblQuit;
+    private Label lblQuit;
 
     private PracticeControl pcDefault;
     private PracticeControl pcInput;
@@ -333,7 +332,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
             setQuestion();
             visualHelp.setCard(card);
         } else {
-            popLastCard.show(lblNext);
+            nextTopic();
         }
     }
 

@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.ui.practice;
 
-import com.helegris.szorengeteg.ui.ClickableLabel;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -24,7 +24,7 @@ public final class PracticeControl {
     private static final int IMG_SIZE = 40;
 
     private final ImageView imageView;
-    private final ClickableLabel label;
+    private final Label label;
 
     private final Image imageUsed;
     private final Image imageUnused;
@@ -35,7 +35,7 @@ public final class PracticeControl {
     private boolean enabled;
 
     public PracticeControl(Direction direction, ImageView imageView,
-            ClickableLabel label, Runnable function) {
+            Label label, Runnable function) {
         this.imageView = imageView;
         imageView.setFitWidth(IMG_SIZE);
         imageView.setFitHeight(IMG_SIZE);
@@ -45,16 +45,8 @@ public final class PracticeControl {
         imageUsed = new Image(PATH_CORE + direction.path + USED_PATH + EXT);
         imageUnused = new Image(PATH_CORE + direction.path + UNUSED_PATH + EXT);
 
-        imageView.setOnMouseEntered(e -> {
-            if (enabled) {
-                label.setUnderline(true);
-            }
-        });
-        imageView.setOnMouseExited(e -> label.setUnderline(false));
-
         this.function = function;
         imageView.setOnMouseClicked(this::action);
-        label.setOnMouseClicked(this::action);
 
         setUsed(false);
         setEnabled(true);

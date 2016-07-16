@@ -199,6 +199,12 @@ public class SpelledWordInput extends WordInput {
             fields.get(index).setText(lastLetter);
         }
         helpFirstChar();
+        for (TextField field : fields) {
+            if (field.getText().isEmpty()) {
+                field.requestFocus();
+                break;
+            }
+        }
         for (int i = index + 1; i < fields.size(); i++) {
             fields.get(i).setDisable(true);
         }
@@ -211,7 +217,12 @@ public class SpelledWordInput extends WordInput {
                 fields.get(i).setText(letter);
             }
         }
-        fields.get(0).requestFocus();
+        for (TextField field : fields) {
+            if (field.getText().isEmpty()) {
+                field.requestFocus();
+                break;
+            }
+        }
     }
 
     @Override

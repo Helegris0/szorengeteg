@@ -30,7 +30,11 @@
                 </HBox>
             </VBox>
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnDeleteTopic" text="%form.delete_topic" />
+            <VBox alignment="CENTER_RIGHT">
+                <Button fx:id="btnDefaultStates" text="Kapcsolók visszaállítása" />
+                <Button fx:id="btnDeleteWords" text="Összes szó törlése" />
+                <Button fx:id="btnDeleteTopic" text="%form.delete_topic" />
+            </VBox>
         </HBox>
         <HBox>
             <Button fx:id="btnNewWord1" text="%form.new_word" />

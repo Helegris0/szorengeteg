@@ -40,7 +40,9 @@ public class EditTopicView extends TopicFormView {
         txtName.setText(topic.getName());
         loadOriginalImage();
         loadOriginalRows();
+        btnDefaultStates.setVisible(true);
         btnDeleteTopic.setVisible(true);
+        btnDefaultStates.setOnAction(this::defaultStates);
         btnDeleteTopic.setOnAction(this::deleteTopic);
     }
 
@@ -57,14 +59,46 @@ public class EditTopicView extends TopicFormView {
         loadRows(cardLoader.loadByTopic(topic));
     }
 
+    private void defaultStates(ActionEvent event) {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Kapcsolók visszaállítása");
+        alert.setHeaderText("Szeretné alaphelyzetbe állítani a kapcsolókat?");
+        alert.setContentText("");
+
+        ButtonType typeYes = new ButtonType("Igen", ButtonData.YES);
+        ButtonType typeCancel = new ButtonType("Mégse", ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().clear();
+        alert.getButtonTypes().add(typeYes);
+        alert.getButtonTypes().add(typeCancel);
+
+        alert.setX(getScene().getWidth() / 2);
+        alert.setY(100);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == typeYes) {
+            rows.stream().forEach(row -> {
+                row.getCard().setLastInput(false);
+                row.getCard().setLastHelp(false);
+                row.getCard().setLastVisual(false);
+                row.getCard().setLastGaveUp(false);
+                row.getCard().setLastPlayedAudio(false);
+            });
+
+            Alert alertInfo = new Alert(AlertType.INFORMATION);
+            alertInfo.setTitle("Kapcsolók visszaállítása");
+            alertInfo.setHeaderText("A változás mentés után fog végbemenni.");
+            alertInfo.showAndWait();
+            alert.close();
+        }
+    }
+
     protected void deleteTopic(ActionEvent event) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(Messages.msg("alert.warning"));
         alert.setHeaderText(Messages.msg("alert.sure_delete_topic"));
         alert.setContentText(Messages.msg("alert.cannot_be_undone"));
 
-        ButtonType typeDelete
-                = new ButtonType(Messages.msg("alert.delete_topic"));
         ButtonType typeDeleteWithWords
                 = new ButtonType(Messages.msg("alert.delete_topic_and_words"));
         ButtonType typeCancel
@@ -72,17 +106,16 @@ public class EditTopicView extends TopicFormView {
                         ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().clear();
-        alert.getButtonTypes().add(typeDelete);
         if (!cardLoader.loadByTopic(topic).isEmpty()) {
             alert.getButtonTypes().add(typeDeleteWithWords);
         }
         alert.getButtonTypes().add(typeCancel);
 
+        alert.setX(getScene().getWidth() / 2);
+        alert.setY(100);
+
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == typeDelete) {
-            entitySaver.deleteTopicWithoutWords(topic);
-            VistaNavigator.getMainView().loadContentTopics();
-        } else if (result.get() == typeDeleteWithWords) {
+        if (result.get() == typeDeleteWithWords) {
             List<PersistentObject> toDelete = new ArrayList<>();
             cardLoader.loadByTopic(topic).stream().forEach(toDelete::add);
             toDelete.add(topic);

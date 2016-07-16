@@ -66,33 +66,27 @@ public class BulkAddWordsView extends AnchorPane {
     @FXML
     public void initialize() {
         lblDescription.setText(description);
-        btnAdd.setOnAction(this::save);
+        btnAdd.setOnAction(this::add);
         btnCancel.setOnAction(e -> close());
     }
 
-    private void save(ActionEvent event) {
+    private void add(ActionEvent event) {
         RadioButton selected = (RadioButton) grpDelimiter.getSelectedToggle();
         String delimiter = delimiterMap.get(selected);
         String text = textArea.getText();
+        cards.clear();
 
         try (Scanner scanner = new Scanner(text)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                if (!line.isEmpty()) {
+                if (!line.trim().isEmpty()) {
                     String[] data = line.split(delimiter);
                     if (data.length > 2) {
                         for (int i = 2; i < data.length; i++) {
                             data[1] += delimiter + data[i];
                         }
                     }
-                    while (" ".equals(data[0].substring(
-                            data[0].length() - 1, data[0].length()))) {
-                        data[0] = data[0].substring(0, data[0].length() - 1);
-                    }
-                    while (" ".equals(data[1].substring(0, 1))) {
-                        data[1] = data[1].substring(1, data[1].length());
-                    }
-                    Card card = new Card(data[0], data[1]);
+                    Card card = new Card(data[0].trim(), data[1].trim());
                     cards.add(card);
                 }
             }

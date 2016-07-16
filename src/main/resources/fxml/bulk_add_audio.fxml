@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
+         id="AnchorPane" prefWidth="350.0" prefHeight="600.0"
+         xmlns="http://javafx.com/javafx/8">
+    <VBox>
+        <TableView fx:id="tableView" prefWidth="350.0" prefHeight="550">
+            <columns>
+                <TableColumn fx:id="colCheckBox" text="" prefWidth="40.0" sortable="false" resizable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="checkBox" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="colWord" text="%form.word" prefWidth="140">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="word" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="colAudio" text="%form.image" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="audioIcon" />
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="colFileName" text="%form.image" sortable="false">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="fileName" />
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+        <HBox>
+            <Button fx:id="btnBrowse" text="Tallózás..." />
+            <Pane HBox.hgrow="ALWAYS" /> 
+            <Button fx:id="btnSave" text="Mentés" style="-fx-font-weight: bold;" />
+            <Button fx:id="btnCancel" text="Mégse" />
+        </HBox>
+    </VBox>
+</fx:root>

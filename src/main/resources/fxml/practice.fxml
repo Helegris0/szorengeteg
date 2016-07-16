@@ -44,12 +44,12 @@
                 <HBox spacing="5" alignment="CENTER_LEFT">
                     <Label text="②" />
                     <ImageView fx:id="imgInput" />
-                    <ClickableLabel fx:id="lblInput" text="%practice.word_input" />
+                    <Label fx:id="lblInput" text="%practice.word_input" />
                 </HBox>
                 <HBox spacing="5" alignment="CENTER_LEFT">
                     <Label text="③" />
                     <ImageView fx:id="imgHelp" />
-                    <ClickableLabel fx:id="lblHelp" text="%practice.help" />
+                    <Label fx:id="lblHelp" text="%practice.help" />
                 </HBox>
             </VBox>
         </HBox>
@@ -58,24 +58,24 @@
                 <HBox spacing="5" alignment="CENTER_LEFT">
                     <Label text="⑤" />
                     <ImageView fx:id="imgGiveUp" />
-                    <ClickableLabel fx:id="lblGiveUp" text="%practice.give_up"
+                    <Label fx:id="lblGiveUp" text="%practice.give_up"
                                     minWidth="300" />
                 </HBox>
                 <HBox spacing="5" alignment="CENTER_LEFT">
                     <Label text="⑥" />
                     <ImageView fx:id="imgPlayAudio" />
-                    <ClickableLabel fx:id="lblPlayAudio" text="%practice.play_audio" />
+                    <Label fx:id="lblPlayAudio" text="%practice.play_audio" />
                     <ImageView fx:id="audioIcon" fitWidth="40" fitHeight="40" />
                 </HBox>
             </VBox>
             <Pane HBox.hgrow="ALWAYS" />
             <VBox spacing="5">
                 <HBox spacing="5" alignment="CENTER_RIGHT">
-                    <ClickableLabel fx:id="lblChooseTopic" text="%practice.choose_topic" />
+                    <Label fx:id="lblChooseTopic" text="%practice.choose_topic" />
                     <ImageView fx:id="imgChooseTopic" />
                 </HBox>
                 <HBox spacing="5" alignment="CENTER_RIGHT">
-                    <ClickableLabel fx:id="lblDefault" text="%practice.default" />
+                    <Label fx:id="lblDefault" text="%practice.default" />
                     <ImageView fx:id="imgDefault" />
                 </HBox>
             </VBox>
@@ -92,9 +92,9 @@
         </HBox>
         <HBox spacing="5" alignment="CENTER_LEFT">
             <ImageView fx:id="imgNext" />
-            <ClickableLabel fx:id="lblNext" text="%practice.next" />
+            <Label fx:id="lblNext" text="%practice.next" />
             <Pane HBox.hgrow="ALWAYS" />
-            <ClickableLabel fx:id="lblQuit" text="Kilépés" />
+            <Label fx:id="lblQuit" text="Kilépés" />
             <ImageView fx:id="imgQuit" />
         </HBox>
     </VBox>

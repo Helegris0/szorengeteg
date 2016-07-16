@@ -281,6 +281,7 @@ public abstract class CardsEditorForm extends AnchorPane {
     }
 
     protected void addRow(ActionEvent event) {
+        tableView.scrollTo(rows.get(rows.size() - 1));
         rows.add(new RowForCard(this::deleteRow, rowMoveListener));
     }
 
