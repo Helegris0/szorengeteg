@@ -25,9 +25,12 @@ public class HelpControl extends HBox {
 
     private ContentType contentType;
 
+    private boolean asd;
+
     public HelpControl() {
         super();
         this.label = new ClickableLabel("Súgó");
+        this.label.setStyle("fx-font-size: 23pt;");
         this.imageView = new ImageView(IMAGE_PATH);
         this.imageView.setFitWidth(IMAGE_SIZE);
         this.imageView.setFitHeight(IMAGE_SIZE);
@@ -52,11 +55,17 @@ public class HelpControl extends HBox {
     }
 
     private void action(MouseEvent event) {
-        Stage helpStage = new Stage();
+        if (!asd) {
+            Stage helpStage = new Stage();
         HelpView helpView = new HelpView();
         helpStage.setScene(new SceneStyler().createScene(
                 helpView, SceneStyler.Style.MAIN));
         helpStage.setTitle("Súgó");
         helpStage.showAndWait();
+        }
+    }
+
+    public void setAsd(boolean asd) {
+        this.asd = asd;
     }
 }

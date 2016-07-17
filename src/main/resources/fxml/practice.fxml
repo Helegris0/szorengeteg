@@ -2,7 +2,6 @@
 
 <?import com.helegris.szorengeteg.ui.AudioIcon?>
 <?import com.helegris.szorengeteg.ui.ClickableLabel?>
-<?import com.helegris.szorengeteg.ui.CloseIcon?>
 <?import com.helegris.szorengeteg.ui.HelpControl?>
 <?import com.helegris.szorengeteg.ui.practice.VisualHelp?>
 <?import java.lang.*?>

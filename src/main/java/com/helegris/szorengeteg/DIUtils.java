@@ -16,8 +16,6 @@ public class DIUtils {
         if (instance == null) {
             return;
         }
-
         ApplicationContainer.getInstance().injectFields(instance);
     }
-
 }

@@ -5,6 +5,7 @@
  */
 package com.helegris.szorengeteg.ui.forms;
 
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.DefaultImage;
 import java.io.FileInputStream;
@@ -13,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javax.inject.Inject;
 
 /**
  *
@@ -22,6 +24,9 @@ public class ImagePopup extends FilePopup {
 
     public static final String FXML = "fxml/image_popup.fxml";
 
+    @Inject
+    private FileChooserHelper fileChooserHelper;
+
     @FXML
     private ImageView imageView;
 
@@ -29,6 +34,7 @@ public class ImagePopup extends FilePopup {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public ImagePopup(Image originalImage) {
+        DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
         if (!(originalImage instanceof DefaultImage)) {
             imageView.setImage(originalImage);
@@ -38,7 +44,7 @@ public class ImagePopup extends FilePopup {
 
     @Override
     protected void load(ActionEvent event) {
-        file = FileChooserHelper.getImageFile(getScene().getWindow());
+        file = fileChooserHelper.getImageFile(getScene().getWindow());
 
         if (file != null) {
             try {

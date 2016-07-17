@@ -13,5 +13,4 @@ public class ApplicationInjector extends AbstractModule {
     protected void configure() {
         install(new JpaPersistModule("default"));
     }
-
 }

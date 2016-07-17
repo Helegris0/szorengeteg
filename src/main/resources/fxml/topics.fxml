@@ -11,7 +11,7 @@
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
     <VBox AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
-        <ScrollPane>
+        <ScrollPane fitToWidth="true">
             <VBox fx:id="vBox" />
         </ScrollPane>
         <HBox>

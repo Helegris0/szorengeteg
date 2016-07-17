@@ -5,8 +5,8 @@
  */
 package com.helegris.szorengeteg.ui.forms;
 
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
-import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.DefaultImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -27,8 +27,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javax.inject.Inject;
 
 /**
  *
@@ -37,6 +37,9 @@ import javafx.stage.Stage;
 public class BulkAddImagesView extends AnchorPane {
 
     private static final String FXML = "fxml/bulk_add_images.fxml";
+
+    @Inject
+    private FileChooserHelper fileChooserHelper;
 
     @FXML
     private TableView tableView;
@@ -55,6 +58,7 @@ public class BulkAddImagesView extends AnchorPane {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public BulkAddImagesView(ObservableList<RowForCard> oRows) {
+        DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
         oRows.stream().forEach(oRow -> rows.add(
                 new Row(oRows.indexOf(oRow), oRow.getWord(), oRow.getImageView().getImage())));
@@ -85,15 +89,7 @@ public class BulkAddImagesView extends AnchorPane {
     }
 
     private void browse(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-
-        FileChooser.ExtensionFilter extFilter
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.images"),
-                        "*.jpg", "*.png", "*.gif");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        List<File> selectedFiles = fileChooser.showOpenMultipleDialog(getScene().getWindow());
+        List<File> selectedFiles = fileChooserHelper.getImageFiles(getScene().getWindow());
         List<Row> selectedRows = rows.stream()
                 .filter(row -> row.isSelected())
                 .collect(Collectors.toList());

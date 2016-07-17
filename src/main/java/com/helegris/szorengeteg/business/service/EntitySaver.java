@@ -45,9 +45,8 @@ public class EntitySaver {
     }
 
     @Transactional
-    public void saveWords(List<Card> cards) {
-        cards.stream().forEach(this::save);
-        delete(cardLoader.loadAll(), card -> !cards.contains(card));
+    public void saveCard(Card card) {
+        save(card);
     }
 
     @Transactional
@@ -64,11 +63,6 @@ public class EntitySaver {
         em.remove(topic);
     }
 
-    @Transactional
-    public void saveCard(Card card) {
-        save(card);
-    }
-
     private void save(PersistentObject entity) {
         if (entity.getId() == null) {
             em.persist(entity);
@@ -81,5 +75,4 @@ public class EntitySaver {
             Predicate<T> filter) {
         entities.stream().filter(filter).forEach(em::remove);
     }
-
 }

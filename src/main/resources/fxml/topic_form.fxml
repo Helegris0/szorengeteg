@@ -31,9 +31,11 @@
             </VBox>
             <Pane HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER_RIGHT">
-                <Button fx:id="btnDefaultStates" text="Kapcsolók visszaállítása" />
+                <Button fx:id="btnDefaultStates" text="Kapcsolók visszaállítása"
+                        visible="false" />
                 <Button fx:id="btnDeleteWords" text="Összes szó törlése" />
-                <Button fx:id="btnDeleteTopic" text="%form.delete_topic" />
+                <Button fx:id="btnDeleteTopic" text="%form.delete_topic"
+                        visible="false" />
             </VBox>
         </HBox>
         <HBox>
@@ -64,7 +66,7 @@
                         <PropertyValueFactory property="txtWord" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colDescription" text="%form.description" prefWidth="500">
+                <TableColumn fx:id="colDescription" text="%form.description" sortable="false" prefWidth="500">
                     <cellValueFactory>
                         <PropertyValueFactory property="txtDescription" />
                     </cellValueFactory>

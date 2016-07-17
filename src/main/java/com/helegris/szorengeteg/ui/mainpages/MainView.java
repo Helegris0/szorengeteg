@@ -10,6 +10,7 @@ import com.helegris.szorengeteg.ui.forms.EditTopicView;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.business.model.Topic;
+import com.helegris.szorengeteg.ui.HelpControl;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
@@ -25,23 +26,23 @@ import javafx.scene.layout.StackPane;
  */
 public class MainView extends AnchorPane {
 
-    public static final String FXML = "fxml/main.fxml";
+    private static final String FXML = "fxml/main.fxml";
 
-    public static final String TOPICS_TITLE = Messages.msg("menu.topics");
-    public static final String NEW_TOPIC_TITLE = Messages.msg("menu.new_topic");
-    public static final String EDIT_TOPIC_TITLE = Messages.msg("menu.edit_topic");
-//    public static final String WORDS_TITLE = Messages.msg("menu.words");
+    private static final String TOPICS_TITLE = Messages.msg("menu.topics");
+    private static final String NEW_TOPIC_TITLE = Messages.msg("menu.new_topic");
+    private static final String EDIT_TOPIC_TITLE = Messages.msg("menu.edit_topic");
 
     @FXML
     private Menu mnTopics;
     @FXML
     private Menu mnNewTopic;
-//    @FXML
-//    private Menu mnWords;
     @FXML
     private Label lblTitle;
     @FXML
     private StackPane vistaHolder;
+    
+    @FXML
+    private HelpControl asd;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public MainView() {
@@ -52,6 +53,7 @@ public class MainView extends AnchorPane {
     public void initialize() {
         lblTitle.setText(TOPICS_TITLE);
         setMenus();
+        asd.setAsd(true);
     }
 
     private void setMenus() {
@@ -64,10 +66,6 @@ public class MainView extends AnchorPane {
         label = new Label(NEW_TOPIC_TITLE);
         label.setOnMouseClicked(event -> loadContentNewTopic());
         initMenuLabel(mnNewTopic, label);
-
-//        label = new Label(WORDS_TITLE);
-//        label.setOnMouseClicked(event -> loadContentWords());
-//        initMenuLabel(mnWords, label);
     }
 
     private void initMenuLabel(Menu menu, Label label) {
@@ -92,10 +90,6 @@ public class MainView extends AnchorPane {
     public void loadContentEditTopic(Topic topic) {
         loadContent(EDIT_TOPIC_TITLE, new EditTopicView(topic));
     }
-
-//    public void loadContentWords() {
-//        loadContent(WORDS_TITLE, new WordsFormView());
-//    }
 
     /**
      * Replaces the vista displayed in the vista holder with a new vista.

@@ -5,6 +5,7 @@
  */
 package com.helegris.szorengeteg.ui.forms;
 
+import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.ui.AudioIcon;
 import javafx.event.ActionEvent;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
+import javax.inject.Inject;
 
 /**
  *
@@ -20,6 +22,9 @@ import javafx.scene.media.Media;
 public class AudioPopup extends FilePopup {
 
     public static final String FXML = "fxml/audio_popup.fxml";
+
+    @Inject
+    private FileChooserHelper fileChooserHelper;
 
     @FXML
     private StackPane stackPane;
@@ -34,6 +39,7 @@ public class AudioPopup extends FilePopup {
 
     @SuppressWarnings("LeakingThisInConstructor")
     public AudioPopup(AudioIcon audioIcon) {
+        DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
         this.audioIcon = audioIcon;
         audioIcon.setFitWidth(iconWidth);
@@ -44,7 +50,7 @@ public class AudioPopup extends FilePopup {
 
     @Override
     protected void load(ActionEvent event) {
-        file = FileChooserHelper.getAudioFile(getScene().getWindow());
+        file = fileChooserHelper.getAudioFile(getScene().getWindow());
 
         if (file != null) {
             audioIcon.setAudio(new Media(file.toURI().toString()));

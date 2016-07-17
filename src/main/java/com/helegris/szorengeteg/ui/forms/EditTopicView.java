@@ -18,8 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javax.inject.Inject;
@@ -32,6 +34,11 @@ public class EditTopicView extends TopicFormView {
 
     @Inject
     private CardLoader cardLoader;
+    
+    @FXML
+    private Button btnDefaultStates;
+    @FXML
+    private Button btnDeleteTopic;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public EditTopicView(Topic topic) {
@@ -87,13 +94,13 @@ public class EditTopicView extends TopicFormView {
 
             Alert alertInfo = new Alert(AlertType.INFORMATION);
             alertInfo.setTitle("Kapcsolók visszaállítása");
-            alertInfo.setHeaderText("A változás mentés után fog végbemenni.");
+            alertInfo.setHeaderText("A változás mentéssel véglegesíthető.");
             alertInfo.showAndWait();
             alert.close();
         }
     }
 
-    protected void deleteTopic(ActionEvent event) {
+    private void deleteTopic(ActionEvent event) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
         alert.setTitle(Messages.msg("alert.warning"));
         alert.setHeaderText(Messages.msg("alert.sure_delete_topic"));

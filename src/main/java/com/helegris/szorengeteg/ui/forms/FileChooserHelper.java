@@ -7,6 +7,7 @@ package com.helegris.szorengeteg.ui.forms;
 
 import com.helegris.szorengeteg.messages.Messages;
 import java.io.File;
+import java.util.List;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
@@ -21,13 +22,13 @@ public class FileChooserHelper {
     private static String audioDirectory = DEFAULT_PATH;
     private static String txtDirectory = DEFAULT_PATH;
 
-    public static File getImageFile(Window ownerWindow) {
+    public File getImageFile(Window ownerWindow) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(imageDirectory));
 
         FileChooser.ExtensionFilter extFilter
                 = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.images"), 
+                        Messages.msg("open_dialog.images"),
                         "*.jpg", "*.png", "*.gif");
         fileChooser.getExtensionFilters().add(extFilter);
 
@@ -38,13 +39,30 @@ public class FileChooserHelper {
         return file;
     }
 
-    public static File getAudioFile(Window ownerWindow) {
+    public List<File> getImageFiles(Window ownerWindow) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(imageDirectory));
+
+        FileChooser.ExtensionFilter extFilter
+                = new FileChooser.ExtensionFilter(
+                        Messages.msg("open_dialog.images"),
+                        "*.jpg", "*.png", "*.gif");
+        fileChooser.getExtensionFilters().add(extFilter);
+
+        List<File> files = fileChooser.showOpenMultipleDialog(ownerWindow);
+        if (files != null && !files.isEmpty()) {
+            imageDirectory = files.get(0).getParent();
+        }
+        return files;
+    }
+
+    public File getAudioFile(Window ownerWindow) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(audioDirectory));
 
         FileChooser.ExtensionFilter extFilter
                 = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.audio_files"), 
+                        Messages.msg("open_dialog.audio_files"),
                         "*.mp3", "*.wav", "*.aac");
         fileChooser.getExtensionFilters().add(extFilter);
 
@@ -55,7 +73,7 @@ public class FileChooserHelper {
         return file;
     }
 
-    public static File getCsvFile(Window ownerWindow) {
+    public File getCsvFile(Window ownerWindow) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(txtDirectory));
 

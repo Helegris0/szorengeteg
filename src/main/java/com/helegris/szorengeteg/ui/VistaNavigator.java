@@ -22,5 +22,4 @@ public class VistaNavigator {
     public static void setMainView(MainView mainView) {
         VistaNavigator.mainView = mainView;
     }
-
 }

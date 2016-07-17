@@ -26,5 +26,4 @@ public class DefaultImage extends Image {
     public static DefaultImage getInstance() {
         return INSTANCE;
     }
-
 }

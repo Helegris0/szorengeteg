@@ -8,14 +8,11 @@ package com.helegris.szorengeteg.ui.practice;
 import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.MainApp;
-import com.helegris.szorengeteg.ui.settings.Settings;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
 import com.helegris.szorengeteg.business.service.EntitySaver;
-import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.AudioIcon;
 import com.helegris.szorengeteg.ui.MediaLoader;
-import com.helegris.szorengeteg.ui.SceneStyler;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.logging.Level;
@@ -34,11 +31,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.media.MediaPlayer;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import javax.inject.Inject;
 import org.controlsfx.control.PopOver;
 
@@ -48,10 +42,8 @@ import org.controlsfx.control.PopOver;
  */
 public class PracticeView extends AnchorPane implements WordInputListener {
 
-    public static final String FXML = "fxml/practice.fxml";
+    private static final String FXML = "fxml/practice.fxml";
 
-    @Inject
-    private Settings settings;
     @Inject
     private EntitySaver entitySaver;
 
@@ -120,16 +112,13 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     private PracticeSession session;
     private Card card;
     private WordInput wordInput;
-    private final boolean playAudio;
     private boolean checked;
-    private final PopOver popLastCard = new PopOver(popOverPaneLastCard());
     private final PopOver popInvalidJump = new PopOver();
 
     @SuppressWarnings("LeakingThisInConstructor")
     public PracticeView(PracticeSession session) {
         setSession(session);
         DIUtils.injectFields(this);
-        playAudio = settings.isPlayAudio();
         FXMLLoaderHelper.load(FXML, this);
     }
 
@@ -184,7 +173,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         visualHelp.setCard(card);
         lblDescription.setText(card.getDescription());
         hboxInput.getChildren().clear();
-        wordInput = new WordInputFactory().getWordInput(card.getWord(), this);
+        wordInput = new SpelledWordInput(card.getWord(), this);
         wordInput.setAlignment(Pos.CENTER);
         wordInput.setVisible(false);
         hboxInput.getChildren().add(wordInput);
@@ -278,15 +267,13 @@ public class PracticeView extends AnchorPane implements WordInputListener {
             entitySaver.saveCard(card);
 
             pcHelp.setEnabled(false);
+            pcVisual.setEnabled(false);
             pcGiveUp.setEnabled(false);
 
             if (card.getAudio() != null) {
                 pcPlayAudio.setEnabled(true);
-                if (playAudio) {
                     playAudio();
-                } else {
                     setBoldness(lblPlayAudio, true);
-                }
             }
             setBoldness(lblNext, true);
 
@@ -336,35 +323,11 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         }
     }
 
-    private void prevCard() {
-        Card prev = session.prevCard();
-        if (prev != null) {
-            card = prev;
-            setQuestion();
-            visualHelp.setCard(card);
-        }
-    }
-
     private void nextTopic() {
         setSession(new PracticeSession(
                 new NextTopicFinder().getNextTopic(
                         session.getTopic())));
         setQuestion();
-    }
-
-    private void chooseTopic() {
-        Stage chooserStage = new Stage();
-        chooserStage.setScene(new SceneStyler().createScene(
-                new TopicChooserView(
-                        session.getTopic(), topic -> {
-                            setSession(new PracticeSession(topic));
-                            setQuestion();
-                        }), SceneStyler.Style.PRACTICE));
-        chooserStage.initModality(Modality.APPLICATION_MODAL);
-        chooserStage.setTitle(Messages.msg("practice.choose_topic"));
-        Stage thisStage = (Stage) this.getScene().getWindow();
-        chooserStage.initOwner(thisStage);
-        chooserStage.showAndWait();
     }
 
     private void jump() {
@@ -417,39 +380,11 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         Optional<ButtonType> result = alert.showAndWait();
 
         if (result.isPresent() && result.get() == yes) {
-            popLastCard.hide(Duration.millis(0));
             Stage stage = (Stage) this.getScene().getWindow();
             stage.close();
         } else {
             alert.close();
         }
-    }
-
-    private AnchorPane popOverPaneLastCard() {
-        VBox vBox = new VBox();
-        AnchorPane anchorPane = new AnchorPane(vBox);
-        vBox.setMaxWidth(600);
-        AnchorPane.setTopAnchor(vBox, 5.);
-        AnchorPane.setRightAnchor(vBox, 5.);
-        AnchorPane.setBottomAnchor(vBox, 5.);
-        AnchorPane.setLeftAnchor(vBox, 5.);
-
-        Label label = new Label(Messages.msg("practice.last"));
-        label.setWrapText(true);
-//        Button btnNextTopic = new Button(Messages.msg("practice.next_topic"));
-//        btnNextTopic.setOnAction(event -> {
-//            nextTopic();
-//            popLast.hide();
-//        });
-//        Button btnOtherTopic = new Button(Messages.msg("practice.other_topic"));
-//        btnOtherTopic.setOnAction(event -> chooseTopic());
-//        Button btnQuit = new Button(Messages.msg("practice.quit"));
-//        btnQuit.setOnAction(event -> abort());
-
-        vBox.getChildren().add(label);
-//        vBox.getChildren().add(new HBox(btnNextTopic, btnOtherTopic, btnQuit));
-
-        return anchorPane;
     }
 
     private void switchToTopics() {

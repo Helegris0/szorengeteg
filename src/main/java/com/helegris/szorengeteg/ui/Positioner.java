@@ -5,7 +5,6 @@
  */
 package com.helegris.szorengeteg.ui;
 
-import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
@@ -44,13 +43,13 @@ public class Positioner extends VBox {
         btnUp.setMinHeight(BUTTON_HEIGHT);
         btnUp.setMaxHeight(BUTTON_HEIGHT);
         btnUp.setFocusTraversable(false);
-        btnUp.setOnAction((ActionEvent event) -> listener.up());
+        btnUp.setOnAction(event -> listener.up());
 
         btnDown = new Button();
         btnDown.setMinHeight(BUTTON_HEIGHT);
         btnDown.setMaxHeight(BUTTON_HEIGHT);
         btnDown.setFocusTraversable(false);
-        btnDown.setOnAction((ActionEvent event) -> listener.down());
+        btnDown.setOnAction(event -> listener.down());
 
         StackPane upPane = new StackPane();
         upPane.getChildren().addAll(btnUp, arrowUp);

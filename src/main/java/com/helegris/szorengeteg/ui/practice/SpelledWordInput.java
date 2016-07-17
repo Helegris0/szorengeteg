@@ -21,7 +21,6 @@ import javafx.scene.input.KeyEvent;
 public class SpelledWordInput extends WordInput {
 
     private static final int FIELD_WIDTH = 66;
-    private static final String vowels = "AÁEÉIÍOÓÖŐÜŰ";
 
     private final List<TextField> fields = new ArrayList<>();
 
@@ -161,35 +160,13 @@ public class SpelledWordInput extends WordInput {
     @Override
     public void help() {
         fields.stream().forEach(field -> field.setText(""));
-        switch (settings.getWordHelp()) {
-            case FIRST_CHAR:
-                helpFirstChar();
-                break;
-            case FIRST_TWO_CHARS:
-                helpFirstTwoChars();
-                break;
-            case FIRST_AND_LAST_CHAR:
-                helpFirstAndLastChar();
-                break;
-            case VOWELS:
-                helpVowels();
-                break;
-        }
+        helpFirstAndLastChar();
     }
 
     private void helpFirstChar() {
         String firstLetter = expectedInput.substring(0, 1);
         fields.get(0).setText(firstLetter);
         fields.get(1).requestFocus();
-    }
-
-    private void helpFirstTwoChars() {
-        helpFirstChar();
-        String secondLetter = expectedInput.substring(1, 2);
-        if (fields.size() > 2) {
-            fields.get(1).setText(secondLetter);
-            fields.get(2).requestFocus();
-        }
     }
 
     private void helpFirstAndLastChar() {
@@ -207,21 +184,6 @@ public class SpelledWordInput extends WordInput {
         }
         for (int i = index + 1; i < fields.size(); i++) {
             fields.get(i).setDisable(true);
-        }
-    }
-
-    private void helpVowels() {
-        for (int i = 0; i < fields.size(); i++) {
-            String letter = expectedInput.toUpperCase().substring(i, i + 1);
-            if (vowels.contains(letter)) {
-                fields.get(i).setText(letter);
-            }
-        }
-        for (TextField field : fields) {
-            if (field.getText().isEmpty()) {
-                field.requestFocus();
-                break;
-            }
         }
     }
 

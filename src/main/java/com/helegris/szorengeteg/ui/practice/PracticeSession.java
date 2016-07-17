@@ -6,7 +6,6 @@
 package com.helegris.szorengeteg.ui.practice;
 
 import com.helegris.szorengeteg.DIUtils;
-import com.helegris.szorengeteg.ui.settings.Settings;
 import com.helegris.szorengeteg.business.service.CardLoader;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
@@ -22,8 +21,6 @@ public class PracticeSession {
 
     @Inject
     private CardLoader cardLoader;
-    @Inject
-    private Settings settings;
     @Inject
     private PositionSaver positionSaver;
 
@@ -58,29 +55,11 @@ public class PracticeSession {
         }
 
         if (!allCards.isEmpty()) {
-            if (settings.isRandomOrder()) {
-                int expectedSize;
-
-                if (settings.isAskAll()
-                        || settings.getWordsPerSession() > allCards.size()) {
-                    expectedSize = allCards.size();
-                } else {
-                    expectedSize = settings.getWordsPerSession();
-                }
-
-                while (sessionCards.size() < expectedSize) {
-                    Card randomCard = allCards.get(
-                            (int) (Math.random() * allCards.size()));
-                    sessionCards.add(randomCard);
-                    allCards.remove(randomCard);
-                }
-            } else {
-                if (topic != null) {
-                    allCards.sort((c1, c2) -> c1.getOrdinal() != null
-                            ? c1.getOrdinal() - c2.getOrdinal() : 1);
-                }
-                sessionCards = allCards;
+            if (topic != null) {
+                allCards.sort((c1, c2) -> c1.getOrdinal() != null
+                        ? c1.getOrdinal() - c2.getOrdinal() : 1);
             }
+            sessionCards = allCards;
 
             positionSaver.setTopic(topic);
             jumpTo(startIndex);
@@ -100,18 +79,6 @@ public class PracticeSession {
         } else {
             return null;
         }
-    }
-
-    public Card prevCard() {
-        if (0 < index) {
-            return jumpTo(index - 1);
-        } else {
-            return null;
-        }
-    }
-
-    public void repeatCard() {
-        sessionCards.add(currentCard);
     }
 
     public int getLength() {
