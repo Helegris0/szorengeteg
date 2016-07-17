@@ -14,7 +14,6 @@ import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
 import com.helegris.szorengeteg.business.service.EntitySaver;
 import com.helegris.szorengeteg.business.service.TopicLoader;
-import com.helegris.szorengeteg.ui.AudioIcon;
 import com.helegris.szorengeteg.ui.DefaultImage;
 import com.helegris.szorengeteg.ui.SceneStyler;
 import java.io.File;
@@ -202,7 +201,7 @@ public abstract class TopicFormView extends AnchorPane {
                         stage.showAndWait();
 
                         if (view.isOk()) {
-                            view.getImageFiles().entrySet().stream().forEach((entry) -> {
+                            view.getFiles().entrySet().stream().forEach((entry) -> {
                                 ((RowForCard) sortedRows.get(entry.getKey())).setImageFile(entry.getValue());
                             });
                             view.getImages().entrySet().stream().forEach((entry) -> {
@@ -213,6 +212,34 @@ public abstract class TopicFormView extends AnchorPane {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("Hiba");
                         alert.setHeaderText("A témakörben még nincsenek szavak, amikhez képet lehetne hozzárendelni.");
+                        alert.setContentText("Adjon hozzá szavakat a témakörhöz.");
+                        alert.showAndWait();
+                    }
+                }
+                break;
+                case AUDIO: {
+                    if (sortedRows.size() > 0) {
+                        Stage stage = new Stage();
+                        BulkAddAudioView view = new BulkAddAudioView(sortedRows);
+                        stage.setScene(new SceneStyler().createScene(
+                                view, SceneStyler.Style.MAIN));
+                        stage.setTitle("Csoportos hozzáadás (hang)");
+                        stage.initModality(Modality.APPLICATION_MODAL);
+                        stage.initOwner(getScene().getWindow());
+                        stage.showAndWait();
+
+                        if (view.isOk()) {
+                            view.getFiles().entrySet().stream().forEach((entry) -> {
+                                ((RowForCard) sortedRows.get(entry.getKey())).setAudioFile(entry.getValue());
+                            });
+                            view.getAudio().entrySet().stream().forEach((entry) -> {
+                                ((RowForCard) sortedRows.get(entry.getKey())).setAudio(entry.getValue());
+                            });
+                        }
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Hiba");
+                        alert.setHeaderText("A témakörben még nincsenek szavak, amikhez hangot lehetne hozzárendelni.");
                         alert.setContentText("Adjon hozzá szavakat a témakörhöz.");
                         alert.showAndWait();
                     }
@@ -269,7 +296,8 @@ public abstract class TopicFormView extends AnchorPane {
             } else if (colAudio.equals(position.getTableColumn())) {
                 int index = position.getRow();
                 RowForCard row = (RowForCard) sortedRows.get(index);
-                AudioPopup audioPopup = new AudioPopup(new AudioIcon(row.getAudioIcon()));
+                AudioPopup audioPopup
+                        = new AudioPopup(row.getAudioIcon().getAudio());
                 Stage stage = new Stage();
                 stage.setScene(new SceneStyler().createScene(
                         audioPopup, SceneStyler.Style.MAIN));

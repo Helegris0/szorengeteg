@@ -37,9 +37,9 @@ public final class AudioIcon extends ImageView {
         this.setOnMouseClicked(this::mouseClicked);
     }
 
-    public AudioIcon(AudioIcon audioIcon) {
+    public AudioIcon(Media audio) {
         this();
-        setAudio(audioIcon.getAudio());
+        setAudio(audio);
     }
 
     private void mouseEntered(MouseEvent event) {

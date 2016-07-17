@@ -38,10 +38,10 @@ public class AudioPopup extends FilePopup {
     private Media finalAudio;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public AudioPopup(AudioIcon audioIcon) {
+    public AudioPopup(Media audio) {
         DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
-        this.audioIcon = audioIcon;
+        this.audioIcon = new AudioIcon(audio);
         audioIcon.setFitWidth(iconWidth);
         audioIcon.setFitHeight(iconHeight);
         stackPane.getChildren().add(audioIcon);

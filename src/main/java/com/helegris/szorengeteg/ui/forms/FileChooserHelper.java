@@ -17,22 +17,19 @@ import javafx.stage.Window;
  */
 public class FileChooserHelper {
 
+    private static final FileChooser.ExtensionFilter IMAGE_EXT
+            = new FileChooser.ExtensionFilter(Messages.msg("open_dialog.images"),
+                    "*.jpg", "*.png", "*.gif");
+    private static final FileChooser.ExtensionFilter AUDIO_EXT
+            = new FileChooser.ExtensionFilter(Messages.msg("open_dialog.audio_files"),
+                    "*.mp3", "*.wav", "*.aac");
     private static final String DEFAULT_PATH = System.getProperty("user.home");
     private static String imageDirectory = DEFAULT_PATH;
     private static String audioDirectory = DEFAULT_PATH;
-    private static String txtDirectory = DEFAULT_PATH;
 
     public File getImageFile(Window ownerWindow) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(imageDirectory));
-
-        FileChooser.ExtensionFilter extFilter
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.images"),
-                        "*.jpg", "*.png", "*.gif");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        File file = fileChooser.showOpenDialog(ownerWindow);
+        File file = getFileChooser(imageDirectory, IMAGE_EXT)
+                .showOpenDialog(ownerWindow);
         if (file != null) {
             imageDirectory = file.getParent();
         }
@@ -40,16 +37,8 @@ public class FileChooserHelper {
     }
 
     public List<File> getImageFiles(Window ownerWindow) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(imageDirectory));
-
-        FileChooser.ExtensionFilter extFilter
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.images"),
-                        "*.jpg", "*.png", "*.gif");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        List<File> files = fileChooser.showOpenMultipleDialog(ownerWindow);
+        List<File> files = getFileChooser(imageDirectory, IMAGE_EXT)
+                .showOpenMultipleDialog(ownerWindow);
         if (files != null && !files.isEmpty()) {
             imageDirectory = files.get(0).getParent();
         }
@@ -57,38 +46,28 @@ public class FileChooserHelper {
     }
 
     public File getAudioFile(Window ownerWindow) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(audioDirectory));
-
-        FileChooser.ExtensionFilter extFilter
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.audio_files"),
-                        "*.mp3", "*.wav", "*.aac");
-        fileChooser.getExtensionFilters().add(extFilter);
-
-        File file = fileChooser.showOpenDialog(ownerWindow);
+        File file = getFileChooser(audioDirectory, AUDIO_EXT)
+                .showOpenDialog(ownerWindow);
         if (file != null) {
             audioDirectory = file.getParent();
         }
         return file;
     }
 
-    public File getCsvFile(Window ownerWindow) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File(txtDirectory));
-
-        FileChooser.ExtensionFilter extFilterTxt
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.txt_files"), "*.txt");
-        FileChooser.ExtensionFilter extFilterCsv
-                = new FileChooser.ExtensionFilter(
-                        Messages.msg("open_dialog.csv_files"), "*.csv");
-        fileChooser.getExtensionFilters().addAll(extFilterTxt, extFilterCsv);
-
-        File file = fileChooser.showOpenDialog(ownerWindow);
-        if (file != null) {
-            txtDirectory = file.getParent();
+    public List<File> getAudioFiles(Window ownerWindow) {
+        List<File> files = getFileChooser(audioDirectory, AUDIO_EXT)
+                .showOpenMultipleDialog(ownerWindow);
+        if (files != null && !files.isEmpty()) {
+            audioDirectory = files.get(0).getParent();
         }
-        return file;
+        return files;
+    }
+
+    private FileChooser getFileChooser(String directory, 
+            FileChooser.ExtensionFilter extensionFilter) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialDirectory(new File(directory));
+        fileChooser.getExtensionFilters().add(extensionFilter);
+        return fileChooser;
     }
 }

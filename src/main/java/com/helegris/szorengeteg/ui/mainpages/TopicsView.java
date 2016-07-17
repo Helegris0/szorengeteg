@@ -32,7 +32,7 @@ import javax.inject.Inject;
  */
 public class TopicsView extends AnchorPane {
 
-    public static final String FXML = "fxml/topics.fxml";
+    private static final String FXML = "fxml/topics.fxml";
 
     @Inject
     private TopicLoader topicLoader;
