@@ -69,21 +69,23 @@ public class BulkAddImagesView extends BulkAddMediaView {
     @Override
     protected void browse(ActionEvent event) {
         List<File> selectedFiles = fileChooserHelper.getImageFiles(getScene().getWindow());
-        List<Row> selectedRows = rows.stream()
-                .filter(row -> row.isSelected())
-                .collect(Collectors.toList());
-        for (int i = 0; i < selectedRows.size() && i < selectedFiles.size(); i++) {
-            Row row = selectedRows.get(i);
-            try {
-                File file = selectedFiles.get(i);
-                Image image = new Image(new FileInputStream(file));
-                row.setImage(image);
-                files.put(row.getIndex(), file);
-                images.put(row.getIndex(), image);
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(BulkAddImagesView.class.getName()).log(Level.SEVERE, null, ex);
+        if (selectedFiles != null && !selectedFiles.isEmpty()) {
+            List<Row> selectedRows = rows.stream()
+                    .filter(row -> row.isSelected())
+                    .collect(Collectors.toList());
+            for (int i = 0; i < selectedRows.size() && i < selectedFiles.size(); i++) {
+                Row row = selectedRows.get(i);
+                try {
+                    File file = selectedFiles.get(i);
+                    Image image = new Image(new FileInputStream(file));
+                    row.setImage(image);
+                    files.put(row.getIndex(), file);
+                    images.put(row.getIndex(), image);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(BulkAddImagesView.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                row.setSelected(false);
             }
-            row.setSelected(false);
         }
     }
 

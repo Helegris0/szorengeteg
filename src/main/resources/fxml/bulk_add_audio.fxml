@@ -28,7 +28,7 @@
                         <PropertyValueFactory property="audioIcon" />
                     </cellValueFactory>
                 </TableColumn>
-                <TableColumn fx:id="colFileName" text="fájlnév" prefWidth="160" sortable="false">
+                <TableColumn fx:id="colFileName" text="%form.filename" prefWidth="160" sortable="false">
                     <cellValueFactory>
                         <PropertyValueFactory property="fileName" />
                     </cellValueFactory>
@@ -36,10 +36,10 @@
             </columns>
         </TableView>
         <HBox>
-            <Button fx:id="btnBrowse" text="Tallózás..." />
+            <Button fx:id="btnBrowse" text="%common.browse" />
             <Pane HBox.hgrow="ALWAYS" /> 
-            <Button fx:id="btnAdd" text="Hozzáadás" style="-fx-font-weight: bold;" />
-            <Button fx:id="btnCancel" text="Mégse" />
+            <Button fx:id="btnAdd" text="%common.add" style="-fx-font-weight: bold;" />
+            <Button fx:id="btnCancel" text="%common.cancel" />
         </HBox>
     </VBox>
 </fx:root>

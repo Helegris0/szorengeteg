@@ -30,7 +30,7 @@ public class HelpControl extends HBox {
 
     public HelpControl() {
         super();
-        this.label = new ClickableLabel("Súgó");
+        this.label = new ClickableLabel(Messages.msg("common.help"));
         this.label.setStyle("fx-font-size: 23pt;");
         this.imageView = new ImageView(IMAGE_PATH);
         this.imageView.setFitWidth(IMAGE_SIZE);

@@ -17,9 +17,9 @@
     <VBox AnchorPane.topAnchor="15" AnchorPane.leftAnchor="45"
           AnchorPane.rightAnchor="45" spacing="5">
         <HBox spacing="5" alignment="CENTER">
-            <Label text="Csak aktív szavak birtokában tudsz beszélni!"
+            <Label text="%practice.quote"
                    style="-fx-text-fill: #ff0000; -fx-font-weight: bold;" />
-            <Label text="/Komanovics István/"
+            <Label text="%practice.author"
                    style="-fx-font-size: 14pt; -fx-font-style: italic;" />
         </HBox>
         <GridPane hgap="10">
@@ -93,7 +93,7 @@
             <ImageView fx:id="imgNext" />
             <Label fx:id="lblNext" text="%practice.next" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Label fx:id="lblQuit" text="Kilépés" />
+            <Label fx:id="lblQuit" text="%common.quit" />
             <ImageView fx:id="imgQuit" />
         </HBox>
     </VBox>

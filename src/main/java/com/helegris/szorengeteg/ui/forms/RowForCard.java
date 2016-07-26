@@ -99,11 +99,11 @@ public class RowForCard {
 
     private void delete(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Sor törlése");
-        alert.setHeaderText("Biztosan törölni szeretné ezt a sort?");
+        alert.setTitle(Messages.msg("alert.delete_row"));
+        alert.setHeaderText(Messages.msg("alert.sure_delete_row"));
 
-        ButtonType typeYes = new ButtonType("Igen", ButtonBar.ButtonData.YES);
-        ButtonType typeCancel = new ButtonType("Mégse", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType typeYes = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
+        ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().add(typeYes);
         alert.getButtonTypes().add(typeCancel);

@@ -16,17 +16,17 @@
           AnchorPane.bottomAnchor="2" AnchorPane.leftAnchor="2">
         <Label fx:id="lblDescription" wrapText="true" visible="false" />
         <HBox spacing="5"  visible="false">
-            <Label text="Elválasztó karakter:" />
+            <Label text="%form.delimiter" />
             <VBox>
-                <RadioButton fx:id="rdColon" text="kettőspont" toggleGroup="$grpDelimiter" selected="true" />
-                <RadioButton fx:id="rdSemicolon" text="pontosvessző" toggleGroup="$grpDelimiter" />
+                <RadioButton fx:id="rdColon" text="%form.colon" toggleGroup="$grpDelimiter" selected="true" />
+                <RadioButton fx:id="rdSemicolon" text="%form.semicolon" toggleGroup="$grpDelimiter" />
             </VBox>
         </HBox>
         <TextArea fx:id="textArea" />
         <HBox>
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnAdd" text="Hozzáadás" style="-fx-font-weight: bold;" />
-            <Button fx:id="btnCancel" text="Mégse" />
+            <Button fx:id="btnAdd" text="%common.add" style="-fx-font-weight: bold;" />
+            <Button fx:id="btnCancel" text="%common.cancel" />
         </HBox>
     </VBox>
 </fx:root>

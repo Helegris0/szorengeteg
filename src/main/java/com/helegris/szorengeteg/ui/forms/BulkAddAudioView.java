@@ -64,19 +64,21 @@ public class BulkAddAudioView extends BulkAddMediaView {
     @Override
     protected void browse(ActionEvent event) {
         List<File> selectedFiles = fileChooserHelper.getAudioFiles(getScene().getWindow());
-        List<Row> selectedRows = rows.stream()
-                .filter(row -> row.isSelected())
-                .collect(Collectors.toList());
-        for (int i = 0; i < selectedRows.size() && i < selectedFiles.size(); i++) {
-            Row row = selectedRows.get(i);
-            File file = selectedFiles.get(i);
-            Media audio = new Media(file.toURI().toString());
-            row.setAudio(audio);
-            row.setFileName(file.getName());
-            row.setSelected(false);
-            files.put(row.getIndex(), file);
-            audioM.put(row.getIndex(), audio);
-            tableView.refresh();
+        if (selectedFiles != null && !selectedFiles.isEmpty()) {
+            List<Row> selectedRows = rows.stream()
+                    .filter(row -> row.isSelected())
+                    .collect(Collectors.toList());
+            for (int i = 0; i < selectedRows.size() && i < selectedFiles.size(); i++) {
+                Row row = selectedRows.get(i);
+                File file = selectedFiles.get(i);
+                Media audio = new Media(file.toURI().toString());
+                row.setAudio(audio);
+                row.setFileName(file.getName());
+                row.setSelected(false);
+                files.put(row.getIndex(), file);
+                audioM.put(row.getIndex(), audio);
+                tableView.refresh();
+            }
         }
     }
 

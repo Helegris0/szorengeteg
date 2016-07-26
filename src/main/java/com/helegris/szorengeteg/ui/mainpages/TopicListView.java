@@ -30,9 +30,9 @@ import javax.inject.Inject;
  *
  * @author Timi
  */
-public class TopicsView extends AnchorPane {
+public class TopicListView extends AnchorPane {
 
-    private static final String FXML = "fxml/topics.fxml";
+    private static final String FXML = "fxml/topic_list.fxml";
 
     @Inject
     private TopicLoader topicLoader;
@@ -77,7 +77,7 @@ public class TopicsView extends AnchorPane {
     };
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public TopicsView() {
+    public TopicListView() {
         DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
         Platform.runLater(() -> requestFocus());

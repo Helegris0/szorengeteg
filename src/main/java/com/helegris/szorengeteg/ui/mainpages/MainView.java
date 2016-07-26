@@ -80,7 +80,7 @@ public class MainView extends AnchorPane {
     }
 
     public void loadContentTopics() {
-        loadContent(TOPICS_TITLE, new TopicsView());
+        loadContent(TOPICS_TITLE, new TopicListView());
     }
 
     public void loadContentNewTopic() {

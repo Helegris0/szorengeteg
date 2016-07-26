@@ -31,10 +31,10 @@
             </columns>
         </TableView>
         <HBox>
-            <Button fx:id="btnBrowse" text="Tallózás..." />
+            <Button fx:id="btnBrowse" text="%common.browse" />
             <Pane HBox.hgrow="ALWAYS" /> 
-            <Button fx:id="btnAdd" text="Hozzáadás" style="-fx-font-weight: bold;" />
-            <Button fx:id="btnCancel" text="Mégse" />
+            <Button fx:id="btnAdd" text="%common.add" style="-fx-font-weight: bold;" />
+            <Button fx:id="btnCancel" text="%common.cancel" />
         </HBox>
     </VBox>
 </fx:root>

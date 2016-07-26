@@ -13,7 +13,7 @@
         <TextArea fx:id="txtContent" wrapText="true" editable="false" />
         <HBox>
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnClose" text="Bezárás" />
+            <Button fx:id="btnClose" text="%common.close" />
         </HBox>
     </VBox>
 </fx:root>

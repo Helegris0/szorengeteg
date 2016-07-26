@@ -72,8 +72,8 @@ public class EditTopicView extends TopicFormView {
         alert.setHeaderText("Szeretné alaphelyzetbe állítani a kapcsolókat?");
         alert.setContentText("");
 
-        ButtonType typeYes = new ButtonType("Igen", ButtonData.YES);
-        ButtonType typeCancel = new ButtonType("Mégse", ButtonData.CANCEL_CLOSE);
+        ButtonType typeYes = new ButtonType(Messages.msg("common.yes"), ButtonData.YES);
+        ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().add(typeYes);
         alert.getButtonTypes().add(typeCancel);
@@ -93,8 +93,8 @@ public class EditTopicView extends TopicFormView {
             });
 
             Alert alertInfo = new Alert(AlertType.INFORMATION);
-            alertInfo.setTitle("Kapcsolók visszaállítása");
-            alertInfo.setHeaderText("A változás mentéssel véglegesíthető.");
+            alertInfo.setTitle(Messages.msg("form.set_default"));
+            alertInfo.setHeaderText(Messages.msg("alert.save_change"));
             alertInfo.showAndWait();
             alert.close();
         }
@@ -109,7 +109,7 @@ public class EditTopicView extends TopicFormView {
         ButtonType typeDeleteWithWords
                 = new ButtonType(Messages.msg("alert.delete_topic_and_words"));
         ButtonType typeCancel
-                = new ButtonType(Messages.msg("alert.cancel"),
+                = new ButtonType(Messages.msg("common.cancel"),
                         ButtonData.CANCEL_CLOSE);
 
         alert.getButtonTypes().clear();

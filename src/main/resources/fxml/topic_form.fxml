@@ -31,9 +31,9 @@
             </VBox>
             <Pane HBox.hgrow="ALWAYS" />
             <VBox alignment="CENTER_RIGHT">
-                <Button fx:id="btnDefaultStates" text="Kapcsolók visszaállítása"
+                <Button fx:id="btnDefaultStates" text="%form.set_default"
                         visible="false" />
-                <Button fx:id="btnDeleteWords" text="Összes szó törlése" />
+                <Button fx:id="btnDeleteWords" text="%form.delete_all_words" />
                 <Button fx:id="btnDeleteTopic" text="%form.delete_topic"
                         visible="false" />
             </VBox>
@@ -42,7 +42,7 @@
             <Button fx:id="btnNewWord1" text="%form.new_word" />
             <Pane HBox.hgrow="ALWAYS" />
             <ComboBox fx:id="cmbBulkAdd" visible="false" />
-            <Button fx:id="btnBulkAdd" text="Haladó" />
+            <Button fx:id="btnBulkAdd" text="%form.advanced" />
         </HBox>
         <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
             <columns>
@@ -81,8 +81,8 @@
         <HBox AnchorPane.bottomAnchor="0">
             <Button fx:id="btnNewWord2" text="%form.new_word" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnSave" text="%form.save" style="-fx-font-weight: bold;" />
-            <Button fx:id="btnBack" text="%form.back" />
+            <Button fx:id="btnSave" text="%common.save" style="-fx-font-weight: bold;" />
+            <Button fx:id="btnBack" text="%common.back" />
         </HBox>
     </VBox>
 </fx:root>

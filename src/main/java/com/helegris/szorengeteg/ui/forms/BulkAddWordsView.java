@@ -94,9 +94,12 @@ public class BulkAddWordsView extends AnchorPane {
         } catch (Exception ex) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle(Messages.msg("alert.error"));
-            alert.setHeaderText("Hibás adat");
-            alert.setContentText("A várt forma:\n"
-                    + "szó1" + delimiter + "leírás1\nszó2" + delimiter + "leírás2");
+            alert.setHeaderText(Messages.msg("alert.wrong_data"));
+            alert.setContentText(Messages.msg("alert.expected_format") 
+                    + "\n" + Messages.msg("form.word") + "1" + delimiter 
+                    + Messages.msg("form.description") + "1\n" 
+                    + Messages.msg("form.word") + "2" + delimiter 
+                    + Messages.msg("form.description") + "2");
             alert.showAndWait();
         }
     }

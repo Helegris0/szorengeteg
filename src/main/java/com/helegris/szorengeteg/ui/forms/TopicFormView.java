@@ -125,9 +125,9 @@ public abstract class TopicFormView extends AnchorPane {
         }
     };
 
-    private static final String WORD = "szó és leírás";
-    private static final String IMAGE = "kép";
-    private static final String AUDIO = "hang";
+    private final String WORD = Messages.msg("form.word");
+    private final String IMAGE = Messages.msg("form.image");
+    private final String AUDIO = Messages.msg("form.audio");
 
     @SuppressWarnings("LeakingThisInConstructor")
     public TopicFormView() {
@@ -176,26 +176,28 @@ public abstract class TopicFormView extends AnchorPane {
 
     private void bulkAdd(ActionEvent event) {
         if (cmbBulkAdd.isVisible()) {
-            switch ((String) cmbBulkAdd.getSelectionModel().getSelectedItem()) {
-                case WORD: {
+            switch (cmbBulkAdd.getSelectionModel().getSelectedIndex()) {
+                case 0: {
                     Stage stage = new Stage();
                     BulkAddWordsView view = new BulkAddWordsView();
                     stage.setScene(new SceneStyler().createScene(
                             view, SceneStyler.Style.MAIN));
-                    stage.setTitle("Csoportos hozzáadás (szó és leírás)");
+                    stage.setTitle(Messages.msg("form.bulk_add_something", 
+                            Messages.msg("form.word_and_descripiton")));
                     stage.initModality(Modality.APPLICATION_MODAL);
                     stage.initOwner(getScene().getWindow());
                     stage.showAndWait();
                     loadRows(view.getCards());
                 }
                 break;
-                case IMAGE: {
+                case 1: {
                     if (sortedRows.size() > 0) {
                         Stage stage = new Stage();
                         BulkAddImagesView view = new BulkAddImagesView(sortedRows);
                         stage.setScene(new SceneStyler().createScene(
                                 view, SceneStyler.Style.MAIN));
-                        stage.setTitle("Csoportos hozzáadás (kép)");
+                        stage.setTitle(Messages.msg("form.bulk_add_something", 
+                            Messages.msg("form.image")));
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initOwner(getScene().getWindow());
                         stage.showAndWait();
@@ -210,20 +212,21 @@ public abstract class TopicFormView extends AnchorPane {
                         }
                     } else {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Hiba");
-                        alert.setHeaderText("A témakörben még nincsenek szavak, amikhez képet lehetne hozzárendelni.");
-                        alert.setContentText("Adjon hozzá szavakat a témakörhöz.");
+                        alert.setTitle(Messages.msg("alert.error"));
+                        alert.setHeaderText(Messages.msg("alert.no_words_image"));
+                        alert.setContentText(Messages.msg("alert.add_words"));
                         alert.showAndWait();
                     }
                 }
                 break;
-                case AUDIO: {
+                case 2: {
                     if (sortedRows.size() > 0) {
                         Stage stage = new Stage();
                         BulkAddAudioView view = new BulkAddAudioView(sortedRows);
                         stage.setScene(new SceneStyler().createScene(
                                 view, SceneStyler.Style.MAIN));
-                        stage.setTitle("Csoportos hozzáadás (hang)");
+                        stage.setTitle(Messages.msg("form.bulk_add_something", 
+                            Messages.msg("form.audio")));
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initOwner(getScene().getWindow());
                         stage.showAndWait();
@@ -238,16 +241,16 @@ public abstract class TopicFormView extends AnchorPane {
                         }
                     } else {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Hiba");
-                        alert.setHeaderText("A témakörben még nincsenek szavak, amikhez hangot lehetne hozzárendelni.");
-                        alert.setContentText("Adjon hozzá szavakat a témakörhöz.");
+                        alert.setTitle(Messages.msg("alert.error"));
+                        alert.setHeaderText(Messages.msg("alert.no_words_audio"));
+                        alert.setContentText(Messages.msg("alert.add_words"));
                         alert.showAndWait();
                     }
                 }
                 break;
             }
         } else {
-            btnBulkAdd.setText("Csoportos hozzáadás");
+            btnBulkAdd.setText(Messages.msg("form.bulk_add"));
             cmbBulkAdd.setVisible(true);
             cmbBulkAdd.requestFocus();
         }
@@ -275,8 +278,8 @@ public abstract class TopicFormView extends AnchorPane {
                 Stage stage = new Stage();
                 stage.setScene(new SceneStyler().createScene(
                         imagePopup, SceneStyler.Style.MAIN));
-                stage.setTitle(row.getTxtWord().getText() + " "
-                        + Messages.msg("form.set_image_of_word"));
+                stage.setTitle(Messages.msg("form.set_image_of_word", 
+                        row.getTxtWord().getText()));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initOwner(tableView.getScene().getWindow());
                 stage.setResizable(false);
@@ -301,8 +304,8 @@ public abstract class TopicFormView extends AnchorPane {
                 Stage stage = new Stage();
                 stage.setScene(new SceneStyler().createScene(
                         audioPopup, SceneStyler.Style.MAIN));
-                stage.setTitle(row.getTxtWord().getText() + " "
-                        + Messages.msg("form.set_audio_of_word"));
+                stage.setTitle(Messages.msg("form.set_audio_of_word", 
+                        row.getTxtWord().getText()));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initOwner(tableView.getScene().getWindow());
                 stage.setResizable(false);
@@ -383,12 +386,12 @@ public abstract class TopicFormView extends AnchorPane {
 
     private void deleteWords(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("A témakör szavainak törlése");
-        alert.setHeaderText("Biztosan törölni szeretné a témakör szavait?");
-        alert.setContentText("A változás mentéssel véglegesíthető.");
+        alert.setTitle(Messages.msg("alert.delete_words"));
+        alert.setHeaderText(Messages.msg("alert.sure_delete_words"));
+        alert.setContentText(Messages.msg("alert.save_to_confirm"));
 
-        ButtonType typeYes = new ButtonType("Igen", ButtonBar.ButtonData.YES);
-        ButtonType typeCancel = new ButtonType("Mégse", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType typeYes = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
+        ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().clear();
         alert.getButtonTypes().add(typeYes);
         alert.getButtonTypes().add(typeCancel);

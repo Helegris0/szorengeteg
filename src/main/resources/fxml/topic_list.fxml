@@ -17,9 +17,9 @@
         <HBox>
             <Button fx:id="btnNewTopic" text="%topics.new_topic" />
             <Button fx:id="btnModifyOrder" text="%topics.modify_order" />
-            <Button fx:id="btnSave" text="%topics.save" visible="false"
+            <Button fx:id="btnSave" text="%common.save" visible="false"
                     style="-fx-font-weight: bold;" />
-            <Button fx:id="btnCancel" text="%topics.cancel" visible="false" />
+            <Button fx:id="btnCancel" text="%common.cancel" visible="false" />
         </HBox>
     </VBox>
 </fx:root>

@@ -5,6 +5,7 @@
  */
 package com.helegris.szorengeteg.messages;
 
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -24,6 +25,14 @@ public class Messages {
     public static String msg(String key) {
         try {
             return RESOURCE_BUNDLE.getString(key);
+        } catch (MissingResourceException e) {
+            return missingKeyMsg(key);
+        }
+    }
+
+    public static String msg(String key, Object... params) {
+        try {
+            return MessageFormat.format(RESOURCE_BUNDLE.getString(key), params);
         } catch (MissingResourceException e) {
             return missingKeyMsg(key);
         }

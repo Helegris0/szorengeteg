@@ -17,10 +17,10 @@
                    preserveRatio="true" />
         </StackPane>
         <HBox>
-            <Button fx:id="btnLoad" text="%form.browse" />
-            <Button fx:id="btnDelete" text="%form.delete" />
+            <Button fx:id="btnLoad" text="%common.browse" />
+            <Button fx:id="btnDelete" text="%common.delete" />
             <Pane HBox.hgrow="ALWAYS" />
-            <Button fx:id="btnOk" text="%form.ok" style="-fx-font-weight: bold;" />
+            <Button fx:id="btnOk" text="%common.ok" style="-fx-font-weight: bold;" />
         </HBox>
     </VBox>
 </fx:root>

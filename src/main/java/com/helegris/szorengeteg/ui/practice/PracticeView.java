@@ -11,6 +11,7 @@ import com.helegris.szorengeteg.MainApp;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
 import com.helegris.szorengeteg.business.service.EntitySaver;
+import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.AudioIcon;
 import com.helegris.szorengeteg.ui.MediaLoader;
 import java.io.IOException;
@@ -343,7 +344,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                     card = session.jumpTo(newWordOrd - 1);
                     setQuestion();
                 } else {
-                    throw new Exception("Az ugrás sikertelen - a témakörben csak " + session.getLength() + " szó van.");
+                    throw new Exception(Messages.msg("practice.unsuccessful_jump", session.getLength()));
                 }
             } else {
                 SessionJump jump = new SessionJump(newTopicOrd, newWordOrd);
@@ -353,9 +354,9 @@ public class PracticeView extends AnchorPane implements WordInputListener {
                     setQuestion();
                 } else {
                     if (jump.getTopic() != null) {
-                        throw new Exception("Az ugrás sikertelen - a témakörben csak " + session.getLength() + " szó van.");
+                        throw new Exception(Messages.msg("practice.unsuccessful_jump", session.getLength()));
                     } else {
-                        throw new Exception("Nincs ilyen számú témakör.");
+                        throw new Exception(Messages.msg("practice.no_such_topic"));
                     }
                 }
             }
@@ -371,11 +372,11 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     }
 
     private void abort() {
-        ButtonType yes = new ButtonType("Igen", ButtonBar.ButtonData.YES);
-        ButtonType no = new ButtonType("Mégse", ButtonBar.ButtonData.NO);
+        ButtonType yes = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
+        ButtonType no = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.NO);
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", yes, no);
-        alert.setTitle("Kilépés");
-        alert.setHeaderText("Biztosan szeretne kilépni?");
+        alert.setTitle(Messages.msg("common.quit"));
+        alert.setHeaderText(Messages.msg("common.sure_quit"));
 
         Optional<ButtonType> result = alert.showAndWait();
 
