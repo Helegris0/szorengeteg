@@ -6,8 +6,9 @@
 package com.helegris.szorengeteg.ui;
 
 import com.helegris.szorengeteg.FXMLLoaderHelper;
-import java.io.File;
+import com.helegris.szorengeteg.ui.HelpControl.ContentType;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
@@ -16,7 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 /**
  *
@@ -26,7 +27,10 @@ public class HelpView extends AnchorPane {
 
     private static final String FXML = "fxml/help.fxml";
 
-    private static final String GUIDE_PATH = "src/main/resources/text/user_guide_utf8.txt";
+    private static final String PRACTICE_GUIDE_PATH
+            = "/text/user_guide_practice.txt";
+    private static final String EDITOR_GUIDE_PATH
+            = "/text/user_guide_editor.txt";
     private static final String CHARSET = "utf-8";
 
     @FXML
@@ -35,15 +39,25 @@ public class HelpView extends AnchorPane {
     private Button btnClose;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public HelpView() {
+    public HelpView(ContentType type) {
         FXMLLoaderHelper.load(FXML, this);
+        String path = null;
+        switch (type) {
+            case PRACTICE:
+                path = PRACTICE_GUIDE_PATH;
+                break;
+            case EDITOR:
+                path = EDITOR_GUIDE_PATH;
+                break;
+        }
         try {
-            String content = FileUtils.readFileToString(new File(GUIDE_PATH), CHARSET);
+            InputStream inputStream = getClass().getResourceAsStream(path);
+            String content = IOUtils.toString(inputStream, CHARSET);
             txtContent.setText(content);
-            setSize();
         } catch (IOException ex) {
             Logger.getLogger(HelpView.class.getName()).log(Level.SEVERE, null, ex);
         }
+        setSize();
     }
 
     @FXML

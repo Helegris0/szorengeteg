@@ -22,5 +22,5 @@
         <Label fx:id="lblTitle" style="-fx-font-size: 18pt;"></Label>
         <StackPane fx:id="vistaHolder" alignment="CENTER" style="-fx-padding: 2pt;" VBox.vgrow="ALWAYS" />
     </VBox>
-    <HelpControl fx:id="asd" AnchorPane.rightAnchor="0" />
+    <HelpControl fx:id="helpControl" AnchorPane.rightAnchor="0" />
 </fx:root>

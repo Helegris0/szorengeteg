@@ -26,8 +26,6 @@ public class HelpControl extends HBox {
 
     private ContentType contentType;
 
-    private boolean asd;
-
     public HelpControl() {
         super();
         this.label = new ClickableLabel(Messages.msg("common.help"));
@@ -56,9 +54,9 @@ public class HelpControl extends HBox {
     }
 
     private void action(MouseEvent event) {
-        if (!asd) {
+        if (contentType != null) {
             Stage helpStage = new Stage();
-        HelpView helpView = new HelpView();
+        HelpView helpView = new HelpView(contentType);
         helpStage.setScene(new SceneStyler().createScene(
                 helpView, SceneStyler.Style.MAIN));
         helpStage.setTitle(Messages.msg("common.help"));
@@ -66,7 +64,7 @@ public class HelpControl extends HBox {
         }
     }
 
-    public void setAsd(boolean asd) {
-        this.asd = asd;
+    public void setContentType(ContentType contentType) {
+        this.contentType = contentType;
     }
 }

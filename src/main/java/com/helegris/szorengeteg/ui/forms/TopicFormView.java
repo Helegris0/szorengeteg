@@ -125,7 +125,7 @@ public abstract class TopicFormView extends AnchorPane {
         }
     };
 
-    private final String WORD = Messages.msg("form.word");
+    private final String WORD = Messages.msg("form.word_and_description");
     private final String IMAGE = Messages.msg("form.image");
     private final String AUDIO = Messages.msg("form.audio");
 

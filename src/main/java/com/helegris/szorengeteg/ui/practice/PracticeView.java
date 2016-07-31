@@ -13,6 +13,7 @@ import com.helegris.szorengeteg.business.model.Topic;
 import com.helegris.szorengeteg.business.service.EntitySaver;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.AudioIcon;
+import com.helegris.szorengeteg.ui.HelpControl;
 import com.helegris.szorengeteg.ui.MediaLoader;
 import java.io.IOException;
 import java.util.Optional;
@@ -98,6 +99,8 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     private ImageView imgQuit;
     @FXML
     private Label lblQuit;
+    @FXML
+    private HelpControl helpControl;
 
     private PracticeControl pcDefault;
     private PracticeControl pcInput;
@@ -168,6 +171,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
         });
         txtTopicOrdinal.setOnMouseClicked(event -> txtTopicOrdinal.selectAll());
         txtWordOrdinal.setOnMouseClicked(event -> txtWordOrdinal.selectAll());
+        helpControl.setContentType(HelpControl.ContentType.PRACTICE);
     }
 
     private void setQuestion() {
@@ -273,7 +277,6 @@ public class PracticeView extends AnchorPane implements WordInputListener {
 
             if (card.getAudio() != null) {
                 pcPlayAudio.setEnabled(true);
-                    playAudio();
                     setBoldness(lblPlayAudio, true);
             }
             setBoldness(lblNext, true);

@@ -42,7 +42,7 @@ public class MainView extends AnchorPane {
     private StackPane vistaHolder;
     
     @FXML
-    private HelpControl asd;
+    private HelpControl helpControl;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public MainView() {
@@ -53,7 +53,7 @@ public class MainView extends AnchorPane {
     public void initialize() {
         lblTitle.setText(TOPICS_TITLE);
         setMenus();
-        asd.setAsd(true);
+        helpControl.setContentType(HelpControl.ContentType.EDITOR);
     }
 
     private void setMenus() {

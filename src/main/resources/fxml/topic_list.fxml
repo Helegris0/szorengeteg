@@ -10,16 +10,19 @@
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
-    <VBox AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
-        <ScrollPane fitToWidth="true">
-            <VBox fx:id="vBox" />
-        </ScrollPane>
-        <HBox>
-            <Button fx:id="btnNewTopic" text="%topics.new_topic" />
-            <Button fx:id="btnModifyOrder" text="%topics.modify_order" />
-            <Button fx:id="btnSave" text="%common.save" visible="false"
+    <HBox AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+        <VBox>
+            <ScrollPane fitToWidth="true">
+                <VBox fx:id="vBox" />
+            </ScrollPane>
+            <HBox>
+                <Button fx:id="btnNewTopic" text="%topics.new_topic" />
+                <Button fx:id="btnModifyOrder" text="%topics.modify_order" />
+                <Button fx:id="btnSave" text="%common.save" visible="false"
                     style="-fx-font-weight: bold;" />
-            <Button fx:id="btnCancel" text="%common.cancel" visible="false" />
-        </HBox>
-    </VBox>
+                <Button fx:id="btnCancel" text="%common.cancel" visible="false" />
+            </HBox>
+        </VBox>
+        <Button fx:id="btnDefaultStates" text="%form.set_default" />
+    </HBox>
 </fx:root>

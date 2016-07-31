@@ -14,8 +14,9 @@
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
          id="AnchorPane" xmlns="http://javafx.com/javafx/8">
-    <VBox AnchorPane.topAnchor="15" AnchorPane.leftAnchor="45"
-          AnchorPane.rightAnchor="45" spacing="5">
+    <VBox AnchorPane.topAnchor="15" AnchorPane.bottomAnchor="15"
+          AnchorPane.leftAnchor="15" AnchorPane.rightAnchor="15"
+          spacing="5" alignment="CENTER">
         <HBox spacing="5" alignment="CENTER">
             <Label text="%practice.quote"
                    style="-fx-text-fill: #ff0000; -fx-font-weight: bold;" />
@@ -97,5 +98,5 @@
             <ImageView fx:id="imgQuit" />
         </HBox>
     </VBox>
-    <HelpControl AnchorPane.rightAnchor="0" />
+    <HelpControl fx:id="helpControl" AnchorPane.rightAnchor="0" />
 </fx:root>

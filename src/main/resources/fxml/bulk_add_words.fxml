@@ -14,8 +14,8 @@
     </fx:define>
     <VBox spacing="5" AnchorPane.topAnchor="2" AnchorPane.rightAnchor="2" 
           AnchorPane.bottomAnchor="2" AnchorPane.leftAnchor="2">
-        <Label fx:id="lblDescription" wrapText="true" visible="false" />
-        <HBox spacing="5"  visible="false">
+        <Label fx:id="lblDescription" wrapText="true" />
+        <HBox spacing="5">
             <Label text="%form.delimiter" />
             <VBox>
                 <RadioButton fx:id="rdColon" text="%form.colon" toggleGroup="$grpDelimiter" selected="true" />

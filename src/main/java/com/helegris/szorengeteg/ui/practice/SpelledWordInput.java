@@ -26,7 +26,7 @@ public class SpelledWordInput extends WordInput {
 
     private final String expectedInput;
 
-    private int numberOfFields = 14;
+    private int numberOfFields = 13;
 
     public SpelledWordInput(String word, WordInputListener listener) {
         super(word, listener);
