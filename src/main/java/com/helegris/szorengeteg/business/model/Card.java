@@ -74,6 +74,14 @@ public class Card extends PersistentObject {
         return word;
     }
 
+    public void reset() {
+        lastInput = false;
+        lastHelp = false;
+        lastVisual = false;
+        lastGaveUp = false;
+        lastPlayedAudio = false;
+    }
+
     public String getWord() {
         return word;
     }

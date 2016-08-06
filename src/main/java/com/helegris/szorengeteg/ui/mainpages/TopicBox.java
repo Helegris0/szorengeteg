@@ -22,7 +22,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javax.inject.Inject;
 
@@ -30,7 +32,7 @@ import javax.inject.Inject;
  *
  * @author Timi
  */
-public class TopicBox extends Pane {
+public class TopicBox extends HBox {
 
     private static final String FXML = "fxml/topicbox.fxml";
 
@@ -48,14 +50,16 @@ public class TopicBox extends Pane {
     @FXML
     private Label lblNumberOfWords;
 
+    private final TopicClickListener clickListener;
     private final Positioner positioner;
 
     private final Topic topic;
     private int numOfCards;
 
     @SuppressWarnings("LeakingThisInConstructor")
-    public TopicBox(Topic topic, TopicBoxMoveListener moveListener) {
+    public TopicBox(Topic topic, TopicClickListener clickListener, TopicBoxMoveListener moveListener) {
         this.topic = topic;
+        this.clickListener = clickListener;
         positioner = new Positioner(new PositionListener() {
 
             @Override
@@ -79,33 +83,43 @@ public class TopicBox extends Pane {
         setNameLabel();
         positionerPane.getChildren().add(positioner);
         numOfCards = cardLoader.loadByTopic(topic).size();
-        lblEdit.setOnMouseClicked(this::editTopic);
+        lblEdit.setOnMouseClicked(this::editClick);
         lblNumberOfWords.setText(numOfCards + " "
                 + Messages.msg("topicbox.words"));
-        imageView.setOnMouseClicked(this::startPracticeSession);
-        lblName.setOnMouseClicked(this::startPracticeSession);
+        imageView.setOnMouseClicked(this::topicClick);
+        lblName.setOnMouseClicked(this::topicClick);
     }
 
-    protected void editTopic(MouseEvent event) {
-        VistaNavigator.getMainView().loadContentEditTopic(topic);
-    }
-
-    private void startPracticeSession(MouseEvent event) {
-        if (numOfCards > 0) {
-            MainApp.getInstance().setPracticeScene(topic);
-        } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle(Messages.msg("topicbox.alert.title"));
-            alert.setHeaderText(topic.getName() + " "
-                    + Messages.msg("topicbox.alert.header"));
-            alert.setContentText(Messages.msg("topicbox.alert.content"));
-            alert.showAndWait();
+    protected void editClick(MouseEvent event) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            VistaNavigator.getMainView().loadContentEditTopic(topic);
         }
     }
 
-    public void highlight() {
-        lblName.setStyle("-fx-font-weight: bold;-fx-font-size: 18pt;"
-                + "-fx-background-color:rgba(85, 255, 68,0.7);");
+    private void topicClick(MouseEvent event) {
+        if (event.getButton().equals(MouseButton.PRIMARY)) {
+            if (event.getClickCount() == 1) {
+                clickListener.clicked(this);
+            } else if (event.getClickCount() == 2) {
+                if (numOfCards > 0) {
+                    MainApp.getInstance().setPracticeScene(topic);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle(Messages.msg("topicbox.alert.title"));
+                    alert.setHeaderText(topic.getName() + " "
+                            + Messages.msg("topicbox.alert.header"));
+                    alert.setContentText(Messages.msg("topicbox.alert.content"));
+                    alert.showAndWait();
+                }
+            }
+        }
+    }
+
+    public void highlight(boolean highlight) {
+        lblName.setStyle(highlight
+                ? "-fx-font-weight: bold;-fx-font-size: 18pt;"
+                + "-fx-background-color:rgba(85, 255, 68,0.7);"
+                : "-fx-font-weight: bold;-fx-font-size: 18pt;");
     }
 
     public void setNameLabel() {

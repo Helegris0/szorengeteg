@@ -18,10 +18,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javax.inject.Inject;
@@ -34,23 +32,19 @@ public class EditTopicView extends TopicFormView {
 
     @Inject
     private CardLoader cardLoader;
-    
-    @FXML
-    private Button btnDefaultStates;
-    @FXML
-    private Button btnDeleteTopic;
 
     @SuppressWarnings("LeakingThisInConstructor")
     public EditTopicView(Topic topic) {
         super();
         this.topic = topic;
+        lblOrdinal.setText(topic.getOrdinal() + ". ");
         txtName.setText(topic.getName());
         loadOriginalImage();
         loadOriginalRows();
-        btnDefaultStates.setVisible(true);
-        btnDeleteTopic.setVisible(true);
-        btnDefaultStates.setOnAction(this::defaultStates);
-        btnDeleteTopic.setOnAction(this::deleteTopic);
+//        btnDefaultStates.setVisible(true);
+//        btnDeleteTopic.setVisible(true);
+//        btnDefaultStates.setOnAction(this::defaultStates);
+//        btnDeleteTopic.setOnAction(this::deleteTopic);
     }
 
     private void loadOriginalImage() {
@@ -68,7 +62,7 @@ public class EditTopicView extends TopicFormView {
 
     private void defaultStates(ActionEvent event) {
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Kapcsolók visszaállítása");
+        alert.setTitle("Kapcsolók visszaállítása"); // TODO: msg
         alert.setHeaderText("Szeretné alaphelyzetbe állítani a kapcsolókat?");
         alert.setContentText("");
 

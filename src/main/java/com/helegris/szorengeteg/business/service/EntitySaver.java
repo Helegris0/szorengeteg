@@ -50,17 +50,13 @@ public class EntitySaver {
     }
 
     @Transactional
-    public void delete(Collection<? extends PersistentObject> entities) {
-        entities.stream().forEach(em::remove);
+    public void saveCards(List<Card> cards) {
+        cards.stream().forEach(this::save);
     }
 
     @Transactional
-    public void deleteTopicWithoutWords(Topic topic) {
-        cardLoader.loadByTopic(topic).stream().forEach(card -> {
-            card.setTopic(null);
-            em.merge(card);
-        });
-        em.remove(topic);
+    public void delete(Collection<? extends PersistentObject> entities) {
+        entities.stream().forEach(em::remove);
     }
 
     private void save(PersistentObject entity) {

@@ -6,12 +6,12 @@ A ② - ⑥ kapcsolók csak egymás után, sorban működnek!
 
 - Az ① alatti szöveg a kért szó meghatározását mutatja, olvassa ezt nagyon gondosan, és próbálja kitalálni a szót.
 
-- A ② mellett egy kapcsoló gomb van, bal egérgomb lenyomással bekapcsol, miközben a színe sötétre vált. Ezután beírhatja a szót az üres négyzetekbe.
+- A ② mellett egy kapcsoló gomb van, bal egérgomb lenyomással bekapcsol, miközben a színe sötétre vált. Ezután beírhatja a szót az újonnan megjelent üres négyzetekbe.
 Ha a kért szó megjelent, akkor ezt a szót kitalálta de még nem tudja, még tanulni kell, hogy akármikor felhasználható legyen.
 Ha a szó megjelent, tovább csak a ⑥ jelű gomb működik.
 Ezután újabb kért szót lehet az "Előre" kapcsoló lenyomásával kérni. (balra alul van).
-Ha viszont nem megfelelő betűket használ, a program nem jelenít meg a megfelelő négyzetben semmit, mert nem találta ki a kért szót.
-Ez esetén a szó kitalálására további lehetősége van.
+Ha viszont nem megfelelő betűket használ, a program nem jelenít meg a megfelelő négyzetbe semmit, mert nem találta ki a kért szót.
+Ez esetben a szó kitalálására további lehetősége van.
 
 - A ③ kapcsoló megnyomásával segítséget kaphat.
 A négyzet sorban megjelenik a helyes szó első és utolsó betűje. Ha be tudja írni a kettő közötti helyekre a helyes betűket, megtalálta a kért szót.
@@ -19,38 +19,37 @@ Ha a helyes betűket nem sikerült beírni, újabb segítséget kaphat.
 - A ④ kapcsoló megnyomásával megjelenik a kért szó fényképe.
 Ha erre már be tudja írni a helyes betűket, leírta és megértette a kért szót.
 Ha a helyes betűket ez után sem sikerült beírni, újabb kérése lehet.
-- Az ⑤ kapcsoló benyomására a program beírja a szükséges betűket, a kért szó teljes egészében olvasható lesz.
 
+- Az ⑤ kapcsoló benyomására a program beírja a szükséges betűket, a kért szó teljes egészében olvasható lesz.
 A szó megismerésére van még egy lehetőség.
 
 - A ⑥ kapcsoló minden újabb megnyomására a hangszóró kimondja a kért szót, hogy hangemlék segítséget adjon.
 
-Csak a 2 - 6 gombok elsötétedése azt mutatja, hogy a kért szó megtaláláshoz hány segítségre volt szüksége. Más kapcsolatok működtetése során nem vált sötétre.
+- Csak a 2 - 6 gombok elsötétedése azt mutatja, hogy a kért szó megtaláláshoz hány segítségre volt szüksége. Más kapcsolók működtetése során nem vált sötétre.
 
-Ha a vélt szót sajnos nem tudta kitalálni - beírni, akkor a "témakör szám" és a "kép szám" adatokat, és a szót papírra kell írni.
+- Ha a vélt szót sajnos nem tudta kitalálni - beírni, akkor a "témakör szám" és a "kép szám" adatokat, és a szót papírra kell írni.
 Ezek után az "Előre" kapcsolóra nyomhat, hogy újabb kért szót kérjen.
-
-Amikor a szavak tanulása során 5 szót nem tudott kitalálni, be kell csukni a prog¬ramot, és holnapig meg kell tanulni ezt az öt szót.
+- Amikor a szavak tanulása során 5 szót nem tudott kitalálni, be kell csukni a programot, és holnapig meg kell tanulni ezt az öt szót.
 A program becsukása a jobb alsó sarokban lévő "Kilépés" kapcsológombbal történhet.
-
 - A program újból megnyitásakor ugyanazon a helyen áll, amin a becsukáskor állt, de a szó írása és a szó képe nem látszik, és a ② - ⑥ kapcsolók nem működnek.
 
 - Meg kell keresni az 5 tanult szóból az első szót.
-Ehhez nyomjon a "A témakör száma" négyzetébe (jobboldalt alul a "Kilépés" felett). Erre az abban álló szám kék lesz. Delete gombbal e számot ki kell törölni, és helyébe be kell írni az első szó témakörének számát. Ehhez hasonlóan a "Kép száma" melletti négyzetbe be kell írni az első szó képszámát. Befejezéshez meg kell nyomni a sor végén álló kapcsolót, mire az első tanult szót lehet látni a képen.
-A képen meglátja, hogy a kért szó kigondolásakor a ② - ⑥ közül hány kapcsolót kért segítségként.
+Ehhez nyomjon a "A témakör száma" négyzetébe (jobboldalt alul a "Kilépés" felett). Erre az abban álló szám kék lesz. Delete gombbal e számot ki kell törölni, és helyébe be kell írni az első szó témakörének számát. Ehhez hasonlóan a "Kép száma" melletti négyzetbe be kell írni az első szó képszámát. Befejezéshez meg kell nyomni a sor végén álló kapcsolót, mire az első tanult szó meghatározása jelenik meg az ① alatt.
+
+- A képen látja, hogy a kért szó kigondolásához a ② - ⑥ közül hány kapcsolót használt segítségként.
 Tanulás után viszont meglátja, hogy kevesebb segítség is elég lesz-e.
 
-- Az első szó újra beírását a ② - ⑥ kapcsolók visszaállításával kezdheti.
-Ehhez meg kell nyomni a "Kapcsolók visszaállítása" kapcsolót (jobboldalt alulról a harmadik sorban).
-A ② kapcsoló megnyomása után (segítségkérés nélkül illik) be leheti írni a vélt szót.
-Ha ez elsőre sikerül, akkor jeles, 5-ös a munkája! Ha viszont mind 6 kapcsolót is meg kellett nyomnia, akkor elégtelen, 1-es az eredménye. Ekkor meg kell keresni az okát, és javítania kell, ahogy lehet.
-Az 5 tanult szó beírása során megfelelő pontot kap a tanulása eredményéről.
-Ezek után az "Előre" kapcsolóra nyomhat, hogy újabb szót kérjen.
+- Az első szó újra beírását a ② - ⑥ kapcsolók visszaállításával kezdeni.
+Ehhez meg kell nyomni a "Kapcsolók visszaállítása" kapcsolót (jobboldalt alulról a harmadik sorban), mire a kapcsolók visszaállítódnak.
+A ② kapcsoló megnyomása után (segítségkérés nélkül illik) be lehet írni a vélt szót.
+Ha ez elsőre sikerül, akkor jeles, 5-ös a munkája. Ha viszont mind a 6 kapcsolót meg kellett nyomnia, akkor elégtelen, 1-es az eredménye. Ekkor meg kell keresni az okát, és javítania kell, ahogy lehet.
+- Az 5 tanult szó beírása során megfelelő pontot kap a tanulása eredményéről.
+- Ezek után az "Előre" kapcsolóra nyomhat, hogy újabb szót kérjen.
 
-- Az "Előre" kapcsolásra a program jelzi, ha a témakörben nincs több képszám, ezért a következő témakör első képszámát mutatja a képre. 
-Ezt abból látja csak, hogy az "A témakör száma négyzetében" levő szám egy számmal növelt számú lett, az "A kép száma négyzetébe" az 1-es szám került. 
-A programban megtanult szavak növekedésével  egyre jobban meg tudja magát értetni.
-Aki ennél többet igényel, a témakörökbe a saját számára fontos újabb szavakat be lehet írni, vagy újabb témaköröket is lehet írni.
-Ehhez nyomja meg a "Témakörökre áttérés" kapcsolót (jobboldalon alulról a negyedik sor), amire képváltás történik.
-Elsőnek érdemes megkeresni és megnyitni a súgót, elolvasni (javasolt kinyomtatni).
-A munkaoldalra való visszatéréshez az adott témakör nevére kell kattintani.
+- Az "Előre" kapcsolásra a program jelzi, ha a témakörben nincs több szó, ezért a következő témakör első képszámát mutatja a képre.
+Ezt abból látja csak, hogy az "A témakör száma négyzetében" levő szám egy számmal növelt számú lett, az "A kép száma négyzetébe" az 1-es szám került.
+- A programban megtanult szavak növekedésével  egyre jobban meg tudja magát értetni.
+- Aki ennél többet igényel, a témakörökbe a saját számára fontos újabb szavakat be tudja írni, vagy újabb témaköröket is lehet írni.
+Ehhez nyomja meg a "Témakörökre áttérés" kapcsolót (jobb oldalon alulról, a negyedik sor), amire képváltás történik.
+Elsőnek érdemes megkeresni és megnyitni a súgót, elolvasni (javasolt kinyomtatni), és annak kérni kell kérni.
+- A munkaoldalra való visszatérésre, az adott témakör nevére duplán kell kattintani.

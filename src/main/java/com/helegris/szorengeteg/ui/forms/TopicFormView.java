@@ -61,9 +61,22 @@ public abstract class TopicFormView extends AnchorPane {
     @Inject
     protected EntitySaver entitySaver;
     @Inject
-    private TopicLoader topicLoader;
+    protected TopicLoader topicLoader;
     @Inject
     private FileChooserHelper fileChooserHelper;
+
+    @FXML
+    protected Label lblOrdinal;
+    @FXML
+    protected TextField txtName;
+    @FXML
+    private Button btnDeleteWords;
+    @FXML
+    protected ImageView imageView;
+    @FXML
+    private Button btnLoadImage;
+    @FXML
+    protected Button btnDeleteImage;
 
     @FXML
     private Button btnNewWord1;
@@ -87,17 +100,6 @@ public abstract class TopicFormView extends AnchorPane {
     private Button btnSave;
     @FXML
     private Button btnBack;
-
-    @FXML
-    protected TextField txtName;
-    @FXML
-    private Button btnDeleteWords;
-    @FXML
-    protected ImageView imageView;
-    @FXML
-    private Button btnLoadImage;
-    @FXML
-    protected Button btnDeleteImage;
 
     protected Topic topic;
     protected File imageFile;

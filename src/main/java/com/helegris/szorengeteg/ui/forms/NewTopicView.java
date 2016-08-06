@@ -15,6 +15,8 @@ public class NewTopicView extends TopicFormView {
     protected void initialize() {
         super.initialize();
         imageView.setImage(DefaultImage.getInstance());
+        int ordinal = topicLoader.loadAll().size() + 1;
+        lblOrdinal.setText(ordinal + ". ");
     }
 
     @Override

@@ -16,7 +16,10 @@
         <HBox spacing="15">
             <VBox>
                 <Label text="%form.topic_name" />
-                <TextField fx:id="txtName" />
+                <HBox alignment="CENTER">
+                    <Label fx:id="lblOrdinal" style="-fx-font-weight: bold;" />
+                    <TextField fx:id="txtName" />
+                </HBox>
             </VBox>
             <VBox>
                 <Label text="%form.topic_image" />
@@ -30,13 +33,7 @@
                 </HBox>
             </VBox>
             <Pane HBox.hgrow="ALWAYS" />
-            <VBox alignment="CENTER_RIGHT">
-                <Button fx:id="btnDefaultStates" text="%form.set_default"
-                        visible="false" />
                 <Button fx:id="btnDeleteWords" text="%form.delete_all_words" />
-                <Button fx:id="btnDeleteTopic" text="%form.delete_topic"
-                        visible="false" />
-            </VBox>
         </HBox>
         <HBox>
             <Button fx:id="btnNewWord1" text="%form.new_word" />

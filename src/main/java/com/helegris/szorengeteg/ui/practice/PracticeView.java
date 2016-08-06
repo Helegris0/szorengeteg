@@ -277,7 +277,7 @@ public class PracticeView extends AnchorPane implements WordInputListener {
 
             if (card.getAudio() != null) {
                 pcPlayAudio.setEnabled(true);
-                    setBoldness(lblPlayAudio, true);
+                setBoldness(lblPlayAudio, true);
             }
             setBoldness(lblNext, true);
 
@@ -317,13 +317,15 @@ public class PracticeView extends AnchorPane implements WordInputListener {
     }
 
     private void nextCard() {
-        Card c = session.nextCard();
-        if (c != null) {
-            card = c;
-            setQuestion();
-            visualHelp.setCard(card);
-        } else {
-            nextTopic();
+        if (checked) {
+            Card c = session.nextCard();
+            if (c != null) {
+                card = c;
+                setQuestion();
+                visualHelp.setCard(card);
+            } else {
+                nextTopic();
+            }
         }
     }
 
