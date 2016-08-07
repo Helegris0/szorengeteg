@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -33,8 +32,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -69,8 +66,6 @@ public abstract class TopicFormView extends AnchorPane {
     protected Label lblOrdinal;
     @FXML
     protected TextField txtName;
-    @FXML
-    private Button btnDeleteWords;
     @FXML
     protected ImageView imageView;
     @FXML
@@ -145,7 +140,6 @@ public abstract class TopicFormView extends AnchorPane {
         cmbBulkAdd.getSelectionModel().select(0);
         btnLoadImage.setOnAction(this::loadImage);
         btnDeleteImage.setOnAction(this::deleteImage);
-        btnDeleteWords.setOnAction(this::deleteWords);
         btnSave.setOnAction(this::submitTopic);
     }
 
@@ -384,27 +378,6 @@ public abstract class TopicFormView extends AnchorPane {
         btnDeleteImage.setVisible(false);
         imageFile = null;
         imageView.setImage(DefaultImage.getInstance());
-    }
-
-    private void deleteWords(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(Messages.msg("alert.delete_words"));
-        alert.setHeaderText(Messages.msg("alert.sure_delete_words"));
-        alert.setContentText(Messages.msg("alert.save_to_confirm"));
-
-        ButtonType typeYes = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
-        ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().clear();
-        alert.getButtonTypes().add(typeYes);
-        alert.getButtonTypes().add(typeCancel);
-
-        alert.setX(getScene().getWidth() / 2);
-        alert.setY(100);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == typeYes) {
-            rows.clear();
-        }
     }
 
     private void submitTopic(ActionEvent event) {

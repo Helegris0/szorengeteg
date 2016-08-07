@@ -21,15 +21,12 @@ public class PositionSaver {
     private static final int TOPIC_DEF = 1;
     private static final int CARD_DEF = 0;
 
-    private static Topic currentTopic;
-
     public int getTopicOrdinal() {
         return prefs.getInt(KEY_TOPIC_ORDINAL, TOPIC_DEF);
     }
 
     public void setTopic(Topic topic) {
         prefs.putInt(KEY_TOPIC_ORDINAL, topic.getOrdinal());
-        currentTopic = topic;
     }
 
     public int getCardOrdinal() {
@@ -39,10 +36,6 @@ public class PositionSaver {
 
     public void setCardOrdinal(int arg) {
         prefs.putInt(KEY_CARD_ORDINAL, arg);
-    }
-
-    public static Topic getCurrentTopic() {
-        return currentTopic;
     }
 
     public static int getTopicOrdDef() {

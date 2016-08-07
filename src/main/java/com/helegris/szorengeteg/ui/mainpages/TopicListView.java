@@ -80,12 +80,13 @@ public class TopicListView extends AnchorPane {
 
     private final TopicClickListener clickListener = (TopicBox topicBox) -> {
         topicBoxes.stream()
-                .filter(box -> box.getTopic()
-                        .equals(PositionSaver.getCurrentTopic()))
+                .filter(box -> box.getTopic().getOrdinal()
+                        == positionSaver.getTopicOrdinal())
                 .findFirst()
                 .get()
                 .highlight(false);
         topicBox.highlight(true);
+        highlighted = topicBox;
         positionSaver.setTopic(topicBox.getTopic());
         positionSaver.setCardOrdinal(0);
     };
@@ -145,7 +146,7 @@ public class TopicListView extends AnchorPane {
             topics.stream().forEach(topic -> {
                 TopicBox topicBox = new TopicBox(topic, clickListener, moveListener);
                 topicBoxes.add(topicBox);
-                if (topic.equals(PositionSaver.getCurrentTopic())) {
+                if (topic.getOrdinal() == positionSaver.getTopicOrdinal()) {
                     topicBox.highlight(true);
                     highlighted = topicBox;
                 }
@@ -233,7 +234,11 @@ public class TopicListView extends AnchorPane {
                 List<Card> cards = cardLoader.loadByTopic(topic);
                 cards.forEach(card -> card.reset());
                 entitySaver.saveTopic(topic, cards);
+
+                resetedInform(Messages.msg("topics.reset_selected"));
             }
+        } else {
+            selectionMissing();
         }
     }
 
@@ -257,7 +262,16 @@ public class TopicListView extends AnchorPane {
             List<Card> cards = cardLoader.loadAll();
             cards.forEach(card -> card.reset());
             entitySaver.saveCards(cards);
+
+            resetedInform(Messages.msg("topics.reset_all"));
         }
+    }
+
+    private void resetedInform(String title) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(Messages.msg("topics.reset_done"));
+        alert.showAndWait();
     }
 
     private void deleteSelected(ActionEvent event) {
@@ -265,16 +279,21 @@ public class TopicListView extends AnchorPane {
             Topic topic = highlighted.getTopic();
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle(Messages.msg("topics.confirm_delete_selected"));
-            alert.setHeaderText(Messages.msg("topics.confirm_reset_selected",
+            alert.setTitle(Messages.msg("topics.delete_selected"));
+            alert.setHeaderText(Messages.msg("topics.confirm_delete_selected",
                     topic.getName()));
             alert.setContentText(Messages.msg("topics.confirm_delete_selected_more"));
 
             ButtonType typeDel = new ButtonType(Messages.msg("common.delete"), ButtonBar.ButtonData.YES);
             ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
             alert.getButtonTypes().clear();
-            alert.getButtonTypes().add(typeDel);
             alert.getButtonTypes().add(typeCancel);
+            alert.getButtonTypes().add(typeDel);
+
+            Button delButton = (Button) alert.getDialogPane().lookupButton(typeDel);
+            delButton.setDefaultButton(false);
+            Button cancelButton = (Button) alert.getDialogPane().lookupButton(typeCancel);
+            cancelButton.setDefaultButton(true);
 
             alert.setX(getScene().getWidth() / 2);
             alert.setY(100);
@@ -286,23 +305,33 @@ public class TopicListView extends AnchorPane {
                 cardLoader.loadByTopic(topic).stream().forEach(toDelete::add);
                 toDelete.add(topic);
                 entitySaver.delete(toDelete);
+                topics.remove(topic);
+                topicBoxes.remove(highlighted);
                 vBox.getChildren().remove(highlighted);
                 highlighted = null;
+                saveOrder();
             }
+        } else {
+            selectionMissing();
         }
     }
 
     private void deleteAll(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(Messages.msg("topics.confirm_delete_all"));
-        alert.setHeaderText("Biztosan szeretne MINDENT törölni? A művelet nem vonható vissza.");
-        alert.setContentText(Messages.msg("Biztosan szeretne MINDEN témakört, leírást, képet és hangfájlt törölni? A művelet NEM vonható vissza!"));
+        alert.setTitle(Messages.msg("topics.delete_all"));
+        alert.setHeaderText(Messages.msg("topics.confirm_delete_all"));
+        alert.setContentText(Messages.msg("topics.confirm_delete_all_more"));
 
         ButtonType typeDel = new ButtonType(Messages.msg("common.delete"), ButtonBar.ButtonData.YES);
         ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
         alert.getButtonTypes().clear();
-        alert.getButtonTypes().add(typeDel);
         alert.getButtonTypes().add(typeCancel);
+        alert.getButtonTypes().add(typeDel);
+
+        Button delButton = (Button) alert.getDialogPane().lookupButton(typeDel);
+        delButton.setDefaultButton(false);
+        Button cancelButton = (Button) alert.getDialogPane().lookupButton(typeCancel);
+        cancelButton.setDefaultButton(true);
 
         alert.setX(getScene().getWidth() / 2);
         alert.setY(100);
@@ -317,5 +346,12 @@ public class TopicListView extends AnchorPane {
             vBox.getChildren().clear();
             highlighted = null;
         }
+    }
+
+    private void selectionMissing() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(Messages.msg("topics.no_selection"));
+        alert.setHeaderText(Messages.msg("topics.how_to_select"));
+        alert.showAndWait();
     }
 }

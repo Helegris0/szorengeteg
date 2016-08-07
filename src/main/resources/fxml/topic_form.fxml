@@ -32,8 +32,6 @@
                     <Pane HBox.hgrow="ALWAYS" />
                 </HBox>
             </VBox>
-            <Pane HBox.hgrow="ALWAYS" />
-                <Button fx:id="btnDeleteWords" text="%form.delete_all_words" />
         </HBox>
         <HBox>
             <Button fx:id="btnNewWord1" text="%form.new_word" />
