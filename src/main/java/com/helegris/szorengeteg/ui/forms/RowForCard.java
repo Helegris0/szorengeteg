@@ -108,6 +108,11 @@ public class RowForCard {
         alert.getButtonTypes().add(typeYes);
         alert.getButtonTypes().add(typeCancel);
 
+        Button delButton = (Button) alert.getDialogPane().lookupButton(typeYes);
+        delButton.setDefaultButton(false);
+        Button cancelButton = (Button) alert.getDialogPane().lookupButton(typeCancel);
+        cancelButton.setDefaultButton(true);
+
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == typeYes) {
             deleteListener.deleteRow(this);

@@ -32,12 +32,15 @@
                     <Pane HBox.hgrow="ALWAYS" />
                 </HBox>
             </VBox>
+            <Pane HBox.hgrow="ALWAYS" />
+            <HBox alignment="CENTER">
+                <ComboBox fx:id="cmbBulkAdd" visible="false" />
+                <Button fx:id="btnBulkAdd" text="%form.advanced" />
+            </HBox>
+            <Pane prefWidth="20" /> 
         </HBox>
         <HBox>
             <Button fx:id="btnNewWord1" text="%form.new_word" />
-            <Pane HBox.hgrow="ALWAYS" />
-            <ComboBox fx:id="cmbBulkAdd" visible="false" />
-            <Button fx:id="btnBulkAdd" text="%form.advanced" />
         </HBox>
         <TableView fx:id="tableView" VBox.vgrow="ALWAYS">
             <columns>

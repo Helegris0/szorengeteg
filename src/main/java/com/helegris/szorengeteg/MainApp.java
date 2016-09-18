@@ -13,6 +13,7 @@ import com.helegris.szorengeteg.ui.practice.PracticeView;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javax.inject.Inject;
@@ -44,6 +45,8 @@ public class MainApp extends Application {
             setEditorScene();
         }
         stage.setTitle(Messages.msg("title"));
+        stage.getIcons().add(
+                new Image(getClass().getResourceAsStream("/images/icon256.png")));
         stage.show();
     }
 

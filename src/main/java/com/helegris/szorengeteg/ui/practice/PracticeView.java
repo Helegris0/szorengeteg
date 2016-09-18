@@ -31,8 +31,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
 import javax.inject.Inject;
@@ -42,7 +42,7 @@ import org.controlsfx.control.PopOver;
  *
  * @author Timi
  */
-public class PracticeView extends AnchorPane implements WordInputListener {
+public class PracticeView extends StackPane implements WordInputListener {
 
     private static final String FXML = "fxml/practice.fxml";
 

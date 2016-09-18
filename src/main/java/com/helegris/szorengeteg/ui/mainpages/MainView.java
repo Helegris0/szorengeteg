@@ -40,7 +40,7 @@ public class MainView extends AnchorPane {
     private Label lblTitle;
     @FXML
     private StackPane vistaHolder;
-    
+
     @FXML
     private HelpControl helpControl;
 
@@ -54,6 +54,8 @@ public class MainView extends AnchorPane {
         lblTitle.setText(TOPICS_TITLE);
         setMenus();
         helpControl.setContentType(HelpControl.ContentType.EDITOR);
+        helpControl.setTextSize(18);
+        helpControl.setImageSize(45);
     }
 
     private void setMenus() {

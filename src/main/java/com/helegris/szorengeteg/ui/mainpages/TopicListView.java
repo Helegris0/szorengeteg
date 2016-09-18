@@ -162,11 +162,11 @@ public class TopicListView extends AnchorPane {
             }
 
             if (highlighted != null) {
-//                double h = scrollPane.getContent().getBoundsInLocal().getHeight();
-//                double y = (highlighted.getBoundsInParent().getMaxY()
-//                        + highlighted.getBoundsInParent().getMinY()) / 2.0;
-//                double v = scrollPane.getViewportBounds().getHeight();
-//                scrollPane.setVvalue(scrollPane.getVmax() * ((y - 0.5 * v) / (h - v)));
+                Platform.runLater(() -> {
+                    double height = vBox.getHeight();
+                    double y = highlighted.getBoundsInParent().getMinY();
+                    scrollPane.setVvalue(y / height);
+                });
             }
         }
     }
@@ -214,28 +214,46 @@ public class TopicListView extends AnchorPane {
         if (highlighted != null) {
             Topic topic = highlighted.getTopic();
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle(Messages.msg("topics.reset_selected"));
-            alert.setHeaderText(Messages.msg("topics.confirm_reset_selected",
+            Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
+            alert1.setTitle(Messages.msg("topics.reset_selected"));
+            alert1.setHeaderText(Messages.msg("topics.confirm_reset_selected_1",
                     topic.getName()));
 
             ButtonType typeYes = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
             ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().clear();
-            alert.getButtonTypes().add(typeYes);
-            alert.getButtonTypes().add(typeCancel);
+            alert1.getButtonTypes().clear();
+            alert1.getButtonTypes().addAll(typeYes, typeCancel);
 
-            alert.setX(getScene().getWidth() / 2);
-            alert.setY(100);
+            Button resetButton = (Button) alert1.getDialogPane().lookupButton(typeYes);
+            resetButton.setDefaultButton(false);
+            Button cancelButton = (Button) alert1.getDialogPane().lookupButton(typeCancel);
+            cancelButton.setDefaultButton(true);
 
-            Optional<ButtonType> result = alert.showAndWait();
+            Optional<ButtonType> result = alert1.showAndWait();
 
             if (result.get() == typeYes) {
-                List<Card> cards = cardLoader.loadByTopic(topic);
-                cards.forEach(card -> card.reset());
-                entitySaver.saveTopic(topic, cards);
+                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert2.setTitle(Messages.msg("topics.reset_selected"));
+                alert2.setHeaderText(Messages.msg("topics.confirm_reset_selected_2",
+                        topic.getName()));
 
-                resetedInform(Messages.msg("topics.reset_selected"));
+                typeYes = new ButtonType(Messages.msg("topics.reset"), ButtonBar.ButtonData.YES);
+                alert2.getButtonTypes().clear();
+                alert2.getButtonTypes().add(typeYes);
+                alert2.getButtonTypes().add(typeCancel);
+
+                resetButton = (Button) alert2.getDialogPane().lookupButton(typeYes);
+                resetButton.setDefaultButton(false);
+                cancelButton = (Button) alert2.getDialogPane().lookupButton(typeCancel);
+                cancelButton.setDefaultButton(true);
+
+                result = alert2.showAndWait();
+
+                if (result.get() == typeYes) {
+                    List<Card> cards = cardLoader.loadByTopic(topic);
+                    cards.forEach(card -> card.reset());
+                    entitySaver.saveTopic(topic, cards);
+                }
             }
         } else {
             selectionMissing();
@@ -243,73 +261,90 @@ public class TopicListView extends AnchorPane {
     }
 
     private void resetAll(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(Messages.msg("topics.reset_all"));
-        alert.setHeaderText(Messages.msg("topics.confirm_reset_all"));
+        Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
+        alert1.setTitle(Messages.msg("topics.reset_all"));
+        alert1.setHeaderText(Messages.msg("topics.confirm_reset_all_1"));
 
         ButtonType typeYes = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
         ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().clear();
-        alert.getButtonTypes().add(typeYes);
-        alert.getButtonTypes().add(typeCancel);
+        alert1.getButtonTypes().clear();
+        alert1.getButtonTypes().addAll(typeYes, typeCancel);
 
-        alert.setX(getScene().getWidth() / 2);
-        alert.setY(100);
-
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = alert1.showAndWait();
 
         if (result.get() == typeYes) {
-            List<Card> cards = cardLoader.loadAll();
-            cards.forEach(card -> card.reset());
-            entitySaver.saveCards(cards);
+            Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+            alert2.setTitle(Messages.msg("topics.reset_all"));
+            alert2.setHeaderText(Messages.msg("topics.confirm_reset_all_2"));
 
-            resetedInform(Messages.msg("topics.reset_all"));
+            typeYes = new ButtonType(Messages.msg("topics.reset"), ButtonBar.ButtonData.YES);
+            alert2.getButtonTypes().clear();
+            alert2.getButtonTypes().add(typeYes);
+            alert2.getButtonTypes().add(typeCancel);
+
+            result = alert2.showAndWait();
+
+            if (result.get() == typeYes) {
+                List<Card> cards = cardLoader.loadAll();
+                cards.forEach(card -> card.reset());
+                entitySaver.saveCards(cards);
+            }
         }
-    }
-
-    private void resetedInform(String title) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(Messages.msg("topics.reset_done"));
-        alert.showAndWait();
     }
 
     private void deleteSelected(ActionEvent event) {
         if (highlighted != null) {
             Topic topic = highlighted.getTopic();
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle(Messages.msg("topics.delete_selected"));
-            alert.setHeaderText(Messages.msg("topics.confirm_delete_selected",
+            Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
+            alert1.setTitle(Messages.msg("topics.delete_selected"));
+            alert1.setHeaderText(Messages.msg("topics.confirm_delete_selected_1",
                     topic.getName()));
-            alert.setContentText(Messages.msg("topics.confirm_delete_selected_more"));
+            alert1.setContentText(Messages.msg("topics.confirm_delete_selected_more_1"));
 
-            ButtonType typeDel = new ButtonType(Messages.msg("common.delete"), ButtonBar.ButtonData.YES);
+            ButtonType typeDel = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
             ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().clear();
-            alert.getButtonTypes().add(typeCancel);
-            alert.getButtonTypes().add(typeDel);
+            alert1.getButtonTypes().clear();
+            alert1.getButtonTypes().add(typeCancel);
+            alert1.getButtonTypes().add(typeDel);
 
-            Button delButton = (Button) alert.getDialogPane().lookupButton(typeDel);
+            Button delButton = (Button) alert1.getDialogPane().lookupButton(typeDel);
             delButton.setDefaultButton(false);
-            Button cancelButton = (Button) alert.getDialogPane().lookupButton(typeCancel);
+            Button cancelButton = (Button) alert1.getDialogPane().lookupButton(typeCancel);
             cancelButton.setDefaultButton(true);
 
-            alert.setX(getScene().getWidth() / 2);
-            alert.setY(100);
-
-            Optional<ButtonType> result = alert.showAndWait();
+            Optional<ButtonType> result = alert1.showAndWait();
 
             if (result.get() == typeDel) {
-                List<PersistentObject> toDelete = new ArrayList<>();
-                cardLoader.loadByTopic(topic).stream().forEach(toDelete::add);
-                toDelete.add(topic);
-                entitySaver.delete(toDelete);
-                topics.remove(topic);
-                topicBoxes.remove(highlighted);
-                vBox.getChildren().remove(highlighted);
-                highlighted = null;
-                saveOrder();
+                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+                alert2.setTitle(Messages.msg("topics.delete_selected"));
+                alert2.setHeaderText(Messages.msg("topics.confirm_delete_selected_2",
+                        topic.getName()));
+                alert2.setContentText(Messages.msg("topics.confirm_delete_selected_more_2"));
+
+                typeDel = new ButtonType(Messages.msg("common.delete"), ButtonBar.ButtonData.YES);
+                typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
+                alert2.getButtonTypes().clear();
+                alert2.getButtonTypes().addAll(typeDel, typeCancel);
+
+                delButton = (Button) alert2.getDialogPane().lookupButton(typeDel);
+                delButton.setDefaultButton(false);
+                cancelButton = (Button) alert2.getDialogPane().lookupButton(typeCancel);
+                cancelButton.setDefaultButton(true);
+
+                result = alert2.showAndWait();
+
+                if (result.get() == typeDel) {
+                    List<PersistentObject> toDelete = new ArrayList<>();
+                    cardLoader.loadByTopic(topic).stream().forEach(toDelete::add);
+                    toDelete.add(topic);
+                    entitySaver.delete(toDelete);
+                    topics.remove(topic);
+                    topicBoxes.remove(highlighted);
+                    vBox.getChildren().remove(highlighted);
+                    highlighted = null;
+                    saveOrder();
+                }
             }
         } else {
             selectionMissing();
@@ -317,34 +352,49 @@ public class TopicListView extends AnchorPane {
     }
 
     private void deleteAll(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(Messages.msg("topics.delete_all"));
-        alert.setHeaderText(Messages.msg("topics.confirm_delete_all"));
-        alert.setContentText(Messages.msg("topics.confirm_delete_all_more"));
+        Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
+        alert1.setTitle(Messages.msg("topics.delete_all"));
+        alert1.setHeaderText(Messages.msg("topics.confirm_delete_all_1"));
+        alert1.setContentText(Messages.msg("topics.confirm_delete_all_more_1"));
 
-        ButtonType typeDel = new ButtonType(Messages.msg("common.delete"), ButtonBar.ButtonData.YES);
+        ButtonType typeDel = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
         ButtonType typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
-        alert.getButtonTypes().clear();
-        alert.getButtonTypes().add(typeCancel);
-        alert.getButtonTypes().add(typeDel);
+        alert1.getButtonTypes().clear();
+        alert1.getButtonTypes().addAll(typeDel, typeCancel);
 
-        Button delButton = (Button) alert.getDialogPane().lookupButton(typeDel);
+        Button delButton = (Button) alert1.getDialogPane().lookupButton(typeDel);
         delButton.setDefaultButton(false);
-        Button cancelButton = (Button) alert.getDialogPane().lookupButton(typeCancel);
+        Button cancelButton = (Button) alert1.getDialogPane().lookupButton(typeCancel);
         cancelButton.setDefaultButton(true);
 
-        alert.setX(getScene().getWidth() / 2);
-        alert.setY(100);
-
-        Optional<ButtonType> result = alert.showAndWait();
+        Optional<ButtonType> result = alert1.showAndWait();
 
         if (result.get() == typeDel) {
-            List<PersistentObject> toDelete = new ArrayList<>();
-            cardLoader.loadAll().stream().forEach(toDelete::add);
-            topicLoader.loadAll().stream().forEach(toDelete::add);
-            entitySaver.delete(toDelete);
-            vBox.getChildren().clear();
-            highlighted = null;
+            Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION);
+            alert2.setTitle(Messages.msg("topics.delete_all"));
+            alert2.setHeaderText(Messages.msg("topics.confirm_delete_all_2"));
+            alert2.setContentText(Messages.msg("topics.confirm_delete_all_more_2"));
+
+            typeDel = new ButtonType(Messages.msg("common.delete"), ButtonBar.ButtonData.YES);
+            typeCancel = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.CANCEL_CLOSE);
+            alert2.getButtonTypes().clear();
+            alert2.getButtonTypes().add(typeCancel);
+            alert2.getButtonTypes().add(typeDel);
+
+            delButton = (Button) alert2.getDialogPane().lookupButton(typeDel);
+            delButton.setDefaultButton(false);
+            cancelButton = (Button) alert2.getDialogPane().lookupButton(typeCancel);
+            cancelButton.setDefaultButton(true);
+
+            result = alert2.showAndWait();
+            if (result.get() == typeDel) {
+                List<PersistentObject> toDelete = new ArrayList<>();
+                cardLoader.loadAll().stream().forEach(toDelete::add);
+                topicLoader.loadAll().stream().forEach(toDelete::add);
+                entitySaver.delete(toDelete);
+                vBox.getChildren().clear();
+                highlighted = null;
+            }
         }
     }
 

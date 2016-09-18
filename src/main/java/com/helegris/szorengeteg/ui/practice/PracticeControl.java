@@ -21,7 +21,7 @@ public final class PracticeControl {
     private static final String UNUSED_PATH = "_unused";
     private static final String EXT = ".png";
 
-    private static final int IMG_SIZE = 40;
+    private static final int IMG_SIZE = 38;
 
     private final ImageView imageView;
     private final Label label;

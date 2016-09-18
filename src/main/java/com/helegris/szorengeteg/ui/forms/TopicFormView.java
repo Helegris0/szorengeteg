@@ -178,8 +178,8 @@ public abstract class TopicFormView extends AnchorPane {
                     BulkAddWordsView view = new BulkAddWordsView();
                     stage.setScene(new SceneStyler().createScene(
                             view, SceneStyler.Style.MAIN));
-                    stage.setTitle(Messages.msg("form.bulk_add_something", 
-                            Messages.msg("form.word_and_descripiton")));
+                    stage.setTitle(Messages.msg("form.bulk_add_something",
+                            Messages.msg("form.word_and_description")));
                     stage.initModality(Modality.APPLICATION_MODAL);
                     stage.initOwner(getScene().getWindow());
                     stage.showAndWait();
@@ -192,8 +192,8 @@ public abstract class TopicFormView extends AnchorPane {
                         BulkAddImagesView view = new BulkAddImagesView(sortedRows);
                         stage.setScene(new SceneStyler().createScene(
                                 view, SceneStyler.Style.MAIN));
-                        stage.setTitle(Messages.msg("form.bulk_add_something", 
-                            Messages.msg("form.image")));
+                        stage.setTitle(Messages.msg("form.bulk_add_something",
+                                Messages.msg("form.image")));
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initOwner(getScene().getWindow());
                         stage.showAndWait();
@@ -221,8 +221,8 @@ public abstract class TopicFormView extends AnchorPane {
                         BulkAddAudioView view = new BulkAddAudioView(sortedRows);
                         stage.setScene(new SceneStyler().createScene(
                                 view, SceneStyler.Style.MAIN));
-                        stage.setTitle(Messages.msg("form.bulk_add_something", 
-                            Messages.msg("form.audio")));
+                        stage.setTitle(Messages.msg("form.bulk_add_something",
+                                Messages.msg("form.audio")));
                         stage.initModality(Modality.APPLICATION_MODAL);
                         stage.initOwner(getScene().getWindow());
                         stage.showAndWait();
@@ -274,7 +274,7 @@ public abstract class TopicFormView extends AnchorPane {
                 Stage stage = new Stage();
                 stage.setScene(new SceneStyler().createScene(
                         imagePopup, SceneStyler.Style.MAIN));
-                stage.setTitle(Messages.msg("form.set_image_of_word", 
+                stage.setTitle(Messages.msg("form.set_image_of_word",
                         row.getTxtWord().getText()));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initOwner(tableView.getScene().getWindow());
@@ -300,7 +300,7 @@ public abstract class TopicFormView extends AnchorPane {
                 Stage stage = new Stage();
                 stage.setScene(new SceneStyler().createScene(
                         audioPopup, SceneStyler.Style.MAIN));
-                stage.setTitle(Messages.msg("form.set_audio_of_word", 
+                stage.setTitle(Messages.msg("form.set_audio_of_word",
                         row.getTxtWord().getText()));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initOwner(tableView.getScene().getWindow());

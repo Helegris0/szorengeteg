@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" xmlns="http://javafx.com/javafx/8">
+         id="AnchorPane" xmlns="http://javafx.com/javafx/8" minWidth="950">
     <VBox AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
         <ScrollPane fx:id="scrollPane" fitToWidth="true">
             <VBox fx:id="vBox" />
