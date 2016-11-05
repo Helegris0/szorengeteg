@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
 /**
+ * Creating scenes using different styles (CSS files).
  *
  * @author Timi
  */
@@ -16,7 +17,7 @@ public class SceneStyler {
 
     public enum Style {
 
-        MAIN("/styles/Styles.css"),
+        TOPIC_LIST("/styles/topiclist.css"),
         PRACTICE("/styles/practice.css");
 
         private final String path;

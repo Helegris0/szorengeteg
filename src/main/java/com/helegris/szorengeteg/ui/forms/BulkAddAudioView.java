@@ -10,12 +10,12 @@ import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.AudioIcon;
 import com.helegris.szorengeteg.ui.SceneStyler;
+import com.helegris.szorengeteg.ui.forms.BulkAddAudioView.AudioRow;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,13 +30,12 @@ import javafx.stage.Stage;
  *
  * @author Timi
  */
-public class BulkAddAudioView extends BulkAddMediaView {
+public class BulkAddAudioView extends BulkAddMediaView<AudioRow> {
 
     private static final String FXML = "fxml/bulk_add_audio.fxml";
     @FXML
     private TableColumn colAudio;
 
-    private final ObservableList<Row> rows = FXCollections.observableArrayList();
     private final Map<Integer, Media> audioM = new HashMap<>();
 
     @SuppressWarnings("LeakingThisInConstructor")
@@ -44,32 +43,26 @@ public class BulkAddAudioView extends BulkAddMediaView {
         DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
         oRows.stream().forEach(oRow -> rows.add(
-                new Row(oRows.indexOf(oRow), oRow.getWord(), oRow.getAudioIcon().getAudio())));
+                new AudioRow(oRows.indexOf(oRow), oRow.getWord(), oRow.getAudioIcon().getAudio())));
         tableView.setItems(rows);
         rows.stream().forEach(row -> row.getCheckBox().setOnAction(event -> checkSelections()));
         checkSelections();
     }
 
-    private void checkSelections() {
-        boolean selected = false;
-        for (Row row : rows) {
-            if (row.getCheckBox().isSelected()) {
-                selected = true;
-                break;
-            }
-        }
-        btnBrowse.setDisable(!selected);
-    }
-
+    /**
+     * Matches the choosed audio files with the selected rows.
+     *
+     * @param event
+     */
     @Override
     protected void browse(ActionEvent event) {
         List<File> selectedFiles = fileChooserHelper.getAudioFiles(getScene().getWindow());
         if (selectedFiles != null && !selectedFiles.isEmpty()) {
-            List<Row> selectedRows = rows.stream()
+            List<AudioRow> selectedRows = rows.stream()
                     .filter(row -> row.isSelected())
                     .collect(Collectors.toList());
             for (int i = 0; i < selectedRows.size() && i < selectedFiles.size(); i++) {
-                Row row = selectedRows.get(i);
+                AudioRow row = selectedRows.get(i);
                 File file = selectedFiles.get(i);
                 Media audio = new Media(file.toURI().toString());
                 row.setAudio(audio);
@@ -82,6 +75,12 @@ public class BulkAddAudioView extends BulkAddMediaView {
         }
     }
 
+    /**
+     * When clicking on the "audio" column of a row, it opens a popup with audio
+     * options.
+     *
+     * @param event
+     */
     @Override
     protected void tableClick(MouseEvent event) {
         if (!rows.isEmpty() && !tableView.getSelectionModel().getSelectedCells().isEmpty()) {
@@ -89,12 +88,11 @@ public class BulkAddAudioView extends BulkAddMediaView {
                     .getSelectedCells().get(0);
             if (colAudio.equals(position.getTableColumn())) {
                 int index = position.getRow();
-                Row row = rows.get(index);
+                AudioRow row = rows.get(index);
                 AudioIcon audioIcon = row.getAudioIcon();
                 AudioPopup audioPopup = new AudioPopup(audioIcon.getAudio());
                 Stage stage = new Stage();
-                stage.setScene(new SceneStyler().createScene(
-                        audioPopup, SceneStyler.Style.MAIN));
+                stage.setScene(new SceneStyler().createScene(audioPopup, SceneStyler.Style.TOPIC_LIST));
                 stage.setTitle(row.getWord() + " "
                         + Messages.msg("form.set_audio_of_word"));
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -125,14 +123,14 @@ public class BulkAddAudioView extends BulkAddMediaView {
         return audioM;
     }
 
-    public class Row extends BulkAddMediaView.Row {
+    public class AudioRow extends BulkAddMediaView.Row {
 
         private static final int ICON_SIZE = 40;
 
         private AudioIcon audioIcon;
         private String fileName;
 
-        public Row(int index, String word, Media audio) {
+        public AudioRow(int index, String word, Media audio) {
             super(index, word);
             this.audioIcon = new AudioIcon(audio);
             this.audioIcon.setFitWidth(ICON_SIZE);

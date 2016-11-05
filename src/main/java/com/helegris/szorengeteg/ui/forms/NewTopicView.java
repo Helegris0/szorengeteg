@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
+ * A form to create new topic.
  *
  * @author Timi
  */

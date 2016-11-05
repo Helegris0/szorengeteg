@@ -10,6 +10,7 @@ import com.google.inject.Injector;
 import com.google.inject.persist.PersistService;
 
 /**
+ * A singleton class for creating an injector to be used across the application.
  *
  * @author Timi
  */

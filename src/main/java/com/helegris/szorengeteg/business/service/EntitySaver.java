@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
 /**
+ * A class for CRUD and persistence.
  *
  * @author Timi
  */
@@ -32,10 +33,17 @@ public class EntitySaver {
         em.persist(topic);
     }
 
+    /**
+     * Saves a topic and its list of cards. If there are cards in the database
+     * that don't have equivalents in the list, it deletes them.
+     *
+     * @param topic
+     * @param cards
+     */
     @Transactional
     public void saveTopic(Topic topic, List<Card> cards) {
         cards.stream().forEach(this::save);
-        delete(cardLoader.loadByTopic(topic), card -> !cards.contains(card));
+        deleteIf(cardLoader.loadByTopic(topic), card -> !cards.contains(card));
         em.merge(topic);
     }
 
@@ -54,11 +62,21 @@ public class EntitySaver {
         cards.stream().forEach(this::save);
     }
 
+    /**
+     * Deletes all the elements of a collection.
+     *
+     * @param entities
+     */
     @Transactional
     public void delete(Collection<? extends PersistentObject> entities) {
         entities.stream().forEach(em::remove);
     }
 
+    /**
+     * Creates a record or updates it if it already exists.
+     *
+     * @param entity
+     */
     private void save(PersistentObject entity) {
         if (entity.getId() == null) {
             em.persist(entity);
@@ -67,7 +85,14 @@ public class EntitySaver {
         }
     }
 
-    private <T extends PersistentObject> void delete(Collection<T> entities,
+    /**
+     * Deletes a collection's elements that meet a given condition.
+     *
+     * @param <T> type of elements
+     * @param entities collection to iterate through
+     * @param filter condition
+     */
+    private <T extends PersistentObject> void deleteIf(Collection<T> entities,
             Predicate<T> filter) {
         entities.stream().filter(filter).forEach(em::remove);
     }

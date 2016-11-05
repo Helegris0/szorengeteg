@@ -16,6 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
+ * A custom pane base to manage (upload, change or delete) a file.
  *
  * @author Timi
  */

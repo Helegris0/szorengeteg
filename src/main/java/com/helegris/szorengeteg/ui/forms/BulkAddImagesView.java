@@ -10,6 +10,7 @@ import com.helegris.szorengeteg.FXMLLoaderHelper;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.DefaultImage;
 import com.helegris.szorengeteg.ui.SceneStyler;
+import com.helegris.szorengeteg.ui.forms.BulkAddImagesView.ImageRow;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,7 +20,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -35,13 +35,12 @@ import javafx.stage.Stage;
  *
  * @author Timi
  */
-public class BulkAddImagesView extends BulkAddMediaView {
+public class BulkAddImagesView extends BulkAddMediaView<ImageRow> {
 
     private static final String FXML = "fxml/bulk_add_images.fxml";
     @FXML
     private TableColumn colImage;
 
-    private final ObservableList<Row> rows = FXCollections.observableArrayList();
     private final Map<Integer, Image> images = new HashMap<>();
 
     @SuppressWarnings("LeakingThisInConstructor")
@@ -49,32 +48,26 @@ public class BulkAddImagesView extends BulkAddMediaView {
         DIUtils.injectFields(this);
         FXMLLoaderHelper.load(FXML, this);
         oRows.stream().forEach(oRow -> rows.add(
-                new Row(oRows.indexOf(oRow), oRow.getWord(), oRow.getImageView().getImage())));
+                new ImageRow(oRows.indexOf(oRow), oRow.getWord(), oRow.getImageView().getImage())));
         tableView.setItems(rows);
         rows.stream().forEach(row -> row.getCheckBox().setOnAction(event -> checkSelections()));
         checkSelections();
     }
 
-    private void checkSelections() {
-        boolean selected = false;
-        for (Row row : rows) {
-            if (row.getCheckBox().isSelected()) {
-                selected = true;
-                break;
-            }
-        }
-        btnBrowse.setDisable(!selected);
-    }
-
+    /**
+     * Matches the choosed image files with the selected rows.
+     * 
+     * @param event 
+     */
     @Override
     protected void browse(ActionEvent event) {
         List<File> selectedFiles = fileChooserHelper.getImageFiles(getScene().getWindow());
         if (selectedFiles != null && !selectedFiles.isEmpty()) {
-            List<Row> selectedRows = rows.stream()
+            List<ImageRow> selectedRows = rows.stream()
                     .filter(row -> row.isSelected())
                     .collect(Collectors.toList());
             for (int i = 0; i < selectedRows.size() && i < selectedFiles.size(); i++) {
-                Row row = selectedRows.get(i);
+                ImageRow row = selectedRows.get(i);
                 try {
                     File file = selectedFiles.get(i);
                     Image image = new Image(new FileInputStream(file));
@@ -89,6 +82,12 @@ public class BulkAddImagesView extends BulkAddMediaView {
         }
     }
 
+    /**
+     * When clicking on the "image" column of a row, it opens a popup with image
+     * options.
+     *
+     * @param event
+     */
     @Override
     protected void tableClick(MouseEvent event) {
         if (!rows.isEmpty() && !tableView.getSelectionModel().getSelectedCells().isEmpty()) {
@@ -96,12 +95,11 @@ public class BulkAddImagesView extends BulkAddMediaView {
                     .getSelectedCells().get(0);
             if (colImage.equals(position.getTableColumn())) {
                 int index = position.getRow();
-                Row row = rows.get(index);
+                ImageRow row = rows.get(index);
                 Image currentImage = row.getImageView().getImage();
                 ImagePopup imagePopup = new ImagePopup(currentImage);
                 Stage stage = new Stage();
-                stage.setScene(new SceneStyler().createScene(
-                        imagePopup, SceneStyler.Style.MAIN));
+                stage.setScene(new SceneStyler().createScene(imagePopup, SceneStyler.Style.TOPIC_LIST));
                 stage.setTitle(row.getWord() + " "
                         + Messages.msg("form.set_image_of_word"));
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -131,13 +129,13 @@ public class BulkAddImagesView extends BulkAddMediaView {
         return images;
     }
 
-    public class Row extends BulkAddMediaView.Row {
+    public class ImageRow extends BulkAddMediaView.Row {
 
         private static final int IMAGE_SIZE = 120;
 
         private ImageView imageView;
 
-        public Row(int index, String word, Image image) {
+        public ImageRow(int index, String word, Image image) {
             super(index, word);
             this.imageView = new ImageView(image);
             imageView.setPreserveRatio(true);

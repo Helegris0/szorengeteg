@@ -24,6 +24,12 @@ public class CardLoader extends EntityLoader<Card> {
         return Card.class;
     }
 
+    /**
+     * Loads all cards from the database that are in a given topic.
+     *
+     * @param topic
+     * @return card list
+     */
     public List<Card> loadByTopic(Topic topic) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Card> cq = cb.createQuery(Card.class);

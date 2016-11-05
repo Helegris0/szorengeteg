@@ -5,9 +5,12 @@
  */
 package com.helegris.szorengeteg.ui.forms;
 
+import com.helegris.szorengeteg.ui.forms.BulkAddMediaView.Row;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -19,10 +22,13 @@ import javafx.stage.Stage;
 import javax.inject.Inject;
 
 /**
+ * UI base for bulk adding media. It has a table which is supposed to contain
+ * selectable rows for a set of cards. One can add files to the selected rows.
  *
  * @author Timi
+ * @param <T>
  */
-public abstract class BulkAddMediaView extends AnchorPane {
+public abstract class BulkAddMediaView<T extends Row> extends AnchorPane {
 
     @Inject
     protected FileChooserHelper fileChooserHelper;
@@ -36,6 +42,7 @@ public abstract class BulkAddMediaView extends AnchorPane {
     @FXML
     private Button btnCancel;
 
+    protected final ObservableList<T> rows = FXCollections.observableArrayList();
     protected final Map<Integer, File> files = new HashMap<>();
 
     protected boolean ok;
@@ -49,6 +56,21 @@ public abstract class BulkAddMediaView extends AnchorPane {
             close();
         });
         btnCancel.setOnAction(event -> close());
+    }
+
+    /**
+     * Disables the "browse" button if no checkbox is selected, otherwise
+     * enables it.
+     */
+    protected void checkSelections() {
+        boolean selected = false;
+        for (Row row : rows) {
+            if (row.getCheckBox().isSelected()) {
+                selected = true;
+                break;
+            }
+        }
+        btnBrowse.setDisable(!selected);
     }
 
     protected abstract void browse(ActionEvent event);

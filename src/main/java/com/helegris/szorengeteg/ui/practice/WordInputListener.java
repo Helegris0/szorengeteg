@@ -11,5 +11,8 @@ package com.helegris.szorengeteg.ui.practice;
  */
 public interface WordInputListener {
 
+    /**
+     * Called when the user typed the whole expected word.
+     */
     public void fullInput();
 }

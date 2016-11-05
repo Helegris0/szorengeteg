@@ -14,6 +14,8 @@ import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
 /**
+ * A custom control to change positions of elements in a list. It consits of an
+ * "up" and "down" button.
  *
  * @author Timi
  */

@@ -14,6 +14,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 /**
+ * Controller class for practicing sessions. A session currently means a
+ * walkthrough of the cards in a given topic.
  *
  * @author Timi
  */
@@ -31,10 +33,6 @@ public class PracticeSession {
 
     private int index;
 
-    public PracticeSession() {
-        this(null);
-    }
-
     public PracticeSession(Topic topic) {
         this(topic, 0);
     }
@@ -46,6 +44,12 @@ public class PracticeSession {
         selectCards(startIndex);
     }
 
+    /**
+     * Sets the cards for the session. If there is a topic defined, it's cards
+     * of the topic, otherwise it's every card.
+     *
+     * @param startIndex index of thhe card to be shown first
+     */
     private void selectCards(int startIndex) {
         List<Card> allCards;
         if (topic == null) {
@@ -66,6 +70,11 @@ public class PracticeSession {
         }
     }
 
+    /**
+     *
+     * @param i index of the card to jump to
+     * @return the desired card
+     */
     public Card jumpTo(int i) {
         currentCard = sessionCards.get(i);
         index = i;
@@ -73,6 +82,10 @@ public class PracticeSession {
         return currentCard;
     }
 
+    /**
+     *
+     * @return next card in the session
+     */
     public Card nextCard() {
         if (index < sessionCards.size() - 1) {
             return jumpTo(index + 1);

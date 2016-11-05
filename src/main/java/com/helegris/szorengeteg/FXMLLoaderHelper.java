@@ -18,6 +18,12 @@ public class FXMLLoaderHelper {
 
     private static FXMLLoader FXML_LOADER = new FXMLLoader();
 
+    /**
+     * Loads an fxml layout and sets an object as its root and controller.
+     *
+     * @param fxml fxml file path
+     * @param dest controller
+     */
     public static void load(String fxml, Object dest) {
         InputStream fxmlInputStream = getFxmlInputStream(fxml);
 

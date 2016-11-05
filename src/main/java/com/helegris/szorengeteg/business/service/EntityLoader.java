@@ -18,7 +18,7 @@ import javax.persistence.criteria.Root;
 /**
  *
  * @author Timi
- * @param <T>
+ * @param <T> type of entity to be loaded
  */
 public abstract class EntityLoader<T extends PersistentObject>
         implements Serializable {
@@ -26,6 +26,11 @@ public abstract class EntityLoader<T extends PersistentObject>
     @Inject
     protected EntityManager em;
 
+    /**
+     * Loads all instances of a type stored in database.
+     *
+     * @return result list
+     */
     public List<T> loadAll() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
@@ -35,5 +40,9 @@ public abstract class EntityLoader<T extends PersistentObject>
         return q.getResultList();
     }
 
+    /**
+     *
+     * @return the type of T
+     */
     protected abstract Class<T> getEntityClass();
 }

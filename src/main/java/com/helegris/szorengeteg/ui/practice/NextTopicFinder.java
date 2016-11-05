@@ -29,6 +29,13 @@ public class NextTopicFinder {
         DIUtils.injectFields(this);
     }
 
+    /**
+     * Returns the topic following the examined one. If there's no such topic,
+     * returns the first one on the list.
+     *
+     * @param currentTopic
+     * @return
+     */
     public Topic getNextTopic(Topic currentTopic) {
         List<Topic> topics = topicLoader.loadAllOrdered().stream()
                 .filter(topic -> cardLoader.loadByTopic(topic).size() > 0)

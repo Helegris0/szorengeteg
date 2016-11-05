@@ -8,7 +8,8 @@ package com.helegris.szorengeteg.ui;
 import javafx.scene.control.Label;
 
 /**
- *
+ * A custom Label. It's underlined when the mouse is hovering.
+ * 
  * @author Timi
  */
 public class ClickableLabel extends Label {

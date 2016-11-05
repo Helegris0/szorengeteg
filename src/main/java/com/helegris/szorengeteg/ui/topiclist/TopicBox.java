@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.helegris.szorengeteg.ui.mainpages;
+package com.helegris.szorengeteg.ui.topiclist;
 
 import com.helegris.szorengeteg.ui.ClickableLabel;
 import com.helegris.szorengeteg.DIUtils;
@@ -29,6 +29,7 @@ import javafx.scene.layout.Pane;
 import javax.inject.Inject;
 
 /**
+ * A list item in the topic list.
  *
  * @author Timi
  */
@@ -79,7 +80,7 @@ public class TopicBox extends HBox {
     @FXML
     protected void initialize() {
         setImage();
-        setModifyable(false);
+        setModifiable(false);
         setNameLabel();
         positionerPane.getChildren().add(positioner);
         numOfCards = cardLoader.loadByTopic(topic).size();
@@ -96,6 +97,14 @@ public class TopicBox extends HBox {
         }
     }
 
+    /**
+     * Click listener for the topic's name and image. In case of a simple click,
+     * the topic gets highlighted and set as current copic. In case of a doube
+     * click, the practicing scene will be opened with the first card in the
+     * topic.
+     *
+     * @param event
+     */
     private void topicClick(MouseEvent event) {
         if (event.getButton().equals(MouseButton.PRIMARY)) {
             if (event.getClickCount() == 1) {
@@ -115,10 +124,15 @@ public class TopicBox extends HBox {
         }
     }
 
+    /**
+     * Highlights the topic's name.
+     *
+     * @param highlight
+     */
     public void highlight(boolean highlight) {
         lblName.setStyle(highlight
                 ? "-fx-font-weight: bold;-fx-font-size: 18pt;"
-                + "-fx-background-color:rgba(85, 255, 68,0.7);"
+                + "-fx-background-color:rgba(85, 255, 68, 0.7);"
                 : "-fx-font-weight: bold;-fx-font-size: 18pt;");
     }
 
@@ -140,7 +154,7 @@ public class TopicBox extends HBox {
         imageView.setImage(image);
     }
 
-    public void setModifyable(boolean modifyable) {
+    public void setModifiable(boolean modifyable) {
         positioner.setVisible(modifyable);
     }
 

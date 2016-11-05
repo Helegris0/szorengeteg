@@ -6,7 +6,7 @@ import com.helegris.szorengeteg.business.service.TopicLoader;
 import com.helegris.szorengeteg.messages.Messages;
 import com.helegris.szorengeteg.ui.VistaNavigator;
 import com.helegris.szorengeteg.ui.SceneStyler;
-import com.helegris.szorengeteg.ui.mainpages.MainView;
+import com.helegris.szorengeteg.ui.topiclist.MainView;
 import com.helegris.szorengeteg.ui.practice.PositionSaver;
 import com.helegris.szorengeteg.ui.practice.PracticeSession;
 import com.helegris.szorengeteg.ui.practice.PracticeView;
@@ -42,7 +42,7 @@ public class MainApp extends Application {
         this.stage = stage;
 
         if (!setPracticeScene()) {
-            setEditorScene();
+            setTopicListScene();
         }
         stage.setTitle(Messages.msg("title"));
         stage.getIcons().add(
@@ -50,6 +50,12 @@ public class MainApp extends Application {
         stage.show();
     }
 
+    /**
+     * Checks the saved practicing position, if available, sets the practice
+     * scene.
+     *
+     * @return true if practice scene is set
+     */
     public boolean setPracticeScene() {
         Topic topic = topicLoader.loadByOrdinal(positionSaver.getTopicOrdinal());
         int index = positionSaver.getCardOrdinal();
@@ -57,7 +63,7 @@ public class MainApp extends Application {
             setPracticeScene(topic, index);
             return true;
         }
-        topic = topicLoader.loadByOrdinal(PositionSaver.getTopicOrdDef());
+        topic = topicLoader.loadByOrdinal(PositionSaver.getTopicOrdinalDefault());
         if (topic != null && cardLoader.loadByTopic(topic).size() > 0) {
             setPracticeScene(topic);
             return true;
@@ -65,10 +71,21 @@ public class MainApp extends Application {
         return false;
     }
 
+    /**
+     * Sets practice scene with the first card of a given topic.
+     *
+     * @param topic
+     */
     public void setPracticeScene(Topic topic) {
         setPracticeScene(topic, 0);
     }
 
+    /**
+     * Sets practice scene with a given topic and card index.
+     *
+     * @param topic
+     * @param index
+     */
     private void setPracticeScene(Topic topic, int index) {
         Scene scene = (new SceneStyler().createScene(new PracticeView(
                 new PracticeSession(topic, index)),
@@ -78,9 +95,9 @@ public class MainApp extends Application {
         stage.setMaximized(true);
     }
 
-    public void setEditorScene() {
+    public void setTopicListScene() {
         Pane root = loadMainPane();
-        Scene scene = new SceneStyler().createScene(root, SceneStyler.Style.MAIN);
+        Scene scene = new SceneStyler().createScene(root, SceneStyler.Style.TOPIC_LIST);
         stage.setScene(scene);
         stage.setMaximized(false);
         stage.setMaximized(true);

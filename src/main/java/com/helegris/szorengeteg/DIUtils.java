@@ -5,13 +5,19 @@
  */
 package com.helegris.szorengeteg;
 
-
 /**
  *
  * @author Timi
  */
 public class DIUtils {
 
+    /**
+     * Injects every field marked with @Inject annotation in a given instance of
+     * any class.
+     *
+     * @param <T>
+     * @param instance
+     */
     public static <T> void injectFields(T instance) {
         if (instance == null) {
             return;

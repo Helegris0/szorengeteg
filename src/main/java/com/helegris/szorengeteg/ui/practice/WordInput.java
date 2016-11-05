@@ -9,6 +9,7 @@ import com.helegris.szorengeteg.DIUtils;
 import javafx.scene.layout.HBox;
 
 /**
+ * A custom control base to type the guessed word.
  *
  * @author Timi
  */

@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 /**
+ * An image view with a hidden image. The image is revealed only if the user
+ * asks for it as a visual help.
  *
  * @author Timi
  */

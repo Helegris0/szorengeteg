@@ -57,8 +57,6 @@ public class EntitySaverTestSkip {
     private final String TOPIC_WITH_MORE_WORDS
             = DIRECTORY + "topic_with_more_words.xml";
     private final String EMPTY_DB = DIRECTORY + "empty_db.xml";
-    private final String WORDS_WITHOUT_TOPIC
-            = DIRECTORY + "words_without_topic.xml";
 
     private final String TOPIC = "Idő";
     private final String WORD1 = "április";
@@ -162,19 +160,4 @@ public class EntitySaverTestSkip {
 
         entitySaver.delete(toDelete);
     }
-
-//    @Test
-//    @DataSet(value = TOPIC_WITH_WORDS)
-//    @ExpectedDataSet(value = WORDS_WITHOUT_TOPIC)
-//    public void testDeleteTopicWithoutItsWords() {
-//        List<Topic> topics = topicLoader.loadAll();
-//        assertEquals(1, topics.size());
-//        Topic topic = topics.get(0);
-//
-//        List<Card> cards = cardLoader.loadByTopic(topic);
-//        cards.forEach(card -> assertEquals(topic, card.getTopic()));
-//
-//        entitySaver.deleteTopicWithoutWords(topic);
-//    }
-
 }

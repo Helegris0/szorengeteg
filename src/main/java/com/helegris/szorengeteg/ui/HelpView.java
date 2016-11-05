@@ -20,6 +20,7 @@ import javafx.stage.Stage;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * A pane containing a user guide text.
  *
  * @author Timi
  */
@@ -46,7 +47,7 @@ public class HelpView extends AnchorPane {
             case PRACTICE:
                 path = PRACTICE_GUIDE_PATH;
                 break;
-            case EDITOR:
+            case TOPIC_LIST:
                 path = EDITOR_GUIDE_PATH;
                 break;
         }
@@ -65,6 +66,9 @@ public class HelpView extends AnchorPane {
         btnClose.setOnAction(event -> ((Stage) this.getScene().getWindow()).close());
     }
 
+    /**
+     * Binds pane size to content size.
+     */
     private void setSize() {
         Platform.runLater(() -> {
             this.prefWidthProperty().bind(this.getScene().widthProperty());

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.helegris.szorengeteg.ui.mainpages;
+package com.helegris.szorengeteg.ui.topiclist;
 
 import com.helegris.szorengeteg.DIUtils;
 import com.helegris.szorengeteg.FXMLLoaderHelper;
@@ -35,6 +35,7 @@ import javafx.scene.layout.VBox;
 import javax.inject.Inject;
 
 /**
+ * A pane for listing the topics.
  *
  * @author Timi
  */
@@ -78,6 +79,10 @@ public class TopicListView extends AnchorPane {
 
     private TopicBox highlighted;
 
+    /**
+     * Removes the highlight from the previously selected topic box, highlights
+     * and saves the currently selected one.
+     */
     private final TopicClickListener clickListener = (TopicBox topicBox) -> {
         topicBoxes.stream()
                 .filter(box -> box.getTopic().getOrdinal()
@@ -133,11 +138,20 @@ public class TopicListView extends AnchorPane {
         btnDeleteAll.setOnAction(this::deleteAll);
     }
 
+    /**
+     * Loads all topics from the database sorted by ordinal.
+     */
     private void loadTopics() {
         topics = topicLoader.loadAll();
-        topics.sort((t1, t2) -> t1.getOrdinal() != null ? t1.getOrdinal() - t2.getOrdinal() : 1);
+        topics.sort((t1, t2) -> t1.getOrdinal() != null
+                ? t1.getOrdinal() - t2.getOrdinal() : 1);
     }
 
+    /**
+     * Creates topic box for each topic. Highlights the saved position, sets the
+     * ordinal of topics that don't have one, scrolls to the highlighted topic
+     * box.
+     */
     private void createTopicBoxes() {
         if (topics.isEmpty()) {
             vBox.getChildren().add(new Label(Messages.msg("topics.no_topics")));
@@ -171,6 +185,9 @@ public class TopicListView extends AnchorPane {
         }
     }
 
+    /**
+     * Fills the vertical box with the topic boxes from the list.
+     */
     private void setTopicBoxes() {
         vBox.getChildren().clear();
         topicBoxes.stream().forEach(box -> vBox.getChildren().add(box));
@@ -180,9 +197,15 @@ public class TopicListView extends AnchorPane {
         VistaNavigator.getMainView().loadContentNewTopic();
     }
 
+    /**
+     * Allows the user to modify the order of the topic list. The positioning
+     * control becomes visible in each topic box.
+     *
+     * @param event
+     */
     private void allowModifyOrder(ActionEvent event) {
         orderModVisibility(true);
-        topicBoxes.stream().forEach(topicBox -> topicBox.setModifyable(true));
+        topicBoxes.stream().forEach(topicBox -> topicBox.setModifiable(true));
     }
 
     private void saveOrder(ActionEvent event) {
@@ -190,26 +213,44 @@ public class TopicListView extends AnchorPane {
         saveOrder();
     }
 
+    /**
+     * Saves the order of the topics.
+     */
     private void saveOrder() {
         topicBoxes.stream().forEach(topicBox -> {
-            topicBox.setModifyable(false);
+            topicBox.setModifiable(false);
             topicBox.getTopic().setOrdinal(topicBoxes.indexOf(topicBox) + 1);
             topicBox.setNameLabel();
         });
         entitySaver.saveTopics(topics);
     }
 
+    /**
+     * Cancels order modifications.
+     *
+     * @param event
+     */
     private void cancel(ActionEvent event) {
         orderModVisibility(false);
         createTopicBoxes();
     }
 
+    /**
+     * Sets the visibility of order modifying buttons.
+     *
+     * @param modifying whether the user wants to modify
+     */
     private void orderModVisibility(boolean modifying) {
         btnModifyOrder.setVisible(!modifying);
         btnSave.setVisible(modifying);
         btnCancel.setVisible(modifying);
     }
 
+    /**
+     * Resets the cards in the selected topic after confirmation.
+     *
+     * @param event
+     */
     private void resetSelected(ActionEvent event) {
         if (highlighted != null) {
             Topic topic = highlighted.getTopic();
@@ -260,6 +301,11 @@ public class TopicListView extends AnchorPane {
         }
     }
 
+    /**
+     * Resets every card after confirmation.
+     *
+     * @param event
+     */
     private void resetAll(ActionEvent event) {
         Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
         alert1.setTitle(Messages.msg("topics.reset_all"));
@@ -292,6 +338,11 @@ public class TopicListView extends AnchorPane {
         }
     }
 
+    /**
+     * Deletes the selected topic after confirmation.
+     *
+     * @param event
+     */
     private void deleteSelected(ActionEvent event) {
         if (highlighted != null) {
             Topic topic = highlighted.getTopic();
@@ -351,6 +402,11 @@ public class TopicListView extends AnchorPane {
         }
     }
 
+    /**
+     * Deletes every topic after confirmation.
+     *
+     * @param event
+     */
     private void deleteAll(ActionEvent event) {
         Alert alert1 = new Alert(Alert.AlertType.CONFIRMATION);
         alert1.setTitle(Messages.msg("topics.delete_all"));
@@ -398,6 +454,9 @@ public class TopicListView extends AnchorPane {
         }
     }
 
+    /**
+     * Shows alert about missing selection.
+     */
     private void selectionMissing() {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(Messages.msg("topics.no_selection"));

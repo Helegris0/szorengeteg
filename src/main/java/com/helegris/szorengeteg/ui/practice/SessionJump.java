@@ -12,6 +12,7 @@ import com.helegris.szorengeteg.business.service.TopicLoader;
 import javax.inject.Inject;
 
 /**
+ * Class for checking if there's a topic and a card with given ordinals.
  *
  * @author Timi
  */
@@ -34,6 +35,11 @@ public class SessionJump {
         DIUtils.injectFields(this);
     }
 
+    /**
+     * Loads the the desired topic.
+     *
+     * @return true if the topic exists as well as the card index
+     */
     public boolean isValid() {
         topic = topicLoader.loadByOrdinal(topicOrdinal);
         return topic != null && cardOrdinal < cardLoader.loadByTopic(topic).size();

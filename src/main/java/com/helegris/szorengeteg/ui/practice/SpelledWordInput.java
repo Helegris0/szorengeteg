@@ -15,6 +15,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 /**
+ * Word input control with individual fields for each of the letters.
  *
  * @author Timi
  */
@@ -34,6 +35,12 @@ public class SpelledWordInput extends WordInput {
         setFields();
     }
 
+    /**
+     * Sets up each field with the desired behavior. If the expected word
+     * contains more letters than the standard number of fields, it will
+     * increase the number accordingly. Adds this amount of fields to the
+     * control and configures them.
+     */
     private void setFields() {
         if (numberOfFields < expectedInput.length()) {
             numberOfFields = expectedInput.length();
@@ -94,6 +101,13 @@ public class SpelledWordInput extends WordInput {
         handleLeft(lastField, oneBeforeTheLastField);
     }
 
+    /**
+     * If the user enters text in the field, it will be shown only if it matches
+     * the expected letter. In this case the next control gets focus.
+     *
+     * @param field to add event handler to
+     * @param nextControl
+     */
     private void handleTextChange(TextField field, Control nextControl) {
         int index = fields.indexOf(field);
         String expectedLetter = index < expectedInput.length()
@@ -119,6 +133,12 @@ public class SpelledWordInput extends WordInput {
         });
     }
 
+    /**
+     * When the right arrow key is pressed, the next control will gain focus.
+     *
+     * @param field to add event handler to
+     * @param nextControl
+     */
     private void handleRight(TextField field, Control nextControl) {
         field.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.RIGHT) {
@@ -127,6 +147,13 @@ public class SpelledWordInput extends WordInput {
         });
     }
 
+    /**
+     * When the left arrow key, backspace or delete is pressed, the previous
+     * field will gain focus.
+     *
+     * @param field to add event handler to
+     * @param previousField
+     */
     private void handleLeft(TextField field, TextField previousField) {
         field.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
             if (event.getCode() == KeyCode.LEFT) {
@@ -138,11 +165,19 @@ public class SpelledWordInput extends WordInput {
         });
     }
 
+    /**
+     * If this control gains focus, it is the first field that actually gains
+     * it.
+     */
     @Override
     public void requestFocus() {
         fields.get(0).requestFocus();
     }
 
+    /**
+     * Checks if the user got the whole expected word already. If so, the
+     * listener will be notified and the control will be disabled.
+     */
     @Override
     protected void check() {
         String input = "";
@@ -159,34 +194,47 @@ public class SpelledWordInput extends WordInput {
 
     @Override
     public void help() {
-        fields.stream().forEach(field -> field.setText(""));
         helpFirstAndLastChar();
     }
 
+    /**
+     * Reveals the first character of the expected word in the first field.
+     * After that, the first empty field will gain focus.
+     */
     private void helpFirstChar() {
         String firstLetter = expectedInput.substring(0, 1);
         fields.get(0).setText(firstLetter);
-        fields.get(1).requestFocus();
-    }
 
-    private void helpFirstAndLastChar() {
-        int index = expectedInput.length() - 1;
-        if (expectedInput.length() > 2) {
-            String lastLetter = expectedInput.substring(index);
-            fields.get(index).setText(lastLetter);
-        }
-        helpFirstChar();
         for (TextField field : fields) {
             if (field.getText().isEmpty()) {
                 field.requestFocus();
                 break;
             }
         }
+    }
+
+    /**
+     * Reveals the first and last characters of the expected word. After that,
+     * the first empty field will gain focus. All the fields after the last
+     * character will be disabled.
+     */
+    private void helpFirstAndLastChar() {
+        int index = expectedInput.length() - 1;
+        if (expectedInput.length() > 2) {
+            String lastLetter = expectedInput.substring(index);
+            fields.get(index).setText(lastLetter);
+        }
+
+        helpFirstChar();
+
         for (int i = index + 1; i < fields.size(); i++) {
             fields.get(i).setDisable(true);
         }
     }
 
+    /**
+     * Reveals the expected word an disables the control.
+     */
     @Override
     public void revealWord() {
         for (int i = 0; i < expectedInput.length(); i++) {
@@ -195,6 +243,9 @@ public class SpelledWordInput extends WordInput {
         disable();
     }
 
+    /**
+     * The user will be unable to interact with the fields.
+     */
     private void disable() {
         fields.stream().forEach(field -> {
             field.setDisable(true);
@@ -202,9 +253,5 @@ public class SpelledWordInput extends WordInput {
                 field.setStyle("-fx-opacity: 1.0;");
             }
         });
-    }
-
-    public List<TextField> getFields() {
-        return new ArrayList<>(fields);
     }
 }

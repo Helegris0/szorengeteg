@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 /**
+ * Icon with label indicating action.
  *
  * @author Timi
  */
@@ -52,6 +53,10 @@ public final class PracticeControl {
         setEnabled(true);
     }
 
+    /**
+     * Four directions in which the triangle can point. Contains a fragment of
+     * the corresponding image's file name.
+     */
     public enum Direction {
 
         UP("_up"),
@@ -66,6 +71,11 @@ public final class PracticeControl {
         }
     }
 
+    /**
+     * If enabled, runs the function. Called when the icon is clicked.
+     *
+     * @param event
+     */
     private void action(MouseEvent event) {
         if (enabled && function != null) {
             function.run();
@@ -88,9 +98,11 @@ public final class PracticeControl {
 
     public final void setEnabled(boolean enabled) {
         this.enabled = enabled;
-        this.label.setDisable(!enabled);
-        if (!enabled) {
-            label.setStyle("-fx-font-weight: regular;-fx-opacity: 1.0;");
+        if (label != null) {
+            this.label.setDisable(!enabled);
+            if (!enabled) {
+                label.setStyle("-fx-font-weight: regular;-fx-opacity: 1.0;");
+            }
         }
     }
 }

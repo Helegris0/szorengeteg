@@ -14,6 +14,7 @@ import java.io.IOException;
 import javax.inject.Inject;
 
 /**
+ * A form that conatins data of an existing topic, allowing to edit it.
  *
  * @author Timi
  */

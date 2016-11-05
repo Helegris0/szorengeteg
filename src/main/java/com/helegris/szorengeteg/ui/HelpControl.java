@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 /**
+ * A control consisting of an image and a clickable label to open help view.
  *
  * @author Timi
  */
@@ -50,7 +51,7 @@ public class HelpControl extends HBox {
     public enum ContentType {
 
         PRACTICE,
-        EDITOR
+        TOPIC_LIST
     }
 
     private void action(MouseEvent event) {
@@ -58,7 +59,7 @@ public class HelpControl extends HBox {
             Stage helpStage = new Stage();
             HelpView helpView = new HelpView(contentType);
             helpStage.setScene(new SceneStyler().createScene(
-                    helpView, SceneStyler.Style.MAIN));
+                    helpView, SceneStyler.Style.TOPIC_LIST));
             helpStage.setTitle(Messages.msg("common.help"));
             helpStage.showAndWait();
         }

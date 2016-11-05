@@ -6,6 +6,8 @@
 package com.helegris.szorengeteg.ui;
 
 /**
+ * Protocol for positioner usage. A positioner can be used to indicate "up" and
+ * "down" movements.
  *
  * @author Timi
  */

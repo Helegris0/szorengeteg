@@ -24,6 +24,11 @@ public class TopicLoader extends EntityLoader<Topic> {
         return Topic.class;
     }
 
+    /**
+     * Loads all topics from the database, ordered by the values of ordinals.
+     *
+     * @return
+     */
     public List<Topic> loadAllOrdered() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Topic> cq = cb.createQuery(getEntityClass());
@@ -34,6 +39,12 @@ public class TopicLoader extends EntityLoader<Topic> {
         return q.getResultList();
     }
 
+    /**
+     * Loads a topic that has a given ordinal number.
+     *
+     * @param ordinal
+     * @return
+     */
     public Topic loadByOrdinal(int ordinal) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Topic> cq = cb.createQuery(getEntityClass());

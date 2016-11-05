@@ -16,6 +16,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Modality;
 
 /**
+ * An alert showing an exception stacktrace.
  *
  * @author Timi
  */

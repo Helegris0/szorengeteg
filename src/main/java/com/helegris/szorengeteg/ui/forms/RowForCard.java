@@ -32,6 +32,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.media.Media;
 
 /**
+ * Row data contained in the card table of a topic form.
  *
  * @author Timi
  */
@@ -97,6 +98,11 @@ public class RowForCard {
         }
     }
 
+    /**
+     * Deletes the row from the table after confirmation.
+     *
+     * @param event
+     */
     private void delete(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(Messages.msg("alert.delete_row"));
@@ -119,6 +125,10 @@ public class RowForCard {
         }
     }
 
+    /**
+     *
+     * @return true if there is word and description set.
+     */
     public boolean dataValidity() {
         return !"".equals(txtWord.getText())
                 && !"".equals(txtDescription.getText());
@@ -130,6 +140,10 @@ public class RowForCard {
         return (cond1 && !cond2) || (!cond1 && cond2);
     }
 
+    /**
+     *
+     * @return card with all fields updated according to row data
+     */
     public Card getUpdatedCard() {
         card.setWord(txtWord.getText());
         card.setDescription(txtDescription.getText());

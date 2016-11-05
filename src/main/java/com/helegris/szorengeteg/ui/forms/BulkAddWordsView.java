@@ -26,6 +26,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
+ * A pane where adding several words with descriptions is possible in a CSV-like
+ * format.
  *
  * @author Timi
  */
@@ -51,9 +53,7 @@ public class BulkAddWordsView extends AnchorPane {
     private final Map<RadioButton, String> delimiterMap = new HashMap<>();
     private final List<Card> cards = new ArrayList<>();
 
-    private final String description = "Ezen a felületen egyszerre több szót is hozzá lehet adni a témakörhöz."
-            + " Egy sorban a SZÓ és a hozzá tartozó LEÍRÁS szerepeljen, köztük az elválasztó karakter."
-            + " Az üres sorokat figyelmen kívül hagyjuk.";
+    private final String description = Messages.msg("form.bulk_add_words_description");
 
     @SuppressWarnings("LeakingThisInConstructor")
     public BulkAddWordsView() {
@@ -95,10 +95,10 @@ public class BulkAddWordsView extends AnchorPane {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle(Messages.msg("alert.error"));
             alert.setHeaderText(Messages.msg("alert.wrong_data"));
-            alert.setContentText(Messages.msg("alert.expected_format") 
-                    + "\n" + Messages.msg("form.word") + "1" + delimiter 
-                    + Messages.msg("form.description") + "1\n" 
-                    + Messages.msg("form.word") + "2" + delimiter 
+            alert.setContentText(Messages.msg("alert.expected_format")
+                    + "\n" + Messages.msg("form.word") + "1" + delimiter
+                    + Messages.msg("form.description") + "1\n"
+                    + Messages.msg("form.word") + "2" + delimiter
                     + Messages.msg("form.description") + "2");
             alert.showAndWait();
         }

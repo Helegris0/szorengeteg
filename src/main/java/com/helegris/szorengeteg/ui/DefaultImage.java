@@ -9,7 +9,8 @@ import java.io.InputStream;
 import javafx.scene.image.Image;
 
 /**
- *
+ * A custom JavaFX Image to be used if no other image is set.
+ * 
  * @author Timi
  */
 public class DefaultImage extends Image {

@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.ui;
 
-import com.helegris.szorengeteg.ui.mainpages.MainView;
+import com.helegris.szorengeteg.ui.topiclist.MainView;
 
 /**
  *

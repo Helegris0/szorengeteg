@@ -22,12 +22,26 @@ import org.apache.commons.io.IOUtils;
  */
 public class MediaLoader {
 
+    /**
+     * Creates JavaFX image from a byte array.
+     *
+     * @param imageBytes
+     * @return image
+     */
     public Image loadImage(byte[] imageBytes) {
         InputStream inputStream = new ByteArrayInputStream(imageBytes);
         Image image = new Image(inputStream);
         return image;
     }
 
+    /**
+     * Creates playable JavaFX audio from a byte array. To achieve this, it
+     * creates and deletes a temporary file.
+     *
+     * @param audioBytes
+     * @return audio
+     * @throws IOException
+     */
     public Media loadAudio(byte[] audioBytes) throws IOException {
         File tempFile = File.createTempFile("audio", null);
         tempFile.deleteOnExit();
@@ -36,6 +50,13 @@ public class MediaLoader {
         return media;
     }
 
+    /**
+     * Turns a file into a btye array.
+     *
+     * @param file
+     * @return byte array
+     * @throws NotFoundException exception containing file information
+     */
     public byte[] loadBytes(File file) throws NotFoundException {
         try {
             return IOUtils.toByteArray(new FileInputStream(file));

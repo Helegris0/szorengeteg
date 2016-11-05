@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.helegris.szorengeteg.ui.mainpages;
+package com.helegris.szorengeteg.ui.topiclist;
 
 import com.helegris.szorengeteg.ui.forms.NewTopicView;
 import com.helegris.szorengeteg.ui.forms.EditTopicView;
@@ -53,7 +53,7 @@ public class MainView extends AnchorPane {
     public void initialize() {
         lblTitle.setText(TOPICS_TITLE);
         setMenus();
-        helpControl.setContentType(HelpControl.ContentType.EDITOR);
+        helpControl.setContentType(HelpControl.ContentType.TOPIC_LIST);
         helpControl.setTextSize(18);
         helpControl.setImageSize(45);
     }

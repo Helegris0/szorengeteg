@@ -48,6 +48,7 @@ import javax.inject.Inject;
 import org.apache.commons.io.IOUtils;
 
 /**
+ * Topic form base.
  *
  * @author Timi
  */
@@ -143,6 +144,11 @@ public abstract class TopicFormView extends AnchorPane {
         btnSave.setOnAction(this::submitTopic);
     }
 
+    /**
+     * Sets content and desired behavior for the table view. Beside card list
+     * and comparators, it sets the width so that the "description" column can
+     * take as much space as possible.
+     */
     private void setTable() {
         RowForCard.refreshAllTopics(topicLoader.loadAll());
         tableView.setPlaceholder(new Label(Messages.msg("form.no_words")));
@@ -152,7 +158,8 @@ public abstract class TopicFormView extends AnchorPane {
         colDescription.setComparator(new TextFieldComparator());
         Platform.runLater(() -> {
             double sum = tableView.getColumns().stream()
-                    .mapToDouble(TableColumn::getWidth).sum();
+                    .mapToDouble(TableColumn::getWidth)
+                    .sum();
             sum -= colDescription.getWidth();
             double fullWidth = tableView.getWidth();
             if (fullWidth == 0) {
@@ -170,14 +177,31 @@ public abstract class TopicFormView extends AnchorPane {
         btnBack.setOnAction(this::goBack);
     }
 
+    /**
+     * A comparator comparing text fields according to the texts they contain.
+     */
+    private class TextFieldComparator implements Comparator<TextField> {
+
+        @Override
+        public int compare(TextField o1, TextField o2) {
+            return o1.getText().compareTo(o2.getText());
+        }
+    }
+
+    /**
+     * Handler for the event which is occurred when clicking on the "bulk add"
+     * button. It checks which option is selected (words, images or audio) and
+     * opens a new stage with the corresponding content.
+     *
+     * @param event
+     */
     private void bulkAdd(ActionEvent event) {
         if (cmbBulkAdd.isVisible()) {
             switch (cmbBulkAdd.getSelectionModel().getSelectedIndex()) {
                 case 0: {
                     Stage stage = new Stage();
                     BulkAddWordsView view = new BulkAddWordsView();
-                    stage.setScene(new SceneStyler().createScene(
-                            view, SceneStyler.Style.MAIN));
+                    stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
                     stage.setTitle(Messages.msg("form.bulk_add_something",
                             Messages.msg("form.word_and_description")));
                     stage.initModality(Modality.APPLICATION_MODAL);
@@ -190,8 +214,7 @@ public abstract class TopicFormView extends AnchorPane {
                     if (sortedRows.size() > 0) {
                         Stage stage = new Stage();
                         BulkAddImagesView view = new BulkAddImagesView(sortedRows);
-                        stage.setScene(new SceneStyler().createScene(
-                                view, SceneStyler.Style.MAIN));
+                        stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
                         stage.setTitle(Messages.msg("form.bulk_add_something",
                                 Messages.msg("form.image")));
                         stage.initModality(Modality.APPLICATION_MODAL);
@@ -219,8 +242,7 @@ public abstract class TopicFormView extends AnchorPane {
                     if (sortedRows.size() > 0) {
                         Stage stage = new Stage();
                         BulkAddAudioView view = new BulkAddAudioView(sortedRows);
-                        stage.setScene(new SceneStyler().createScene(
-                                view, SceneStyler.Style.MAIN));
+                        stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
                         stage.setTitle(Messages.msg("form.bulk_add_something",
                                 Messages.msg("form.audio")));
                         stage.initModality(Modality.APPLICATION_MODAL);
@@ -252,6 +274,12 @@ public abstract class TopicFormView extends AnchorPane {
         }
     }
 
+    /**
+     * Loads a (sorted) list of cards into the table. If a card has no ordinal,
+     * it will be represented at the bottom.
+     *
+     * @param cards to be loaded into the table
+     */
     protected void loadRows(List<Card> cards) {
         cards.sort((c1, c2) -> c1.getOrdinal() != null ? c1.getOrdinal() - c2.getOrdinal() : 1);
 
@@ -261,6 +289,12 @@ public abstract class TopicFormView extends AnchorPane {
         });
     }
 
+    /**
+     * Handles click events on the table. When clicking on the "image" or
+     * "audio" column of a word, it opens a new stage for editing them.
+     *
+     * @param event
+     */
     private void tableClick(MouseEvent event) {
         if (!rows.isEmpty()
                 && !tableView.getSelectionModel().getSelectedCells().isEmpty()) {
@@ -273,7 +307,7 @@ public abstract class TopicFormView extends AnchorPane {
                 ImagePopup imagePopup = new ImagePopup(currentImage);
                 Stage stage = new Stage();
                 stage.setScene(new SceneStyler().createScene(
-                        imagePopup, SceneStyler.Style.MAIN));
+                        imagePopup, SceneStyler.Style.TOPIC_LIST));
                 stage.setTitle(Messages.msg("form.set_image_of_word",
                         row.getTxtWord().getText()));
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -299,7 +333,7 @@ public abstract class TopicFormView extends AnchorPane {
                         = new AudioPopup(row.getAudioIcon().getAudio());
                 Stage stage = new Stage();
                 stage.setScene(new SceneStyler().createScene(
-                        audioPopup, SceneStyler.Style.MAIN));
+                        audioPopup, SceneStyler.Style.TOPIC_LIST));
                 stage.setTitle(Messages.msg("form.set_audio_of_word",
                         row.getTxtWord().getText()));
                 stage.initModality(Modality.APPLICATION_MODAL);
@@ -326,41 +360,12 @@ public abstract class TopicFormView extends AnchorPane {
         tableView.scrollTo(rows.get(rows.size() - 1));
     }
 
-    private void alertFileNotFound(Exception ex, File file) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(Messages.msg("alert.file_upload_unsuccessful"));
-        alert.setHeaderText(Messages.msg("alert.file_not_available"));
-        alert.setContentText(Messages.msg("alert.file") + file.getAbsolutePath());
-        alert.initModality(Modality.APPLICATION_MODAL);
-
-        alert.showAndWait();
-    }
-
-    private static class MissingDataException extends RuntimeException {
-    }
-
-    private void alertMissingData() {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(Messages.msg("alert.missing_data"));
-        alert.setHeaderText(Messages.msg("alert.missing_word_or_description"));
-        alert.initModality(Modality.APPLICATION_MODAL);
-
-        alert.showAndWait();
-    }
-
-    private void goBack(ActionEvent event) {
-        VistaNavigator.getMainView().loadContentTopics();
-    }
-
-    private class TextFieldComparator implements Comparator<TextField> {
-
-        @Override
-        public int compare(TextField o1, TextField o2) {
-            return o1.getText().compareTo(o2.getText());
-        }
-
-    }
-
+    /**
+     * Opens a file chooser and sets the selected image file as the image of the
+     * topic.
+     *
+     * @param event
+     */
     private void loadImage(ActionEvent event) {
         imageFile = fileChooserHelper.getImageFile(getScene().getWindow());
         if (imageFile != null) {
@@ -380,6 +385,11 @@ public abstract class TopicFormView extends AnchorPane {
         imageView.setImage(DefaultImage.getInstance());
     }
 
+    /**
+     * Form submission event handler.
+     *
+     * @param event
+     */
     private void submitTopic(ActionEvent event) {
         if ("".equals(txtName.getText())) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -406,6 +416,12 @@ public abstract class TopicFormView extends AnchorPane {
         }
     }
 
+    /**
+     * Sets the fields of topic.
+     *
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
     protected void prepareTopic() throws FileNotFoundException, IOException {
         topic.setName(txtName.getText());
         if (imageFile != null) {
@@ -413,10 +429,16 @@ public abstract class TopicFormView extends AnchorPane {
         }
     }
 
+    /**
+     * Sets the ordinal fields of cards according to their place in the table.
+     */
     private void setOrdinals() {
         rows.stream().forEach(row -> row.setOrdinal(rows.indexOf(row)));
     }
 
+    /**
+     * Saves data into database if nothing mandatory is missing.
+     */
     private void getTransactionDone() {
         if (rows.stream().anyMatch(RowForCard::missingData)) {
             throw new MissingDataException();
@@ -427,5 +449,31 @@ public abstract class TopicFormView extends AnchorPane {
                 .map(row -> row.getUpdatedCard(topic))
                 .collect(Collectors.toList());
         entitySaver.saveTopic(topic, cards);
+    }
+
+    private void goBack(ActionEvent event) {
+        VistaNavigator.getMainView().loadContentTopics();
+    }
+
+    private void alertFileNotFound(Exception ex, File file) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(Messages.msg("alert.file_upload_unsuccessful"));
+        alert.setHeaderText(Messages.msg("alert.file_not_available"));
+        alert.setContentText(Messages.msg("alert.file") + file.getAbsolutePath());
+        alert.initModality(Modality.APPLICATION_MODAL);
+
+        alert.showAndWait();
+    }
+
+    private void alertMissingData() {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(Messages.msg("alert.missing_data"));
+        alert.setHeaderText(Messages.msg("alert.missing_word_or_description"));
+        alert.initModality(Modality.APPLICATION_MODAL);
+
+        alert.showAndWait();
+    }
+
+    private static class MissingDataException extends RuntimeException {
     }
 }

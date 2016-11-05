@@ -9,7 +9,9 @@ import com.helegris.szorengeteg.business.model.Topic;
 import java.util.prefs.Preferences;
 
 /**
- *
+ * Saves and loads practicing position (topic and card ordinal)
+ * using Preferences API.
+ * 
  * @author Timi
  */
 public class PositionSaver {
@@ -18,11 +20,11 @@ public class PositionSaver {
             = Preferences.userRoot().node(this.getClass().getName());
     private static final String KEY_TOPIC_ORDINAL = "topic_ordinal";
     private static final String KEY_CARD_ORDINAL = "card_ordinal";
-    private static final int TOPIC_DEF = 1;
-    private static final int CARD_DEF = 0;
+    private static final int TOPIC_DEFAULT = 1;
+    private static final int CARD_DEFAULT = 0;
 
     public int getTopicOrdinal() {
-        return prefs.getInt(KEY_TOPIC_ORDINAL, TOPIC_DEF);
+        return prefs.getInt(KEY_TOPIC_ORDINAL, TOPIC_DEFAULT);
     }
 
     public void setTopic(Topic topic) {
@@ -30,19 +32,18 @@ public class PositionSaver {
     }
 
     public int getCardOrdinal() {
-        int def = 0;
-        return prefs.getInt(KEY_CARD_ORDINAL, CARD_DEF);
+        return prefs.getInt(KEY_CARD_ORDINAL, CARD_DEFAULT);
     }
 
     public void setCardOrdinal(int arg) {
         prefs.putInt(KEY_CARD_ORDINAL, arg);
     }
 
-    public static int getTopicOrdDef() {
-        return TOPIC_DEF;
+    public static int getTopicOrdinalDefault() {
+        return TOPIC_DEFAULT;
     }
 
-    public static int getCardOrdDef() {
-        return CARD_DEF;
+    public static int getCardOrdinalDefault() {
+        return CARD_DEFAULT;
     }
 }

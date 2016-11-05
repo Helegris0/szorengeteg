@@ -39,6 +39,7 @@ import javax.inject.Inject;
 import org.controlsfx.control.PopOver;
 
 /**
+ * A pane for practicing (reviewing cards).
  *
  * @author Timi
  */
@@ -156,13 +157,14 @@ public class PracticeView extends StackPane implements WordInputListener {
                 this::nextCard);
         pcChooseTopic = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgChooseTopic, lblChooseTopic,
-                this::switchToTopics);
+                this::switchToTopicList);
+        pcJump = new PracticeControl(
+                PracticeControl.Direction.RIGHT, imgJump, null,
+                this::jump);
         pcQuit = new PracticeControl(
                 PracticeControl.Direction.RIGHT, imgQuit, lblQuit,
                 this::abort);
         audioIcon.setImage(new Image(AudioIcon.AUDIO));
-        imgJump.setImage(new Image("/images/triangle_right_unused.png"));
-        imgJump.setOnMouseClicked(event -> jump());
         setQuestion();
         this.setOnKeyPressed((KeyEvent event) -> {
             if (checked && event.getCode().equals(KeyCode.ENTER)) {
@@ -174,6 +176,9 @@ public class PracticeView extends StackPane implements WordInputListener {
         helpControl.setContentType(HelpControl.ContentType.PRACTICE);
     }
 
+    /**
+     * Sets the content so that the current card's informations are shown.
+     */
     private void setQuestion() {
         visualHelp.setCard(card);
         lblDescription.setText(card.getDescription());
@@ -199,12 +204,17 @@ public class PracticeView extends StackPane implements WordInputListener {
         pcVisual.setEnabled(false);
         pcGiveUp.setEnabled(false);
         pcPlayAudio.setEnabled(false);
+        setBoldness(lblNext, false);
 
         txtTopicOrdinal.setText(Integer.toString(card.getTopic().getOrdinal()));
         txtWordOrdinal.setText(Integer.toString(session.getIndex() + 1));
         checked(false);
     }
 
+    /**
+     * Sets the "practice controls" indicating that none of the helps were used
+     * last time.
+     */
     private void defaultMode() {
         setBoldness(lblDefault, false);
         pcDefault.setEnabled(false);
@@ -261,6 +271,10 @@ public class PracticeView extends StackPane implements WordInputListener {
         wordInput.revealWord();
     }
 
+    /**
+     *
+     * @param checked true if the word is revealed, false if new question is set
+     */
     private void checked(boolean checked) {
         this.checked = checked;
         if (checked) {
@@ -284,12 +298,15 @@ public class PracticeView extends StackPane implements WordInputListener {
             setBoldness(lblHelp, false);
             setBoldness(lblVisual, false);
             setBoldness(lblGiveUp, false);
-        } else {
-            setBoldness(lblNext, false);
         }
         Platform.runLater(() -> requestFocus());
     }
 
+    /**
+     *
+     * @param label
+     * @param bold if true, the label will be bold, otherwise not
+     */
     private void setBoldness(Label label, boolean bold) {
         label.setStyle(bold ? "-fx-font-weight: bold;"
                 : "-fx-font-weight: regular;-fx-opacity: 1.0;");
@@ -336,6 +353,11 @@ public class PracticeView extends StackPane implements WordInputListener {
         setQuestion();
     }
 
+    /**
+     * Jumps to the position specified by the user. If the format is invalid,
+     * the fields' texts will be set to the original numbers. In case of
+     * non-existing position, there will be a message shown.
+     */
     private void jump() {
         int origTopicOrd = card.getTopic().getOrdinal();
         int origWordOrd = session.getIndex() + 1;
@@ -376,6 +398,10 @@ public class PracticeView extends StackPane implements WordInputListener {
         }
     }
 
+    /**
+     * Called when the user wants to quit the app. A confirmation will be
+     * required to do that.
+     */
     private void abort() {
         ButtonType yes = new ButtonType(Messages.msg("common.yes"), ButtonBar.ButtonData.YES);
         ButtonType no = new ButtonType(Messages.msg("common.cancel"), ButtonBar.ButtonData.NO);
@@ -393,8 +419,8 @@ public class PracticeView extends StackPane implements WordInputListener {
         }
     }
 
-    private void switchToTopics() {
-        MainApp.getInstance().setEditorScene();
+    private void switchToTopicList() {
+        MainApp.getInstance().setTopicListScene();
     }
 
     public interface TopicChangeListener {

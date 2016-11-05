@@ -16,6 +16,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 /**
+ * A custom ImageView for "play audio" icon. When clicked, an audio clip starts
+ * playing.
  *
  * @author Timi
  */
@@ -50,6 +52,11 @@ public final class AudioIcon extends ImageView {
         this.setImage(actualImage);
     }
 
+    /**
+     * If the audio clip exists, it starts playing.
+     *
+     * @param event
+     */
     private void mouseClicked(MouseEvent event) {
         if (audio != null) {
             MediaPlayer player = new MediaPlayer(audio);
@@ -57,6 +64,11 @@ public final class AudioIcon extends ImageView {
         }
     }
 
+    /**
+     * Sets the audio from a card.
+     *
+     * @param card
+     */
     public final void setCard(Card card) {
         try {
             byte[] audioBytes = card.getAudio();

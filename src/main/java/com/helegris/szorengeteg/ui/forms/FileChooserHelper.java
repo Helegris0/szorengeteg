@@ -12,6 +12,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 /**
+ * A helper class for getting a file or a list of files using file chooser.
  *
  * @author Timi
  */
@@ -63,7 +64,7 @@ public class FileChooserHelper {
         return files;
     }
 
-    private FileChooser getFileChooser(String directory, 
+    private FileChooser getFileChooser(String directory,
             FileChooser.ExtensionFilter extensionFilter) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setInitialDirectory(new File(directory));

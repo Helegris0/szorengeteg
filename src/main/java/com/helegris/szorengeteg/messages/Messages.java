@@ -11,6 +11,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
+ * i18n
  *
  * @author Timi
  */
@@ -38,6 +39,11 @@ public class Messages {
         }
     }
 
+    /**
+     *
+     * @param key
+     * @return a string to be displayed if the key doesn't exist
+     */
     private static String missingKeyMsg(String key) {
         return "???" + key + "???";
     }
