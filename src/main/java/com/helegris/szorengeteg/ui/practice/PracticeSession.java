@@ -33,6 +33,9 @@ public class PracticeSession {
 
     private int index;
 
+    public PracticeSession() {
+    }
+
     public PracticeSession(Topic topic) {
         this(topic, 0);
     }

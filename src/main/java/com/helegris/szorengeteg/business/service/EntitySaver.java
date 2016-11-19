@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
  *
  * @author Timi
  */
+@Transactional
 public class EntitySaver {
 
     @Inject
@@ -27,7 +28,6 @@ public class EntitySaver {
     @Inject
     private CardLoader cardLoader;
 
-    @Transactional
     public void createTopic(Topic topic, List<Card> cards) {
         cards.stream().forEach(this::save);
         em.persist(topic);
@@ -40,24 +40,20 @@ public class EntitySaver {
      * @param topic
      * @param cards
      */
-    @Transactional
     public void saveTopic(Topic topic, List<Card> cards) {
         cards.stream().forEach(this::save);
         deleteIf(cardLoader.loadByTopic(topic), card -> !cards.contains(card));
         em.merge(topic);
     }
 
-    @Transactional
     public void saveTopics(List<Topic> topics) {
         topics.stream().forEach(this::save);
     }
 
-    @Transactional
     public void saveCard(Card card) {
         save(card);
     }
 
-    @Transactional
     public void saveCards(List<Card> cards) {
         cards.stream().forEach(this::save);
     }
@@ -67,7 +63,6 @@ public class EntitySaver {
      *
      * @param entities
      */
-    @Transactional
     public void delete(Collection<? extends PersistentObject> entities) {
         entities.stream().forEach(em::remove);
     }

@@ -63,14 +63,8 @@ public abstract class BulkAddMediaView<T extends Row> extends AnchorPane {
      * enables it.
      */
     protected void checkSelections() {
-        boolean selected = false;
-        for (Row row : rows) {
-            if (row.getCheckBox().isSelected()) {
-                selected = true;
-                break;
-            }
-        }
-        btnBrowse.setDisable(!selected);
+        btnBrowse.setDisable(!rows.stream()
+                .anyMatch(row -> row.getCheckBox().isSelected()));
     }
 
     protected abstract void browse(ActionEvent event);

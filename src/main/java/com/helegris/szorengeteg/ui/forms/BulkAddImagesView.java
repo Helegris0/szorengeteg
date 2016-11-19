@@ -17,12 +17,11 @@ import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.image.Image;
@@ -56,8 +55,8 @@ public class BulkAddImagesView extends BulkAddMediaView<ImageRow> {
 
     /**
      * Matches the choosed image files with the selected rows.
-     * 
-     * @param event 
+     *
+     * @param event
      */
     @Override
     protected void browse(ActionEvent event) {
@@ -75,7 +74,12 @@ public class BulkAddImagesView extends BulkAddMediaView<ImageRow> {
                     files.put(row.getIndex(), file);
                     images.put(row.getIndex(), image);
                 } catch (FileNotFoundException ex) {
-                    Logger.getLogger(BulkAddImagesView.class.getName()).log(Level.SEVERE, null, ex);
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle(Messages.msg("alert.image_upload_unsuccessful"));
+                    alert.setHeaderText(Messages.msg("alert.image_not_available"));
+                    alert.initModality(Modality.APPLICATION_MODAL);
+
+                    alert.showAndWait();
                 }
                 row.setSelected(false);
             }

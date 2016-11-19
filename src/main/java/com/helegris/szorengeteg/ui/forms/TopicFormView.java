@@ -198,79 +198,88 @@ public abstract class TopicFormView extends AnchorPane {
     private void bulkAdd(ActionEvent event) {
         if (cmbBulkAdd.isVisible()) {
             switch (cmbBulkAdd.getSelectionModel().getSelectedIndex()) {
-                case 0: {
-                    Stage stage = new Stage();
-                    BulkAddWordsView view = new BulkAddWordsView();
-                    stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
-                    stage.setTitle(Messages.msg("form.bulk_add_something",
-                            Messages.msg("form.word_and_description")));
-                    stage.initModality(Modality.APPLICATION_MODAL);
-                    stage.initOwner(getScene().getWindow());
-                    stage.showAndWait();
-                    loadRows(view.getCards());
-                }
-                break;
-                case 1: {
-                    if (sortedRows.size() > 0) {
-                        Stage stage = new Stage();
-                        BulkAddImagesView view = new BulkAddImagesView(sortedRows);
-                        stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
-                        stage.setTitle(Messages.msg("form.bulk_add_something",
-                                Messages.msg("form.image")));
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initOwner(getScene().getWindow());
-                        stage.showAndWait();
-
-                        if (view.isOk()) {
-                            view.getFiles().entrySet().stream().forEach((entry) -> {
-                                ((RowForCard) sortedRows.get(entry.getKey())).setImageFile(entry.getValue());
-                            });
-                            view.getImages().entrySet().stream().forEach((entry) -> {
-                                ((RowForCard) sortedRows.get(entry.getKey())).setImage(entry.getValue());
-                            });
-                        }
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle(Messages.msg("alert.error"));
-                        alert.setHeaderText(Messages.msg("alert.no_words_image"));
-                        alert.setContentText(Messages.msg("alert.add_words"));
-                        alert.showAndWait();
-                    }
-                }
-                break;
-                case 2: {
-                    if (sortedRows.size() > 0) {
-                        Stage stage = new Stage();
-                        BulkAddAudioView view = new BulkAddAudioView(sortedRows);
-                        stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
-                        stage.setTitle(Messages.msg("form.bulk_add_something",
-                                Messages.msg("form.audio")));
-                        stage.initModality(Modality.APPLICATION_MODAL);
-                        stage.initOwner(getScene().getWindow());
-                        stage.showAndWait();
-
-                        if (view.isOk()) {
-                            view.getFiles().entrySet().stream().forEach((entry) -> {
-                                ((RowForCard) sortedRows.get(entry.getKey())).setAudioFile(entry.getValue());
-                            });
-                            view.getAudio().entrySet().stream().forEach((entry) -> {
-                                ((RowForCard) sortedRows.get(entry.getKey())).setAudio(entry.getValue());
-                            });
-                        }
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle(Messages.msg("alert.error"));
-                        alert.setHeaderText(Messages.msg("alert.no_words_audio"));
-                        alert.setContentText(Messages.msg("alert.add_words"));
-                        alert.showAndWait();
-                    }
-                }
-                break;
+                case 0:
+                    bulkAddWords();
+                    break;
+                case 1:
+                    bulkAddImages();
+                    break;
+                case 2:
+                    bulkAddAudio();
+                    break;
             }
         } else {
             btnBulkAdd.setText(Messages.msg("form.bulk_add"));
             cmbBulkAdd.setVisible(true);
             cmbBulkAdd.requestFocus();
+        }
+    }
+
+    private void bulkAddWords() {
+        Stage stage = new Stage();
+        BulkAddWordsView view = new BulkAddWordsView();
+        stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
+        stage.setTitle(Messages.msg("form.bulk_add_something",
+                Messages.msg("form.word_and_description")));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initOwner(getScene().getWindow());
+        stage.showAndWait();
+        loadRows(view.getCards());
+    }
+
+    private void bulkAddImages() {
+        if (sortedRows.size() > 0) {
+            Stage stage = new Stage();
+            BulkAddImagesView view = new BulkAddImagesView(sortedRows);
+            stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
+            stage.setTitle(Messages.msg("form.bulk_add_something",
+                    Messages.msg("form.image")));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(getScene().getWindow());
+            stage.showAndWait();
+
+            if (view.isOk()) {
+                view.getFiles().entrySet().stream().forEach((entry) -> {
+                    ((RowForCard) sortedRows.get(entry.getKey())).setImageFile(entry.getValue());
+                });
+                view.getImages().entrySet().stream().forEach((entry) -> {
+                    ((RowForCard) sortedRows.get(entry.getKey())).setImage(entry.getValue());
+                });
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(Messages.msg("alert.error"));
+            alert.setHeaderText(Messages.msg("alert.no_words_image"));
+            alert.setContentText(Messages.msg("alert.add_words"));
+            alert.showAndWait();
+        }
+    }
+
+    private void bulkAddAudio() {
+        if (sortedRows.size() > 0) {
+            Stage stage = new Stage();
+            BulkAddAudioView view = new BulkAddAudioView(sortedRows);
+            stage.setScene(new SceneStyler().createScene(view, SceneStyler.Style.TOPIC_LIST));
+            stage.setTitle(Messages.msg("form.bulk_add_something",
+                    Messages.msg("form.audio")));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initOwner(getScene().getWindow());
+            stage.showAndWait();
+
+            if (view.isOk()) {
+                view.getFiles().entrySet().stream().forEach((entry) -> {
+                    ((RowForCard) sortedRows.get(entry.getKey())).setAudioFile(entry.getValue());
+                });
+                view.getAudio().entrySet().stream().forEach((entry) -> {
+                    ((RowForCard) sortedRows.get(entry.getKey())).setAudio(entry.getValue());
+                });
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle(Messages.msg("alert.error"));
+            alert.setHeaderText(Messages.msg("alert.no_words_audio"));
+            alert.setContentText(Messages.msg("alert.add_words"));
+            alert.showAndWait();
         }
     }
 

@@ -254,4 +254,8 @@ public class SpelledWordInput extends WordInput {
             }
         });
     }
+
+    public List<TextField> getFields() {
+        return new ArrayList<>(fields);
+    }
 }

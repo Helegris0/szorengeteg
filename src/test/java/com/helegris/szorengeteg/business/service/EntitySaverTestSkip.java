@@ -58,7 +58,7 @@ public class EntitySaverTestSkip {
             = DIRECTORY + "topic_with_more_words.xml";
     private final String EMPTY_DB = DIRECTORY + "empty_db.xml";
 
-    private final String TOPIC = "Idő";
+    private final String TOPIC = "Hónapok";
     private final String WORD1 = "április";
     private final String WORD2 = "május";
     private final String WORD3 = "június";

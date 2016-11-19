@@ -5,7 +5,7 @@
  */
 package com.helegris.szorengeteg.ui.forms;
 
-import com.helegris.szorengeteg.JavaFXThreadingRule;
+import com.helegris.szorengeteg.ui.JavaFXThreadingRule;
 import com.helegris.szorengeteg.business.model.Card;
 import com.helegris.szorengeteg.business.model.Topic;
 import java.util.ArrayList;

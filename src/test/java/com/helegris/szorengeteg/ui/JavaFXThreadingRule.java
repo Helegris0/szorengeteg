@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.helegris.szorengeteg;
+package com.helegris.szorengeteg.ui;
 
 import java.util.concurrent.CountDownLatch;
 import javafx.application.Platform;

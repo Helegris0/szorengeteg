@@ -7,8 +7,6 @@ package com.helegris.szorengeteg.ui;
 
 import com.helegris.szorengeteg.business.model.Card;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -78,7 +76,7 @@ public final class AudioIcon extends ImageView {
                 setAudio(null);
             }
         } catch (IOException ex) {
-            Logger.getLogger(AudioIcon.class.getName()).log(Level.SEVERE, null, ex);
+            setAudio(null);
         }
     }
 
