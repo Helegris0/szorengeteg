@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 
 <fx:root xmlns:fx="http://javafx.com/fxml/1" type="AnchorPane"
-         id="AnchorPane" prefWidth="600.0" prefHeight="500.0"
+         id="AnchorPane" prefWidth="600.0" prefHeight="580.0"
          xmlns="http://javafx.com/javafx/8">
     <fx:define>
         <ToggleGroup fx:id="grpDelimiter" />
@@ -22,6 +22,9 @@
                 <RadioButton fx:id="rdSemicolon" text="%form.semicolon" toggleGroup="$grpDelimiter" />
             </VBox>
         </HBox>
+        <Label fx:id="lblExample" text="%form.bulk_add_words_example" />
+        <Label fx:id="lblExample1" />
+        <Label fx:id="lblExample2" />
         <TextArea fx:id="textArea" />
         <HBox>
             <Pane HBox.hgrow="ALWAYS" />

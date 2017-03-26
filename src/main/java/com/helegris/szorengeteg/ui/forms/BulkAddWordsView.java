@@ -38,6 +38,12 @@ public class BulkAddWordsView extends AnchorPane {
     @FXML
     private Label lblDescription;
     @FXML
+    private Label lblExample;
+    @FXML
+    private Label lblExample1;
+    @FXML
+    private Label lblExample2;
+    @FXML
     private ToggleGroup grpDelimiter;
     @FXML
     private RadioButton rdColon;
@@ -60,19 +66,32 @@ public class BulkAddWordsView extends AnchorPane {
         FXMLLoaderHelper.load(FXML, this);
         delimiterMap.put(rdColon, ":");
         delimiterMap.put(rdSemicolon, ";");
+        setExample();
         Platform.runLater(() -> textArea.requestFocus());
     }
 
     @FXML
     public void initialize() {
         lblDescription.setText(description);
+        rdColon.setOnAction(e -> setExample());
+        rdSemicolon.setOnAction(e -> setExample());
         btnAdd.setOnAction(this::add);
         btnCancel.setOnAction(e -> close());
     }
 
-    private void add(ActionEvent event) {
+    private String getDelimiter() {
         RadioButton selected = (RadioButton) grpDelimiter.getSelectedToggle();
-        String delimiter = delimiterMap.get(selected);
+        return delimiterMap.get(selected);
+    }
+
+    private void setExample() {
+        String delimiter = getDelimiter();
+        lblExample1.setText(Messages.msg("form.bulk_add_words_example1", delimiter));
+        lblExample2.setText(Messages.msg("form.bulk_add_words_example2", delimiter));
+    }
+
+    private void add(ActionEvent event) {
+        String delimiter = getDelimiter();
         String text = textArea.getText();
         cards.clear();
 

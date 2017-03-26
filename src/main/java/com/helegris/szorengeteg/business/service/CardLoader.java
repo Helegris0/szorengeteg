@@ -32,8 +32,8 @@ public class CardLoader extends EntityLoader<Card> {
      */
     public List<Card> loadByTopic(Topic topic) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Card> cq = cb.createQuery(Card.class);
-        Root<Card> card = cq.from(Card.class);
+        CriteriaQuery<Card> cq = cb.createQuery(getEntityClass());
+        Root<Card> card = cq.from(getEntityClass());
         cq.select(card).where(cb.equal(card.get("topic"), topic));
         TypedQuery<Card> q = em.createQuery(cq);
         return q.getResultList();

@@ -93,8 +93,7 @@ public class BulkAddAudioView extends BulkAddMediaView<AudioRow> {
                 AudioPopup audioPopup = new AudioPopup(audioIcon.getAudio());
                 Stage stage = new Stage();
                 stage.setScene(new SceneStyler().createScene(audioPopup, SceneStyler.Style.TOPIC_LIST));
-                stage.setTitle(row.getWord() + " "
-                        + Messages.msg("form.set_audio_of_word"));
+                stage.setTitle(Messages.msg("form.set_audio_of_word", row.getWord()));
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.initOwner(tableView.getScene().getWindow());
                 stage.setResizable(false);

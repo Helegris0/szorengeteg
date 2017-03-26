@@ -11,7 +11,7 @@
 
 <fx:root type="HBox" xmlns="http://javafx.com/javafx/8.0.65" 
          xmlns:fx="http://javafx.com/fxml/1" prefHeight="120.0">
-        <Pane fx:id="positionerPane" />
+        <Pane fx:id="positionerPane" prefWidth="35.0" />
         <ImageView fx:id="imageView" fitHeight="100.0" fitWidth="115.0" />
         <Region prefWidth="20.0" />
         <VBox prefWidth="380.0">
