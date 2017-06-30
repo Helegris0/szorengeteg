@@ -12,17 +12,20 @@ import java.io.IOException;
  */
 public class NewTopicView extends TopicFormView {
 
+    private int ordinal;
+
     @Override
     protected void initialize() {
         super.initialize();
         imageView.setImage(DefaultImage.getInstance());
-        int ordinal = topicLoader.loadAll().size() + 1;
+        ordinal = topicLoader.loadAll().size() + 1;
         lblOrdinal.setText(ordinal + ". ");
     }
 
     @Override
     protected void prepareTopic() throws FileNotFoundException, IOException {
         topic = new Topic();
+        topic.setOrdinal(ordinal);
         super.prepareTopic();
     }
 }
